@@ -1,50 +1,44 @@
 <template>
-  <div ref="teamScope" class="min-h-screen bg-[#F8FAFC] py-16 px-4 font-sans">
-    <div class="max-w-6xl mx-auto">
+  <div ref="teamScope" class="min-h-screen bg-[#070B16] text-white py-20 px-4 font-sans overflow-hidden">
+    <div class="max-w-6xl mx-auto relative">
+      
+      <!-- Ambient Background Glows -->
+      <div class="absolute -right-20 -top-20 w-[400px] h-[400px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+      <div class="absolute -left-20 bottom-20 w-[400px] h-[400px] bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none"></div>
       
       <!-- Page Header -->
-      <div class="text-center mb-16 header-area">
-        <span class="text-blue-600 font-bold text-xs uppercase tracking-widest mb-3 inline-block tracking-widest-2">Our Community Leaders</span>
-        <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-none mb-4">
+      <div class="text-center mb-20 header-area">
+        <span class="text-blue-400 font-black text-xs uppercase tracking-[0.2em] mb-4 inline-block">Our Community Leaders</span>
+        <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-none mb-6">
           Meet the Core Team
         </h1>
-        <p class="text-gray-500 text-base sm:text-lg max-w-xl mx-auto font-medium">
+        <p class="text-gray-400 text-base sm:text-lg max-w-xl mx-auto font-medium leading-relaxed">
           Students and mentors who build local chapters, manage project sprints, and nurture our learning ecosystem.
         </p>
       </div>
 
       <!-- Team Members Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 cards-container">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10 cards-container">
         
         <div 
           v-for="member in teamMembers" 
           :key="member.name" 
-          class="bg-white rounded-[2rem] p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1.5 duration-300 flex flex-col items-center text-center group team-card"
+          class="bg-slate-900/40 backdrop-blur-md rounded-[2.5rem] p-8 border border-white/5 hover:border-blue-500/30 shadow-xl transition-all duration-500 hover:scale-[1.02] flex flex-col items-center text-center group team-card"
         >
-          <!-- Image -->
-          <div class="w-32 h-32 rounded-[2rem] overflow-hidden bg-slate-100 border-2 border-white shadow-md mb-6 transform group-hover:scale-105 duration-300 shrink-0">
+          <!-- Image Container with Zoom and Glow -->
+          <div class="w-32 h-32 rounded-[2rem] overflow-hidden bg-slate-800 border-2 border-white/10 shadow-md mb-6 transform group-hover:scale-105 duration-500 shrink-0">
             <img :src="member.image" :alt="member.name" class="w-full h-full object-cover" />
           </div>
           
-          <h3 class="text-xl font-extrabold text-gray-900 mb-1">{{ member.name }}</h3>
-          <span class="inline-block bg-blue-50 text-blue-600 text-xs font-black px-3 py-1 rounded-full mb-4 border border-blue-100 uppercase">
+          <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-2">{{ member.name }}</h3>
+          <span class="inline-block bg-blue-500/10 text-blue-400 text-xs font-black px-4 py-1.5 rounded-full mb-6 border border-blue-500/20 uppercase tracking-wider">
             {{ member.role }}
           </span>
-          <p class="text-gray-500 text-sm leading-relaxed font-medium">
+          <p class="text-gray-400 text-sm leading-relaxed font-medium">
             {{ member.bio }}
           </p>
         </div>
         
-      </div>
-
-      <!-- Action Footer -->
-      <div class="mt-16 text-center footer-cta">
-        <p class="text-gray-500 text-sm font-semibold mb-4">Are you a core team member who hasn't registered yet?</p>
-        <router-link to="/team-members-form">
-          <button class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold uppercase rounded-full shadow-sm transition hover:scale-105 active:scale-95 cursor-pointer">
-            Register Details
-          </button>
-        </router-link>
       </div>
 
     </div>
@@ -53,6 +47,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import gsap from 'gsap'
 import { useGSAP } from '../composables/useGSAP'
 
 const teamScope = ref(null)
@@ -84,9 +79,7 @@ onMounted(() => {
   teamMembers.value = [...defaultTeam, ...localMembers]
 })
 
-useGSAP((self) => {
-  const { gsap } = self
-
+useGSAP(() => {
   gsap.from('.header-area', {
     y: 50,
     opacity: 0,
@@ -94,7 +87,7 @@ useGSAP((self) => {
     ease: 'power3.out'
   })
 
-  // We defer card animations slightly to allow teamMembers array to load in onMounted
+  // We animate core cards after array is loaded in onMounted
   gsap.from('.team-card', {
     y: 60,
     opacity: 0,
@@ -103,14 +96,6 @@ useGSAP((self) => {
     stagger: 0.15,
     ease: 'back.out(1.3)',
     delay: 0.2
-  })
-
-  gsap.from('.footer-cta', {
-    y: 30,
-    opacity: 0,
-    duration: 1,
-    ease: 'power3.out',
-    delay: 0.6
   })
 }, teamScope)
 </script>
