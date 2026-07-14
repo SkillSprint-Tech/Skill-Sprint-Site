@@ -1,4 +1,4 @@
-import { onMounted, onBeforeUnmount } from 'vue'
+import { onMounted, onBeforeUnmount, nextTick } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -18,6 +18,13 @@ export function useGSAP(animationCallback, scope) {
   onMounted(() => {
     const scopeEl = scope && 'value' in scope ? scope.value : scope
     ctx = gsap.context(animationCallback, scopeEl)
+    
+    // Refresh ScrollTrigger instances on DOM updates to prevent transition glitches
+    nextTick(() => {
+      setTimeout(() => {
+        ScrollTrigger.refresh()
+      }, 150)
+    })
   })
 
   onBeforeUnmount(() => {

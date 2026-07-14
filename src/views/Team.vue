@@ -1,18 +1,18 @@
 <template>
-  <div ref="teamScope" class="min-h-screen bg-[#070B16] text-white py-20 px-4 font-sans overflow-hidden">
+  <div ref="teamScope" class="min-h-screen bg-[#F8FAFC] text-gray-950 py-20 px-4 font-sans overflow-hidden">
     <div class="max-w-6xl mx-auto relative">
       
       <!-- Ambient Background Glows -->
-      <div class="absolute -right-20 -top-20 w-[400px] h-[400px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none"></div>
-      <div class="absolute -left-20 bottom-20 w-[400px] h-[400px] bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+      <div class="absolute -right-20 -top-20 w-[400px] h-[400px] bg-blue-400/5 blur-[120px] rounded-full pointer-events-none"></div>
+      <div class="absolute -left-20 bottom-20 w-[400px] h-[400px] bg-indigo-400/5 blur-[120px] rounded-full pointer-events-none"></div>
       
       <!-- Page Header -->
       <div class="text-center mb-20 header-area">
-        <span class="text-blue-400 font-black text-xs uppercase tracking-[0.2em] mb-4 inline-block">Our Community Leaders</span>
-        <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-none mb-6">
+        <span class="text-[#0178FF] font-black text-xs uppercase tracking-[0.2em] mb-4 inline-block">Our Community Leaders</span>
+        <h1 class="text-4xl sm:text-6xl font-extrabold text-gray-900 tracking-tight leading-none mb-6">
           Meet the Core Team
         </h1>
-        <p class="text-gray-400 text-base sm:text-lg max-w-xl mx-auto font-medium leading-relaxed">
+        <p class="text-gray-500 text-base sm:text-lg max-w-xl mx-auto font-medium leading-relaxed">
           Students and mentors who build local chapters, manage project sprints, and nurture our learning ecosystem.
         </p>
       </div>
@@ -23,18 +23,18 @@
         <div 
           v-for="member in teamMembers" 
           :key="member.name" 
-          class="bg-slate-900/40 backdrop-blur-md rounded-[2.5rem] p-8 border border-white/5 hover:border-blue-500/30 shadow-xl transition-all duration-500 hover:scale-[1.02] flex flex-col items-center text-center group team-card"
+          class="bg-white rounded-[2.5rem] p-8 border border-gray-100 hover:border-blue-300/30 shadow-[0_15px_40px_rgba(0,0,0,0.03)] transition-all duration-500 hover:scale-[1.02] flex flex-col items-center text-center group team-card"
         >
           <!-- Image Container with Zoom and Glow -->
-          <div class="w-32 h-32 rounded-[2rem] overflow-hidden bg-slate-800 border-2 border-white/10 shadow-md mb-6 transform group-hover:scale-105 duration-500 shrink-0">
+          <div class="w-32 h-32 rounded-[2rem] overflow-hidden bg-slate-100 border-2 border-white shadow-md mb-6 transform group-hover:scale-105 duration-500 shrink-0">
             <img :src="member.image" :alt="member.name" class="w-full h-full object-cover" />
           </div>
           
-          <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-2">{{ member.name }}</h3>
-          <span class="inline-block bg-blue-500/10 text-blue-400 text-xs font-black px-4 py-1.5 rounded-full mb-6 border border-blue-500/20 uppercase tracking-wider">
+          <h3 class="text-xl sm:text-2xl font-extrabold text-gray-900 mb-2">{{ member.name }}</h3>
+          <span class="inline-block bg-blue-50 text-blue-600 text-xs font-black px-4 py-1.5 rounded-full mb-6 border border-blue-100 uppercase tracking-wider">
             {{ member.role }}
           </span>
-          <p class="text-gray-400 text-sm leading-relaxed font-medium">
+          <p class="text-gray-500 text-sm leading-relaxed font-medium">
             {{ member.bio }}
           </p>
         </div>
@@ -87,7 +87,6 @@ useGSAP(() => {
     ease: 'power3.out'
   })
 
-  // We animate core cards after array is loaded in onMounted
   gsap.from('.team-card', {
     y: 60,
     opacity: 0,

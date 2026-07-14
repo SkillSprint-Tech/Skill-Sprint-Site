@@ -1,18 +1,18 @@
 <template>
-  <div ref="sprintsScope" class="min-h-screen bg-[#070B16] text-white py-20 px-4 font-sans overflow-hidden">
+  <div ref="sprintsScope" class="min-h-screen bg-[#F8FAFC] text-gray-950 py-20 px-4 font-sans overflow-hidden">
     <div class="max-w-6xl mx-auto relative">
       
       <!-- Ambient Background Glows -->
-      <div class="absolute -left-20 -top-20 w-[400px] h-[400px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none"></div>
-      <div class="absolute -right-20 bottom-20 w-[400px] h-[400px] bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+      <div class="absolute -left-20 -top-20 w-[400px] h-[400px] bg-blue-400/5 blur-[120px] rounded-full pointer-events-none"></div>
+      <div class="absolute -right-20 bottom-20 w-[400px] h-[400px] bg-indigo-400/5 blur-[120px] rounded-full pointer-events-none"></div>
 
       <!-- Page Header -->
       <div class="text-center mb-20 header-area">
-        <span class="text-blue-400 font-black text-xs uppercase tracking-[0.2em] mb-4 inline-block">Sprint Cycles</span>
-        <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-none mb-6">
+        <span class="text-[#0178FF] font-black text-xs uppercase tracking-[0.2em] mb-4 inline-block">Sprint Cycles</span>
+        <h1 class="text-4xl sm:text-6xl font-extrabold text-gray-900 tracking-tight leading-none mb-6">
           Active Project Sprints
         </h1>
-        <p class="text-gray-400 text-base sm:text-lg max-w-xl mx-auto font-medium leading-relaxed">
+        <p class="text-gray-500 text-base sm:text-lg max-w-xl mx-auto font-medium leading-relaxed">
           Collaborate on high-impact projects, gain verified badges, and build out your portfolio inside focused, structured cycles.
         </p>
       </div>
@@ -23,29 +23,29 @@
         <div 
           v-for="sprint in sprints" 
           :key="sprint.title" 
-          class="bg-slate-900/40 backdrop-blur-md rounded-[2.5rem] p-8 border border-white/5 hover:border-blue-500/30 shadow-xl transition-all duration-500 hover:scale-[1.02] flex flex-col justify-between sprint-card"
+          class="bg-white rounded-[2.5rem] p-8 border border-gray-100 hover:border-blue-300/30 shadow-[0_15px_40px_rgba(0,0,0,0.03)] transition-all duration-500 hover:scale-[1.02] flex flex-col justify-between sprint-card"
         >
           <div>
             <div class="flex items-center justify-between mb-8">
               <span 
                 class="px-4 py-1.5 text-xs font-black rounded-full border flex items-center gap-2"
                 :class="[
-                  sprint.status === 'Active' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25' : 'bg-blue-500/15 text-blue-400 border-blue-500/25'
+                  sprint.status === 'Active' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-blue-50 text-blue-600 border-blue-100'
                 ]"
               >
-                <span class="w-1.5 h-1.5 rounded-full" :class="[sprint.status === 'Active' ? 'bg-emerald-400' : 'bg-blue-400']"></span>
+                <span class="w-1.5 h-1.5 rounded-full" :class="[sprint.status === 'Active' ? 'bg-emerald-500' : 'bg-blue-500']"></span>
                 {{ sprint.status }}
               </span>
               <span class="text-gray-400 text-xs font-semibold">Ends {{ sprint.endDate }}</span>
             </div>
             
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-4 leading-snug">{{ sprint.title }}</h3>
-            <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-8 font-medium">{{ sprint.desc }}</p>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-4 leading-snug">{{ sprint.title }}</h3>
+            <p class="text-gray-500 text-sm sm:text-base leading-relaxed mb-8 font-medium">{{ sprint.desc }}</p>
             
             <div class="space-y-4 mb-8">
               <div v-for="bullet in sprint.bullets" :key="bullet" class="flex items-center gap-3">
-                <span class="text-emerald-400 font-bold">✓</span>
-                <span class="text-slate-300 text-sm sm:text-base font-semibold">{{ bullet }}</span>
+                <span class="text-emerald-500 font-bold">✓</span>
+                <span class="text-gray-700 text-sm sm:text-base font-semibold">{{ bullet }}</span>
               </div>
             </div>
           </div>

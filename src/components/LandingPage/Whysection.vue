@@ -125,7 +125,7 @@ useGSAP((self) => {
 
     // Set initial stacked and hidden state in the center
     gsap.set(desktopCards, {
-      xPercent: -50,
+      xPercent: (i) => i === 1 ? -50 : 0,
       x: 0,
       y: 120,
       rotation: 0,
@@ -144,11 +144,13 @@ useGSAP((self) => {
     })
     .to(desktopCards[0], {
       x: -430,
+      xPercent: 0,
       rotation: 5,
       duration: 0.9,
       ease: 'power3.out'
     }, '-=0.6')
     .to(desktopCards[1], {
+      x: 0,
       xPercent: -50,
       rotation: -4,
       duration: 0.9,
@@ -156,6 +158,7 @@ useGSAP((self) => {
     }, '-=0.8')
     .to(desktopCards[2], {
       x: 110,
+      xPercent: 0,
       rotation: 5,
       duration: 0.9,
       ease: 'power3.out'
