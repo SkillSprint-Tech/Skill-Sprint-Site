@@ -38,19 +38,21 @@
           <div class="flex flex-nowrap items-center gap-4 lg:gap-6
                       bg-gray-200 px-6 lg:px-8 py-3 lg:py-4 
                       rounded-full text-sm lg:text-base font-medium text-gray-500">
-            <router-link to="/" class="text-blue-600 cursor-pointer transition">Home</router-link>
-            <a href="#" class="text-gray-500 hover:text-blue-600 cursor-pointer transition">Community</a>
-            <a href="#" class="text-gray-500 hover:text-blue-600 cursor-pointer transition">Sprints</a>
-            <a href="#" class="text-gray-500 hover:text-blue-600 cursor-pointer transition">Team</a>
-            <router-link to="/AboutUs" class="text-gray-500 hover:text-blue-600 cursor-pointer transition">About Us</router-link>
+            <router-link to="/" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Home</router-link>
+            <router-link to="/community" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Community</router-link>
+            <router-link to="/sprints" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Sprints</router-link>
+            <router-link to="/team" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Team</router-link>
+            <router-link to="/AboutUs" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">About Us</router-link>
           </div>
 
           <!-- Button -->
-          <button class="bg-blue-600 text-white px-6 lg:px-8 py-3 lg:py-4 
-                         text-sm lg:text-base rounded-full font-medium 
-                         hover:bg-blue-700 transition shadow-sm shadow-blue-100">
-            Join the Sprint
-          </button>
+          <router-link to="/contact-us">
+            <button class="bg-blue-600 text-white px-6 lg:px-8 py-3 lg:py-4 
+                           text-sm lg:text-base rounded-full font-medium 
+                           hover:bg-blue-700 transition shadow-sm shadow-blue-100 cursor-pointer">
+              Join the Sprint
+            </button>
+          </router-link>
           
         </div>
       </div>
@@ -61,25 +63,27 @@
     <Transition name="slide-down">
       <div v-if="menuOpen" class="md:hidden bg-white border-t border-gray-100 shadow-lg pb-4">
         <div class="px-4 py-4 space-y-1">
-          <router-link to="/" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-blue-600 font-semibold bg-blue-50 text-sm">
+          <router-link to="/" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
             Home
           </router-link>
-          <a href="#" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150">
+          <router-link to="/community" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
             Community
-          </a>
-          <a href="#" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150">
+          </router-link>
+          <router-link to="/sprints" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
             Sprints
-          </a>
-          <a href="#" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150">
+          </router-link>
+          <router-link to="/team" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
             Team
-          </a>
-          <router-link to="/AboutUs" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150">
+          </router-link>
+          <router-link to="/AboutUs" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
             About Us
           </router-link>
           <div class="pt-3 pb-1">
-            <button @click="closeMenu" class="w-full bg-blue-600 text-white py-3 rounded-full text-sm font-semibold hover:bg-blue-700 transition-colors duration-200">
-              Join the Sprint
-            </button>
+            <router-link to="/contact-us" @click="closeMenu" class="block">
+              <button class="w-full bg-blue-600 text-white py-3 rounded-full text-sm font-semibold hover:bg-blue-700 transition-colors duration-200 cursor-pointer">
+                Join the Sprint
+              </button>
+            </router-link>
           </div>
         </div>
       </div>

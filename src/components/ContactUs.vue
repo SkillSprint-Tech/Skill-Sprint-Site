@@ -62,141 +62,187 @@
               </div>
             </div>
 
-            <!-- RIGHT PANEL - Form -->
-            <div class="bg-transparent rounded-[16px] p-0 sm:p-0 flex-1 w-full">
+            <!-- RIGHT PANEL - Form or Success State -->
+            <div class="bg-transparent rounded-[16px] p-0 sm:p-0 flex-1 w-full relative">
               
-              <!-- Form -->
-              <form @submit.prevent="handleSubmit" class="flex flex-col gap-[16px] w-full">
-                
-                <!-- Row 1: Full Name + Email -->
-                <div class="flex flex-col sm:flex-row gap-[16px] w-full">
-                  <div class="flex flex-col gap-2 w-full sm:w-[354px]">
-                    <label class="text-[16px] font-medium text-black tracking-[0.5px]">
-                      Full Name <span class="text-red-400">*</span>
-                    </label>
-                    <input 
-                      v-model="form.fullName"
-                      type="text"
-                      placeholder="Enter your first name"
-                      class="w-full px-4 py-[16px] rounded-[12px] bg-white border border-[#D4D4D4] 
-                             text-[14px] text-gray-800 placeholder-[#737373]
-                             focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 focus:border-[#0178FF]
-                             transition h-[52px]"
-                    />
+              <Transition name="fade-slide" mode="out-in">
+                <!-- Success Message Card -->
+                <div v-if="submitSuccess" class="flex flex-col items-center justify-center text-center py-12 px-6 bg-white rounded-[24px] border border-emerald-100 shadow-sm min-h-[500px]">
+                  <div class="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-6 border border-emerald-100/50 shadow-inner">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
                   </div>
-                  <div class="flex flex-col gap-2 w-full sm:w-[354px]">
-                    <label class="text-[16px] font-medium text-black tracking-[0.5px]">
-                      Email Address <span class="text-red-400">*</span>
-                    </label>
-                    <input 
-                      v-model="form.email"
-                      type="email"
-                      placeholder="Enter your email"
-                      class="w-full px-4 py-[16px] rounded-[12px] bg-white border border-[#D4D4D4] 
-                             text-[14px] text-gray-800 placeholder-[#737373]
-                             focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 focus:border-[#0178FF]
-                             transition h-[52px]"
-                    />
-                  </div>
-                </div>
-
-                <!-- Row 2: Phone + University -->
-                <div class="flex flex-col sm:flex-row gap-[16px] w-full">
-                  <div class="flex flex-col gap-2 w-full sm:w-[354px]">
-                    <label class="text-[16px] font-medium text-black tracking-[0.5px]">
-                      Phone Number <span class="text-red-400">*</span>
-                    </label>
-                    <div class="flex items-center w-full h-[52px] rounded-[12px] bg-white border border-[#D4D4D4] overflow-hidden">
-                      <span class="px-4 flex items-center gap-2 border-r border-[#D4D4D4] h-full text-[14px] text-[#737373]">
-                        🇺🇸 US
-                      </span>
-                      <input 
-                        v-model="form.phone"
-                        type="tel"
-                        placeholder="+1 (555) 000-0000"
-                        class="flex-1 px-4 py-[16px] bg-transparent text-[14px] text-gray-800 placeholder-[#737373]
-                               focus:outline-none h-full"
-                      />
-                    </div>
-                  </div>
-                  <div class="flex flex-col gap-2 w-full sm:w-[354px]">
-                    <label class="text-[16px] font-medium text-black tracking-[0.5px]">
-                      University / Organization
-                    </label>
-                    <input 
-                      v-model="form.organization"
-                      type="text"
-                      placeholder="Enter your University / Organization"
-                      class="w-full px-4 py-[16px] rounded-[12px] bg-white border border-[#D4D4D4] 
-                             text-[14px] text-gray-800 placeholder-[#737373]
-                             focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 focus:border-[#0178FF]
-                             transition h-[52px]"
-                    />
-                  </div>
-                </div>
-
-                <!-- Purpose -->
-                <div class="flex flex-col gap-2 w-full">
-                  <label class="text-[16px] font-medium text-black tracking-[0.5px]">
-                    Purpose of Contact <span class="text-red-400">*</span>
-                  </label>
-                  <select 
-                    v-model="form.purpose"
-                    class="w-full px-4 py-[16px] rounded-[8px] bg-white border border-[#D4D4D4] 
-                           text-[14px] text-[#737373] focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 
-                           focus:border-[#0178FF] transition h-[52px] appearance-none"
+                  <h3 class="text-gray-900 font-extrabold text-2xl tracking-tight mb-2">Message Sent Successfully!</h3>
+                  <p class="text-gray-500 text-base leading-relaxed max-w-[400px] mb-8">
+                    Thank you for reaching out, <span class="font-semibold text-gray-800">{{ form.fullName }}</span>. We've received your details and will get back to you shortly.
+                  </p>
+                  <button
+                    type="button"
+                    @click="resetForm"
+                    class="px-8 py-3 bg-[#0178FF] hover:bg-[#0168E0] text-white font-semibold rounded-full shadow-md shadow-blue-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
                   >
-                    <option value="" disabled selected>Select Purpose</option>
-                    <option value="General Inquiry">General Inquiry</option>
-                    <option value="Student Programs">Student Programs &amp; Events</option>
-                    <option value="Partnerships">Academic Partnerships</option>
-                    <option value="Corporate">Corporate Partnerships</option>
-                    <option value="Volunteer">Volunteer &amp; Mentorship</option>
-                    <option value="Hiring">Talent Acquisition</option>
-                    <option value="Media">Media &amp; Press</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-
-                <!-- Message -->
-                <div class="flex flex-col gap-1 w-full">
-                  <label class="text-[16px] font-medium text-black tracking-[0.5px]">
-                    Message <span class="text-red-400">*</span>
-                  </label>
-                  <textarea 
-                    v-model="form.message"
-                    rows="4"
-                    placeholder="Write your message..."
-                    class="w-full px-4 py-[16px] rounded-[12px] bg-white border border-[#D4D4D4] 
-                           text-[14px] text-gray-800 placeholder-[#737373] resize-none
-                           focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 focus:border-[#0178FF]
-                           transition min-h-[294px] sm:min-h-[294px]"
-                  ></textarea>
-                </div>
-
-                <!-- Checkbox + Submit -->
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 w-full pt-2">
-                  <label class="flex items-start gap-3 cursor-pointer">
-                    <input type="checkbox" v-model="agreed" class="mt-0.5 w-[24px] h-[24px] rounded-[3px] border-[#A3A3A3] text-[#0178FF] focus:ring-[#0178FF]" />
-                    <span class="text-[16px] text-black leading-[20px] tracking-[0.5px]">
-                      You agree to our friendly 
-                      <a href="#" class="text-[#0178FF] underline decoration-[#0178FF] decoration-1 underline-offset-2">privacy policy.</a>
-                    </span>
-                  </label>
-
-                  <button 
-                    type="submit"
-                    :disabled="isSubmitting || !agreed"
-                    class="w-full sm:w-[141px] bg-[#0178FF] hover:bg-[#0168E0] text-white font-medium 
-                           py-[12px] px-[24px] rounded-[12px] text-[14px] tracking-[-0.16px]
-                           transition disabled:opacity-50 disabled:cursor-not-allowed h-[44px]"
-                  >
-                    <span v-if="isSubmitting">Sending...</span>
-                    <span v-else>Send Message</span>
+                    Send Another Message
                   </button>
                 </div>
 
-              </form>
+                <!-- Form -->
+                <form v-else @submit.prevent="handleSubmit" class="flex flex-col gap-[16px] w-full">
+                  
+                  <!-- Error message if any -->
+                  <div v-if="submitError" class="p-4 bg-red-50 border border-red-100 text-red-700 text-sm rounded-xl flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ submitError }}</span>
+                  </div>
+
+                  <!-- Row 1: Full Name + Email -->
+                  <div class="flex flex-col sm:flex-row gap-[16px] w-full">
+                    <div class="flex flex-col gap-2 w-full sm:w-[354px]">
+                      <label class="text-[16px] font-medium text-black tracking-[0.5px]">
+                        Full Name <span class="text-red-400">*</span>
+                      </label>
+                      <input 
+                        v-model="form.fullName"
+                        type="text"
+                        placeholder="Enter your first name"
+                        required
+                        class="w-full px-4 py-[16px] rounded-[12px] bg-white border border-[#D4D4D4] 
+                               text-[14px] text-gray-800 placeholder-[#737373]
+                               focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 focus:border-[#0178FF]
+                               transition h-[52px]"
+                      />
+                    </div>
+                    <div class="flex flex-col gap-2 w-full sm:w-[354px]">
+                      <label class="text-[16px] font-medium text-black tracking-[0.5px]">
+                        Email Address <span class="text-red-400">*</span>
+                      </label>
+                      <input 
+                        v-model="form.email"
+                        type="email"
+                        placeholder="Enter your email"
+                        required
+                        class="w-full px-4 py-[16px] rounded-[12px] bg-white border border-[#D4D4D4] 
+                               text-[14px] text-gray-800 placeholder-[#737373]
+                               focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 focus:border-[#0178FF]
+                               transition h-[52px]"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Row 2: Phone + University -->
+                  <div class="flex flex-col sm:flex-row gap-[16px] w-full">
+                    <div class="flex flex-col gap-2 w-full sm:w-[354px]">
+                      <label class="text-[16px] font-medium text-black tracking-[0.5px]">
+                        Phone Number <span class="text-red-400">*</span>
+                      </label>
+                      <div class="flex items-center w-full h-[52px] rounded-[12px] bg-white border border-[#D4D4D4] overflow-hidden">
+                        <span class="px-4 flex items-center gap-2 border-r border-[#D4D4D4] h-full text-[14px] text-[#737373]">
+                          🇺🇸 US
+                        </span>
+                        <input 
+                          v-model="form.phone"
+                          type="tel"
+                          placeholder="+1 (555) 000-0000"
+                          required
+                          class="flex-1 px-4 py-[16px] bg-transparent text-[14px] text-gray-800 placeholder-[#737373]
+                                 focus:outline-none h-full"
+                        />
+                      </div>
+                    </div>
+                    <div class="flex flex-col gap-2 w-full sm:w-[354px]">
+                      <label class="text-[16px] font-medium text-black tracking-[0.5px]">
+                        University / Organization
+                      </label>
+                      <input 
+                        v-model="form.organization"
+                        type="text"
+                        placeholder="Enter your University / Organization"
+                        class="w-full px-4 py-[16px] rounded-[12px] bg-white border border-[#D4D4D4] 
+                               text-[14px] text-gray-800 placeholder-[#737373]
+                               focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 focus:border-[#0178FF]
+                               transition h-[52px]"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Purpose -->
+                  <div class="flex flex-col gap-2 w-full">
+                    <label class="text-[16px] font-medium text-black tracking-[0.5px]">
+                      Purpose of Contact <span class="text-red-400">*</span>
+                    </label>
+                    <div class="relative w-full">
+                      <select 
+                        v-model="form.purpose"
+                        required
+                        class="w-full px-4 py-[16px] rounded-[8px] bg-white border border-[#D4D4D4] 
+                               text-[14px] text-[#737373] focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 
+                               focus:border-[#0178FF] transition h-[52px] appearance-none"
+                      >
+                        <option value="" disabled>Select Purpose</option>
+                        <option value="General Inquiry">General Inquiry</option>
+                        <option value="Student Programs">Student Programs &amp; Events</option>
+                        <option value="Partnerships">Academic Partnerships</option>
+                        <option value="Corporate">Corporate Partnerships</option>
+                        <option value="Volunteer">Volunteer &amp; Mentorship</option>
+                        <option value="Hiring">Talent Acquisition</option>
+                        <option value="Media">Media &amp; Press</option>
+                        <option value="Other">Other</option>
+                      </select>
+                      <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Message -->
+                  <div class="flex flex-col gap-1 w-full">
+                    <label class="text-[16px] font-medium text-black tracking-[0.5px]">
+                      Message <span class="text-red-400">*</span>
+                    </label>
+                    <textarea 
+                      v-model="form.message"
+                      rows="4"
+                      placeholder="Write your message..."
+                      required
+                      class="w-full px-4 py-[16px] rounded-[12px] bg-white border border-[#D4D4D4] 
+                             text-[14px] text-gray-800 placeholder-[#737373] resize-none
+                             focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 focus:border-[#0178FF]
+                             transition min-h-[294px] sm:min-h-[294px]"
+                    ></textarea>
+                  </div>
+
+                  <!-- Checkbox + Submit -->
+                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 w-full pt-2">
+                    <label class="flex items-start gap-3 cursor-pointer select-none">
+                      <input type="checkbox" v-model="agreed" class="mt-0.5 w-[24px] h-[24px] rounded-[3px] border-[#A3A3A3] text-[#0178FF] focus:ring-[#0178FF]" />
+                      <span class="text-[16px] text-black leading-[20px] tracking-[0.5px]">
+                        You agree to our friendly 
+                        <a href="#" class="text-[#0178FF] underline decoration-[#0178FF] decoration-1 underline-offset-2">privacy policy.</a>
+                      </span>
+                    </label>
+
+                    <button 
+                      type="submit"
+                      :disabled="isSubmitting || !agreed"
+                      class="w-full sm:w-[150px] bg-[#0178FF] hover:bg-[#0168E0] text-white font-medium 
+                             py-[12px] px-[24px] rounded-[12px] text-[14px] tracking-[-0.16px]
+                             transition disabled:opacity-50 disabled:cursor-not-allowed h-[44px] flex items-center justify-center"
+                    >
+                      <svg v-if="isSubmitting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span v-if="isSubmitting">Sending...</span>
+                      <span v-else>Send Message</span>
+                    </button>
+                  </div>
+
+                </form>
+              </Transition>
 
               <!-- ── EMAIL & PHONE SECTION (MOBILE ONLY - BELOW FORM) ── -->
               <div class="flex flex-col justify-center items-start p-[12px_0px] gap-[4px] w-full sm:w-[354px] h-[142px] mt-6 sm:hidden">
@@ -357,17 +403,64 @@ const form = reactive({
 
 const agreed = ref(false)
 const isSubmitting = ref(false)
+const submitSuccess = ref(false)
+const submitError = ref('')
 
 const handleSubmit = async () => {
   if (!agreed.value || isSubmitting.value) return
   
   isSubmitting.value = true
+  submitError.value = ''
   
-  setTimeout(() => {
-    alert('Message sent! We\'ll get back to you soon.')
-    Object.assign(form, { fullName: '', email: '', phone: '', organization: '', purpose: '', message: '' })
-    agreed.value = false
+  try {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(form)
+    })
+    
+    const result = await response.json()
+    
+    if (result.success) {
+      submitSuccess.value = true
+    } else {
+      submitError.value = result.message || 'Failed to submit form.'
+    }
+  } catch (err) {
+    submitError.value = err.message || 'Connection error. Please try again later.'
+  } finally {
     isSubmitting.value = false
-  }, 1500)
+  }
+}
+
+const resetForm = () => {
+  submitSuccess.value = false
+  submitError.value = ''
+  agreed.value = false
+  Object.assign(form, {
+    fullName: '',
+    email: '',
+    phone: '',
+    organization: '',
+    purpose: '',
+    message: ''
+  })
 }
 </script>
+
+<style scoped>
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+</style>

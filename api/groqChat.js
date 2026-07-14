@@ -112,7 +112,7 @@ export const createSkillSprintReply = async ({ messages, env = process.env }) =>
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: env.GROQ_MODEL || env.DEFAULT_MODEL || DEFAULT_MODEL || 'llama3-8b-8192',
+      model: env.GROQ_MODEL || env.DEFAULT_MODEL || DEFAULT_MODEL || 'llama-3.1-8b-instant',
       messages: [{ role: 'system', content: systemPrompt }, ...normalizedMessages],
       temperature: 0.6,
       max_completion_tokens: 350,
