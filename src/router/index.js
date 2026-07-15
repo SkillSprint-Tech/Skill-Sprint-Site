@@ -14,7 +14,8 @@ const routes = [
   { path: '/community', component: Community },
   { path: '/sprints', component: Sprints },
   { path: '/team', component: Team },
-  { path: '/team-members-form', component: TeamForm }
+  { path: '/team-members-form', component: TeamForm },
+  { path: '/team-form', component: TeamForm }
 ]
 
 const router = createRouter({

@@ -27,7 +27,10 @@ export function useGSAP(animationCallback, scope) {
         }, scopeEl)
 
         ScrollTrigger.refresh()
-      }, 100)
+
+        // Second refresh after images / async content has settled
+        setTimeout(() => ScrollTrigger.refresh(), 400)
+      }, 300)
     })
   })
 
