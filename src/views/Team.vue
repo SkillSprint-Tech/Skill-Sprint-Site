@@ -2,7 +2,7 @@
   <div ref="teamScope" class="bg-[#F8FAFC] overflow-hidden font-sans">
 
     <!-- ─── HERO (light) ─── -->
-    <section class="relative bg-[#F8FAFC] pt-14 pb-16 px-4 text-center overflow-hidden">
+    <section class="relative bg-[#F8FAFC] pt-20 pb-20 px-4 text-center overflow-hidden">
       <!-- Background decoration: subtle dot grid SVG -->
       <div class="absolute inset-0 pointer-events-none opacity-[0.035]" aria-hidden="true">
         <svg class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -22,57 +22,57 @@
 
       <!-- Floating annotation tags -->
       <div class="hidden sm:block pointer-events-none select-none" aria-hidden="true">
-        <div class="absolute left-[12%] top-[18%] -rotate-6 bg-white shadow-md px-3.5 py-2 rounded-full border border-gray-100 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
+        <div class="absolute left-[12%] top-[18%] -rotate-6 bg-white shadow-lg px-4 py-2.5 rounded-2xl border border-gray-150 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
           🧑‍💻 students leading students
         </div>
-        <div class="absolute right-[10%] top-[12%] rotate-6 bg-white shadow-md px-3.5 py-2 rounded-full border border-gray-100 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
+        <div class="absolute right-[10%] top-[12%] rotate-6 bg-white shadow-lg px-4 py-2.5 rounded-2xl border border-gray-150 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
           🔥 passionate, not perfect
         </div>
-        <div class="absolute left-[7%] top-[40%] rotate-12 bg-white shadow-md px-3.5 py-2 rounded-full border border-gray-100 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
+        <div class="absolute left-[7%] top-[40%] rotate-12 bg-white shadow-lg px-4 py-2.5 rounded-2xl border border-gray-150 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
           🙌 community-built
         </div>
-        <div class="absolute right-[8%] top-[42%] -rotate-9 bg-white shadow-md px-3.5 py-2 rounded-full border border-gray-100 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
+        <div class="absolute right-[8%] top-[42%] -rotate-9 bg-white shadow-lg px-4 py-2.5 rounded-2xl border border-gray-150 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
           🌍 diverse skill sets
         </div>
       </div>
 
       <div class="relative z-10 max-w-4xl mx-auto">
-        <h1 class="text-[2.4rem] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-5 team-title">
+        <h1 class="text-[2.4rem] sm:text-6xl md:text-7xl font-extrabold text-gray-900 leading-[1.05] tracking-tight mb-6 team-title">
           Meet the<br />
-          <span class="text-blue-600">Core Team</span>
+          <span class="bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent">Core Team</span>
         </h1>
-        <p class="max-w-xs sm:max-w-xl mx-auto text-gray-500 text-sm sm:text-base md:text-lg mb-10 leading-relaxed team-sub">
+        <p class="max-w-xs sm:max-w-xl mx-auto text-gray-500 text-sm sm:text-base md:text-lg mb-12 leading-relaxed team-sub font-medium">
           Students and mentors who build local chapters, manage project sprints, and nurture our learning ecosystem — all driven by passion, not profit.
         </p>
         
-        <!-- CTA Relative Handdrawn Arrow -->
+        <!-- CTA area with Handdrawn arrow -->
         <div class="relative inline-flex flex-col sm:flex-row items-center justify-center gap-4 team-ctas">
-          <router-link to="/team-form">
-            <button class="px-8 py-3.5 rounded-full bg-blue-600 text-white text-sm sm:text-base font-bold hover:bg-blue-700 hover:scale-105 active:scale-95 transition-all duration-200 shadow-xl shadow-blue-200 cursor-pointer">
+          <router-link to="/contact-us">
+            <button class="px-9 py-4 rounded-full bg-blue-600 text-white text-sm sm:text-base font-black hover:bg-blue-700 hover:scale-105 active:scale-95 transition-all duration-200 shadow-xl shadow-blue-200 cursor-pointer">
               Apply to the Team →
             </button>
           </router-link>
           <router-link to="/community">
-            <button class="px-8 py-3.5 rounded-full bg-white border border-gray-200 text-gray-700 text-sm sm:text-base font-bold hover:bg-gray-50 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+            <button class="px-9 py-4 rounded-full bg-white border border-gray-200 text-gray-700 text-sm sm:text-base font-black hover:bg-gray-50 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
               Our Community
             </button>
           </router-link>
 
-          <!-- Handdrawn Arrow -->
-          <img src="/rightarrow.png" class="hidden lg:block absolute left-[96%] top-[50%] w-16 opacity-70 -rotate-12 pointer-events-none" alt="" />
+          <!-- Handdrawn Arrow overlay pointing to apply -->
+          <img src="/rightarrow.png" class="hidden lg:block absolute left-[96%] top-[50%] w-16 opacity-75 -rotate-12 pointer-events-none" alt="" />
         </div>
       </div>
     </section>
 
     <!-- ─── JOIN THE TEAM BANNER (white) ─── -->
-    <section class="bg-white border-y border-gray-150/80 py-10 px-4 join-banner">
+    <section class="bg-white border-y border-gray-150 py-12 px-4 join-banner">
       <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
         <div>
           <p class="text-blue-600 text-xs font-black uppercase tracking-widest mb-1.5">We're Growing</p>
           <h3 class="text-xl sm:text-2xl font-extrabold text-gray-900 leading-tight">Think you belong here? We're looking for passionate people.</h3>
         </div>
         <router-link to="/contact-us" class="shrink-0">
-          <button class="px-8 py-3.5 rounded-full bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 hover:scale-105 active:scale-95 transition-all duration-200 shadow-md shadow-blue-200 cursor-pointer whitespace-nowrap">
+          <button class="px-9 py-3.5 rounded-full bg-blue-600 text-white text-sm font-black hover:bg-blue-700 hover:scale-105 active:scale-95 transition-all duration-200 shadow-xl shadow-blue-200 cursor-pointer whitespace-nowrap">
             🙋 Apply Now
           </button>
         </router-link>
@@ -80,22 +80,22 @@
     </section>
 
     <!-- ─── TEAM GRID (dark) ─── -->
-    <section class="bg-[#0B101B] py-20 sm:py-28 px-4 relative overflow-hidden">
+    <section class="bg-[#0B101B] py-24 sm:py-32 px-4 relative overflow-hidden">
       <!-- Glow orb -->
       <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[500px] bg-blue-600/5 blur-[160px] rounded-full"></div>
       </div>
 
       <div class="max-w-6xl mx-auto relative z-10">
-        <div class="text-center mb-16 team-grid-header">
+        <div class="text-center mb-20 team-grid-header">
           <p class="text-blue-400 text-xs font-black uppercase tracking-widest mb-3">The Crew</p>
-          <h2 class="text-white text-3xl sm:text-4xl font-extrabold tracking-tight leading-none">Who Runs the Show</h2>
+          <h2 class="text-white text-3xl sm:text-5xl font-black tracking-tight leading-none">Who Runs the Show</h2>
         </div>
 
-        <!-- Empty state with premium styling -->
+        <!-- Empty state -->
         <div v-if="teamMembers.length === 0" class="flex flex-col items-center justify-center py-20 text-center empty-state relative">
           <!-- Glass Card wrapper -->
-          <div class="bg-white/[0.02] border border-white/[0.08] backdrop-blur-md rounded-3xl p-10 max-w-lg shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex flex-col items-center">
+          <div class="bg-white/[0.02] border border-white/[0.08] backdrop-blur-md rounded-[2.5rem] p-12 max-w-lg shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex flex-col items-center border-dashed">
             <div class="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-4xl mb-6 shadow-inner">
               🙋
             </div>
@@ -116,19 +116,19 @@
           <div
             v-for="(member, idx) in teamMembers"
             :key="member.name"
-            class="bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col group hover:scale-[1.02] transition-transform duration-300 team-card border border-white/5"
+            class="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col group hover:scale-[1.02] transition-transform duration-300 team-card border border-white/5"
             :class="[
               idx % 3 === 0 ? 'md:rotate-1 md:-translate-y-1' : '',
               idx % 3 === 1 ? 'md:-rotate-1 md:translate-y-1' : '',
               idx % 3 === 2 ? 'md:rotate-2 md:translate-y-2' : ''
             ]"
           >
-            <!-- Top gradient bar -->
+            <!-- Top bar -->
             <div class="h-2 bg-gradient-to-r from-blue-500 to-indigo-500 w-full"></div>
 
-            <div class="p-6 sm:p-9 flex flex-col items-center text-center flex-1">
+            <div class="p-8 sm:p-10 flex flex-col items-center text-center flex-1">
               <!-- Avatar with ring and hover zoom -->
-              <div class="w-28 h-28 rounded-3xl overflow-hidden bg-gray-50 border-4 border-white shadow-xl mb-6 transform group-hover:scale-105 duration-300 shrink-0 ring-4 ring-blue-50 group-hover:ring-blue-150 transition-all">
+              <div class="w-28 h-28 rounded-[2rem] overflow-hidden bg-gray-50 border-4 border-white shadow-xl mb-6 transform group-hover:scale-105 duration-300 shrink-0 ring-4 ring-blue-50 group-hover:ring-blue-150 transition-all">
                 <img :src="member.image" :alt="member.name" class="w-full h-full object-cover" />
               </div>
 
@@ -138,15 +138,15 @@
               </span>
               <p class="text-gray-500 text-sm leading-relaxed font-medium mb-6">{{ member.bio }}</p>
 
-              <!-- Social row with premium styled icon badges -->
+              <!-- Social links -->
               <div class="flex items-center justify-center gap-3.5 mt-auto pt-5 border-t border-gray-100/80 w-full">
-                <a href="#" class="w-9 h-9 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-all duration-200 text-sm font-black">
+                <a href="#" class="w-9 h-9 rounded-xl bg-gray-50 border border-gray-250 flex items-center justify-center text-gray-400 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-all duration-200 text-sm font-black">
                   in
                 </a>
-                <a href="#" class="w-9 h-9 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-900 hover:border-gray-450 hover:bg-gray-100 transition-all duration-200">
+                <a href="#" class="w-9 h-9 rounded-xl bg-gray-50 border border-gray-250 flex items-center justify-center text-gray-400 hover:text-gray-900 hover:border-gray-450 hover:bg-gray-100 transition-all duration-200">
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
                 </a>
-                <a href="#" class="w-9 h-9 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 hover:text-blue-400 hover:border-blue-200 hover:bg-blue-50 transition-all duration-200 text-xs font-extrabold">
+                <a href="#" class="w-9 h-9 rounded-xl bg-gray-50 border border-gray-250 flex items-center justify-center text-gray-400 hover:text-blue-400 hover:border-blue-200 hover:bg-blue-50 transition-all duration-200 text-xs font-extrabold">
                   𝕏
                 </a>
               </div>
@@ -156,13 +156,13 @@
       </div>
     </section>
 
-    <!-- ─── TEAM VALUES (dark continues) ─── -->
-    <section class="bg-[#0B101B] pb-20 sm:pb-28 px-4">
+    <!-- ─── TEAM VALUES ─── -->
+    <section class="bg-[#0B101B] pb-24 sm:pb-32 px-4">
       <div class="max-w-6xl mx-auto">
         <div class="border-t border-white/10 pt-16">
-          <div class="text-center mb-14 values-header">
+          <div class="text-center mb-16 values-header">
             <p class="text-blue-400 text-xs font-black uppercase tracking-widest mb-3">What We Stand For</p>
-            <h2 class="text-white text-3xl sm:text-4xl font-extrabold tracking-tight leading-none">Team Values</h2>
+            <h2 class="text-white text-3xl sm:text-5xl font-black tracking-tight leading-none">Team Values</h2>
           </div>
           
           <!-- Bento styled values -->
@@ -170,13 +170,15 @@
             <div
               v-for="value in values"
               :key="value.title"
-              class="bg-white/[0.02] border border-white/[0.07] backdrop-blur-md rounded-3xl p-8 hover:border-blue-500/30 hover:bg-white/[0.06] transition-all duration-300 value-card shadow-[0_8px_32px_rgba(0,0,0,0.15)]"
+              class="bg-white/[0.02] border border-white/[0.07] backdrop-blur-md rounded-[2rem] p-8.5 hover:border-blue-500/30 hover:bg-white/[0.05] transition-all duration-300 value-card shadow-[0_12px_40px_rgba(0,0,0,0.15)] flex flex-col justify-between"
             >
-              <div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-xl mb-6 shadow-lg shadow-blue-500/20">
-                {{ value.icon }}
+              <div>
+                <div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-xl mb-6 shadow-lg shadow-blue-500/20">
+                  {{ value.icon }}
+                </div>
+                <h3 class="text-white font-extrabold text-lg mb-3.5 leading-tight">{{ value.title }}</h3>
+                <p class="text-gray-400 text-xs sm:text-sm leading-relaxed font-medium">{{ value.desc }}</p>
               </div>
-              <h3 class="text-white font-extrabold text-lg mb-3.5 leading-tight">{{ value.title }}</h3>
-              <p class="text-gray-400 text-sm leading-relaxed font-medium">{{ value.desc }}</p>
             </div>
           </div>
         </div>
@@ -184,24 +186,24 @@
     </section>
 
     <!-- ─── OPEN ROLES (light) ─── -->
-    <section class="bg-[#F8FAFC] py-20 sm:py-28 px-4 border-t border-gray-100">
-      <div class="max-w-5xl mx-auto">
+    <section class="bg-[#F8FAFC] py-24 sm:py-32 px-4 border-t border-gray-150/70">
+      <div class="max-w-6xl mx-auto">
         <div class="text-center mb-16 roles-header">
           <p class="text-blue-600 text-xs font-black uppercase tracking-widest mb-3">Open Positions</p>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-none">Roles We're Hiring</h2>
+          <h2 class="text-3xl sm:text-5xl font-black text-gray-900 tracking-tight leading-none">Roles We're Hiring</h2>
           <p class="text-gray-500 text-sm sm:text-base mt-4 max-w-md mx-auto font-medium">All roles are volunteer-based. The reward is skills, network, and portfolio.</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 roles-grid">
           <div
             v-for="role in openRoles"
             :key="role.title"
-            class="bg-white rounded-3xl p-6.5 border border-gray-100/80 shadow-[0_8px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgba(59,130,246,0.08)] hover:border-blue-150/80 transition-all duration-300 flex gap-5.5 role-card group cursor-pointer"
+            class="bg-white rounded-[2rem] p-7 border border-gray-150 hover:shadow-[0_20px_50px_rgba(59,130,246,0.08)] hover:border-blue-200 transition-all duration-300 flex gap-6 role-card group cursor-pointer"
           >
-            <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shrink-0 bg-blue-50 border border-blue-100 group-hover:scale-105 transition-transform duration-300">
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0 bg-blue-50 border border-blue-100 group-hover:scale-105 transition-transform duration-300 shadow-sm">
               {{ role.icon }}
             </div>
             <div class="flex-1">
-              <h3 class="text-gray-900 font-extrabold text-base mb-1.5 leading-tight group-hover:text-blue-600 transition-colors">{{ role.title }}</h3>
+              <h3 class="text-gray-900 font-extrabold text-base sm:text-lg mb-1.5 leading-tight group-hover:text-blue-600 transition-colors">{{ role.title }}</h3>
               <p class="text-gray-500 text-xs sm:text-sm leading-relaxed mb-4 font-medium">{{ role.desc }}</p>
               <router-link to="/contact-us">
                 <button class="text-blue-600 text-[10px] font-black uppercase tracking-widest hover:text-blue-700 transition cursor-pointer flex items-center gap-1">

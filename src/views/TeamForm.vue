@@ -14,8 +14,8 @@
         <span>Back to Team</span>
       </router-link>
 
-      <!-- Main card (2-col on md+) with a premium border-radius and deep shadow -->
-      <div class="flex flex-col md:flex-row gap-0 bg-white rounded-[2rem] border border-gray-100 shadow-[0_30px_100px_rgba(0,0,0,0.06)] overflow-hidden form-card">
+      <!-- Main card (2-col on md+) -->
+      <div class="flex flex-col md:flex-row gap-0 bg-white rounded-[2.5rem] border border-gray-150 shadow-[0_30px_100px_rgba(0,0,0,0.05)] overflow-hidden form-card">
 
         <!-- ── LEFT PANEL (desktop only) ── -->
         <div class="hidden md:flex flex-col bg-[#0B101B] w-80 lg:w-96 shrink-0 p-10 relative overflow-hidden border-r border-white/5">
@@ -26,8 +26,8 @@
           <div class="relative z-10 flex flex-col h-full">
             <!-- Logo/brand -->
             <div class="mb-10">
-              <div class="w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black text-sm mb-4 shadow-lg shadow-blue-500/30">SS</div>
-              <h3 class="text-white font-extrabold text-2xl leading-none">Join the<br/><span class="bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">Core Team</span></h3>
+              <div class="w-10 h-10 bg-blue-600 rounded-[1.25rem] flex items-center justify-center text-white font-black text-sm mb-4 shadow-lg shadow-blue-500/30">SS</div>
+              <h3 class="text-white font-black text-2xl leading-tight">Join the<br/><span class="bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">Core Team</span></h3>
               <p class="text-gray-400 text-xs sm:text-sm mt-3 leading-relaxed font-medium">You'll be building alongside passionate student leaders.</p>
             </div>
 
@@ -74,7 +74,7 @@
         <div class="flex-1 p-8 sm:p-12">
 
           <!-- Top accent bar -->
-          <div class="h-1.5 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-400 rounded-full mb-8"></div>
+          <div class="h-2 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-400 rounded-full mb-8"></div>
 
           <Transition name="fade-slide" mode="out-in">
             <!-- Success State -->
@@ -121,7 +121,7 @@
                 <input
                   id="memberName" v-model="newMember.name" type="text"
                   placeholder="Enter member name" required
-                  class="w-full px-4.5 py-4 bg-gray-50 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all text-sm font-semibold text-gray-900 placeholder-gray-400"
+                  class="w-full px-4.5 py-4 bg-gray-50 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-sm"
                 />
               </div>
 
@@ -131,7 +131,7 @@
                 <input
                   id="memberRole" v-model="newMember.role" type="text"
                   placeholder="e.g. Design Specialist, Community Manager" required
-                  class="w-full px-4.5 py-4 bg-gray-50 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all text-sm font-semibold text-gray-900 placeholder-gray-400"
+                  class="w-full px-4.5 py-4 bg-gray-50 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-sm"
                 />
               </div>
 
@@ -141,7 +141,7 @@
                 <textarea
                   id="memberBio" v-model="newMember.bio" rows="3"
                   placeholder="Write a brief (1–2 sentences) summary of your focus areas…" required maxlength="140"
-                  class="w-full px-4.5 py-4 bg-gray-50 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all text-sm font-semibold text-gray-900 placeholder-gray-400 resize-none"
+                  class="w-full px-4.5 py-4 bg-gray-50 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all text-sm font-semibold text-gray-900 placeholder-gray-400 resize-none shadow-sm"
                 ></textarea>
                 <div class="flex items-center justify-between">
                   <span class="text-[10px] text-gray-400 font-medium">Keep it punchy — one or two sentences</span>
@@ -149,11 +149,11 @@
                 </div>
               </div>
 
-              <!-- Photo Upload with advanced hover styling -->
+              <!-- Photo Upload -->
               <div class="flex flex-col gap-2 field-group">
                 <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Profile Photo *</label>
                 <div
-                  class="border-2 border-dashed rounded-3xl p-8 text-center transition-all cursor-pointer"
+                  class="border-2 border-dashed rounded-3xl p-8 text-center transition-all cursor-pointer shadow-sm"
                   :class="dragOver ? 'border-blue-500 bg-blue-50/40' : 'border-gray-200 hover:border-blue-400 hover:bg-blue-50/10'"
                   @click="triggerFileInput"
                   @dragover.prevent="dragOver = true"
@@ -169,7 +169,7 @@
                   </div>
 
                   <div v-else class="flex flex-col items-center gap-3">
-                    <div class="w-24 h-24 rounded-3xl overflow-hidden border-4 border-blue-100 bg-gray-50 shadow-xl">
+                    <div class="w-24 h-24 rounded-[1.5rem] overflow-hidden border-4 border-blue-100 bg-gray-50 shadow-xl">
                       <img :src="imagePreview" alt="Preview" class="w-full h-full object-cover" />
                     </div>
                     <p class="text-xs font-bold text-emerald-600 flex items-center gap-1.5">
@@ -186,7 +186,7 @@
               <!-- Submit -->
               <button
                 type="submit" :disabled="isSaving"
-                class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-all shadow-lg shadow-blue-500/10 cursor-pointer disabled:opacity-50 text-sm hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
+                class="w-full py-4.5 bg-gradient-to-r from-blue-600 to-indigo-650 hover:from-blue-700 hover:to-indigo-750 text-white font-black rounded-full transition-all shadow-xl shadow-blue-500/10 cursor-pointer disabled:opacity-50 text-sm hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
               >
                 <svg v-if="isSaving" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

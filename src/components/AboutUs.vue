@@ -2,7 +2,7 @@
   <div ref="aboutScope" class="bg-[#F8FAFC] overflow-hidden font-sans">
 
     <!-- ─── HERO (light) ─── -->
-    <section class="relative bg-[#F8FAFC] pt-14 pb-16 px-4 text-center overflow-hidden">
+    <section class="relative bg-[#F8FAFC] pt-20 pb-20 px-4 text-center overflow-hidden">
       <!-- Dot grid background -->
       <div class="absolute inset-0 pointer-events-none opacity-[0.04]" aria-hidden="true">
         <svg class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -22,76 +22,76 @@
 
       <!-- Floating annotation tags -->
       <div class="hidden sm:block pointer-events-none select-none" aria-hidden="true">
-        <div class="absolute left-[12%] top-[18%] -rotate-6 bg-white shadow-md px-3.5 py-2 rounded-full border border-gray-100 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
+        <div class="absolute left-[12%] top-[18%] -rotate-6 bg-white shadow-lg px-4 py-2.5 rounded-2xl border border-gray-150 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
           🏆 real projects, real growth
         </div>
-        <div class="absolute right-[10%] top-[14%] rotate-6 bg-white shadow-md px-3.5 py-2 rounded-full border border-gray-100 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
+        <div class="absolute right-[10%] top-[14%] rotate-6 bg-white shadow-lg px-4 py-2.5 rounded-2xl border border-gray-150 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
           🌱 student-first always
         </div>
-        <div class="absolute left-[8%] top-[38%] rotate-12 bg-white shadow-md px-3.5 py-2 rounded-full border border-gray-100 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
+        <div class="absolute left-[8%] top-[38%] rotate-12 bg-white shadow-lg px-4 py-2.5 rounded-2xl border border-gray-150 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
           💡 learn by doing
         </div>
-        <div class="absolute right-[8%] top-[40%] -rotate-9 bg-white shadow-md px-3.5 py-2 rounded-full border border-gray-100 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
+        <div class="absolute right-[8%] top-[40%] -rotate-9 bg-white shadow-lg px-4 py-2.5 rounded-2xl border border-gray-150 text-[11px] font-bold tracking-widest text-blue-600 uppercase ann-tag" style="font-family:'Handlee',cursive;">
           🤝 community > competition
         </div>
       </div>
 
       <div class="relative z-10 max-w-4xl mx-auto">
-        <h1 class="text-[2.4rem] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-5 about-title">
+        <h1 class="text-[2.4rem] sm:text-6xl md:text-7xl font-extrabold text-gray-900 leading-[1.05] tracking-tight mb-6 about-title">
           Bridging Classrooms<br/>
-          <span class="text-blue-600">and Careers</span>
+          <span class="bg-linear-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent">and Careers</span>
         </h1>
-        <p class="max-w-sm sm:max-w-xl mx-auto text-gray-500 text-sm sm:text-base md:text-lg mb-10 leading-relaxed about-sub">
+        <p class="max-w-sm sm:max-w-xl mx-auto text-gray-500 text-sm sm:text-base md:text-lg mb-12 leading-relaxed about-sub font-medium">
           Skill Sprint is a student-first learning ecosystem. We build projects, share mentor guidance, and forge solid portfolios — entirely peer-led, entirely free, and entirely real.
         </p>
 
-        <!-- CTA Arrow overlay -->
+        <!-- CTA area -->
         <div class="relative inline-flex flex-col sm:flex-row items-center justify-center gap-4 about-ctas">
           <router-link to="/contact-us">
-            <button class="px-8 py-3.5 rounded-full bg-blue-600 text-white text-sm sm:text-base font-bold hover:bg-blue-700 hover:scale-105 active:scale-95 transition-all duration-200 shadow-xl shadow-blue-200 cursor-pointer">
+            <button class="px-9 py-4 rounded-full bg-blue-600 text-white text-sm sm:text-base font-black hover:bg-blue-700 hover:scale-105 active:scale-95 transition-all duration-200 shadow-xl shadow-blue-200 cursor-pointer">
               Join the Sprint
             </button>
           </router-link>
           <router-link to="/community">
-            <button class="px-8 py-3.5 rounded-full bg-white border border-gray-200 text-gray-700 text-sm sm:text-base font-bold hover:bg-gray-50 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+            <button class="px-9 py-4 rounded-full bg-white border border-gray-200 text-gray-700 text-sm sm:text-base font-black hover:bg-gray-50 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
               Our Community →
             </button>
           </router-link>
 
-          <!-- Handdrawn Arrow overlay -->
-          <img src="/arrow2.png" class="hidden lg:block absolute left-[96%] top-[60%] w-16 opacity-70 rotate-12 pointer-events-none" alt="" />
+          <!-- Handdrawn Arrow overlay pointing to join -->
+          <img src="/arrow2.png" class="hidden lg:block absolute left-[96%] top-[60%] w-16 opacity-75 rotate-12 pointer-events-none" alt="" />
         </div>
       </div>
     </section>
 
     <!-- ─── STATS (dark) ─── -->
-    <section class="bg-[#0B101B] py-16 sm:py-24 px-4 relative overflow-hidden stats-section">
+    <section class="bg-[#0B101B] py-20 sm:py-28 px-4 relative overflow-hidden stats-section">
       <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[400px] bg-blue-600/6 blur-[150px] rounded-full"></div>
       </div>
-      <div class="max-w-4xl mx-auto relative z-10 grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
+      <div class="max-w-5xl mx-auto relative z-10 grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
         <div v-for="stat in stats" :key="stat.label" class="text-center stat-item group">
-          <!-- Pulsing ring with fine blue glow -->
-          <div class="relative inline-flex items-center justify-center mb-4">
+          <!-- Pulsing ring -->
+          <div class="relative inline-flex items-center justify-center mb-5">
             <div class="absolute w-20 h-20 rounded-full border-2 border-blue-500/20 animate-ping group-hover:animate-none" style="animation-duration: 3s;"></div>
-            <div class="relative w-16 h-16 rounded-2xl bg-white/[0.02] border border-white/10 flex items-center justify-center group-hover:border-blue-500/50 transition-colors duration-300">
+            <div class="relative w-16 h-16 rounded-[1.25rem] bg-white/[0.02] border border-white/10 flex items-center justify-center group-hover:border-blue-500/50 transition-colors duration-300">
               <span class="text-2xl">{{ stat.icon }}</span>
             </div>
           </div>
-          <p class="text-4xl sm:text-5xl font-black text-white mb-2 leading-none">{{ stat.value }}</p>
-          <p class="text-gray-400 text-[10px] sm:text-xs font-black uppercase tracking-widest">{{ stat.label }}</p>
+          <p class="text-4xl sm:text-5xl font-black text-white mb-2 leading-none bg-gradient-to-b from-white to-gray-300 bg-clip-text text-transparent">{{ stat.value }}</p>
+          <p class="text-gray-400 text-[10px] sm:text-xs font-black uppercase tracking-widest mt-1">{{ stat.label }}</p>
         </div>
       </div>
     </section>
 
     <!-- ─── OUR STORY (light) ─── -->
-    <section class="bg-[#F8FAFC] py-20 sm:py-28 px-4">
+    <section class="bg-[#F8FAFC] py-24 sm:py-32 px-4">
       <div class="max-w-6xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center story-section">
           <!-- Left: Story text -->
           <div class="story-left">
             <p class="text-blue-600 text-xs font-black uppercase tracking-widest mb-4">Our Origin</p>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-6 leading-none">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-6 leading-none">
               Started by Students,<br/>Built for Students.
             </h2>
             <div class="space-y-5">
@@ -116,19 +116,17 @@
             </div>
           </div>
 
-          <!-- Right: Staggered physical photo collage -->
+          <!-- Right: Staggered photo collage -->
           <div class="story-right">
             <div class="grid grid-cols-2 gap-4 h-full relative">
               <div class="space-y-4">
-                <!-- Polaroid card 1 -->
-                <div class="bg-white p-3 rounded-2xl shadow-xl border border-gray-150/50 -rotate-3 hover:-rotate-1 duration-300 cursor-pointer">
+                <div class="bg-white p-3 rounded-[1.5rem] shadow-xl border border-gray-150 hover:-rotate-1 duration-300 cursor-pointer -rotate-3">
                   <div class="rounded-xl overflow-hidden aspect-[4/5] bg-gray-50">
                     <img src="/Long Group.jpg.jpeg" alt="Sprint community" class="w-full h-full object-cover" />
                   </div>
                   <div class="text-center mt-3 text-xs font-black text-gray-400 uppercase tracking-widest" style="font-family:'Handlee',cursive;">📸 launch kickoff</div>
                 </div>
-                <!-- Polaroid card 2 -->
-                <div class="bg-white p-3 rounded-2xl shadow-xl border border-gray-150/50 rotate-3 hover:rotate-1 duration-300 cursor-pointer">
+                <div class="bg-white p-3 rounded-[1.5rem] shadow-xl border border-gray-150 hover:rotate-1 duration-300 cursor-pointer rotate-3">
                   <div class="rounded-xl overflow-hidden aspect-square bg-gray-50">
                     <img src="/Speaker.jpg.jpeg" alt="Workshop speaker" class="w-full h-full object-cover" />
                   </div>
@@ -136,15 +134,13 @@
                 </div>
               </div>
               <div class="space-y-4 pt-8">
-                <!-- Polaroid card 3 -->
-                <div class="bg-white p-3 rounded-2xl shadow-xl border border-gray-150/50 rotate-2 hover:rotate-0 duration-300 cursor-pointer">
+                <div class="bg-white p-3 rounded-[1.5rem] shadow-xl border border-gray-150 hover:rotate-0 duration-300 cursor-pointer rotate-2">
                   <div class="rounded-xl overflow-hidden aspect-square bg-gray-50">
                     <img src="/Short Group.jpg.jpeg" alt="Team formation" class="w-full h-full object-cover" />
                   </div>
                   <div class="text-center mt-3 text-xs font-black text-gray-400 uppercase tracking-widest" style="font-family:'Handlee',cursive;">📷 peer review</div>
                 </div>
-                <!-- Polaroid card 4 -->
-                <div class="bg-white p-3 rounded-2xl shadow-xl border border-gray-150/50 -rotate-2 hover:rotate-0 duration-300 cursor-pointer">
+                <div class="bg-white p-3 rounded-[1.5rem] shadow-xl border border-gray-150 hover:rotate-0 duration-300 cursor-pointer -rotate-2">
                   <div class="rounded-xl overflow-hidden aspect-[4/5] bg-gray-50">
                     <img src="/Crowd.JPG.jpeg" alt="Sprint showcase" class="w-full h-full object-cover" />
                   </div>
@@ -158,9 +154,9 @@
     </section>
 
     <!-- ─── PHILOSOPHY TIMELINE (light) ─── -->
-    <section class="bg-white py-20 sm:py-28 px-4 border-y border-gray-100">
+    <section class="bg-white py-24 sm:py-32 px-4 border-y border-gray-150/70">
       <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-16 timeline-header">
+        <div class="text-center mb-20 timeline-header">
           <p class="text-blue-600 text-xs font-black uppercase tracking-widest mb-3">Philosophy</p>
           <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-none mb-4 text-gray-900">Our Core Philosophy</h2>
           <p class="text-gray-500 text-sm sm:text-base font-medium max-w-sm mx-auto">
@@ -174,13 +170,13 @@
             :key="milestone.title"
             class="relative milestone-item"
           >
-            <!-- Dot marker with icon and neon shadow -->
+            <!-- Dot marker with icon -->
             <div class="absolute -left-[54px] sm:-left-[70px] top-6 w-10 h-10 rounded-2xl bg-blue-600 border-4 border-white shadow-lg flex items-center justify-center text-lg">
               {{ milestone.icon }}
             </div>
 
-            <div class="bg-[#F8FAFC] rounded-3xl p-7 sm:p-9 border border-gray-100/80 shadow-[0_8px_30px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-blue-100/80 transition-all duration-300 group">
-              <span class="inline-block px-3.5 py-1 bg-blue-50 text-blue-600 text-[10px] font-black rounded-full mb-4 uppercase border border-blue-100 tracking-widest">
+            <div class="bg-[#F8FAFC] rounded-[2rem] p-8 sm:p-10 border border-gray-150/80 shadow-[0_12px_35px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-blue-150 transition-all duration-300 group">
+              <span class="inline-block px-4 py-1.5 bg-blue-50 text-blue-600 text-[10px] font-black rounded-full mb-4 uppercase border border-blue-100 tracking-widest">
                 Phase 0{{ i + 1 }} — {{ milestone.phase }}
               </span>
               <h3 class="text-xl sm:text-2xl font-extrabold text-gray-900 mb-3.5 leading-snug">{{ milestone.title }}</h3>
@@ -192,14 +188,14 @@
     </section>
 
     <!-- ─── RECOGNITION (dark) ─── -->
-    <section class="bg-[#0B101B] py-16 sm:py-20 px-4 recognition-section relative overflow-hidden border-b border-white/5">
+    <section class="bg-[#0B101B] py-20 sm:py-24 px-4 recognition-section relative overflow-hidden border-b border-white/5">
       <div class="max-w-5xl mx-auto text-center relative z-10">
         <p class="text-gray-500 text-[10px] sm:text-xs font-black uppercase tracking-widest mb-8">University Partners & Recognition</p>
         <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
           <div
             v-for="partner in partners"
             :key="partner"
-            class="px-5 py-2.5 bg-white/[0.02] border border-white/10 rounded-full text-gray-400 font-bold text-xs sm:text-sm hover:text-white hover:border-white/20 hover:bg-white/5 transition-all duration-300 partner-badge cursor-default"
+            class="px-5 py-3 bg-white/[0.02] border border-white/10 rounded-full text-gray-400 font-bold text-xs sm:text-sm hover:text-white hover:border-white/20 hover:bg-white/5 transition-all duration-300 partner-badge cursor-default"
           >
             {{ partner }}
           </div>
@@ -208,20 +204,20 @@
     </section>
 
     <!-- ─── CTA BANNER (dark continues) ─── -->
-    <section class="bg-[#0B101B] pb-20 sm:pb-28 px-4 text-center relative overflow-hidden">
+    <section class="bg-[#0B101B] pb-24 sm:pb-32 px-4 text-center relative overflow-hidden">
       <!-- Glow background -->
       <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-blue-600/10 blur-[110px] rounded-full"></div>
       </div>
       <div class="max-w-3xl mx-auto relative z-10 cta-block">
         <!-- Premium glass glow card -->
-        <div class="bg-white/[0.02] border border-white/[0.08] rounded-3xl p-10 sm:p-14 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight leading-none">"We Learn. We Sprint. We Grow."</h2>
-          <p class="text-gray-400 text-sm sm:text-base mb-8 max-w-md mx-auto leading-relaxed font-medium">
+        <div class="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] p-10 sm:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white mb-6 tracking-tight leading-none">"We Learn. We Sprint. We Grow."</h2>
+          <p class="text-gray-400 text-sm sm:text-base md:text-lg mb-10 max-w-lg mx-auto leading-relaxed font-medium">
             Ready to jumpstart your developer journey? Connect with a sprint group today.
           </p>
           <router-link to="/contact-us">
-            <button class="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer text-sm sm:text-base">
+            <button class="px-9 py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-full shadow-xl shadow-blue-500/20 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer text-sm sm:text-base">
               Get Started →
             </button>
           </router-link>
@@ -285,7 +281,7 @@ useGSAP((self) => {
   const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
   tl.from('.about-title', { y: 80, opacity: 0, duration: 1.4, skewY: 2 })
     .from('.about-sub', { y: 30, opacity: 0, duration: 1.1 }, '-=1.0')
-    .from('.about-ctas a, .about-ctas a + a', { scale: 0.85, opacity: 0, duration: 0.9, stagger: 0.1, ease: 'back.out(1.8)' }, '-=0.8')
+    .from('.about-ctas a', { scale: 0.85, opacity: 0, duration: 0.9, stagger: 0.1, ease: 'back.out(1.8)' }, '-=0.8')
 
   // Floating annotation tags
   const tags = gsap.utils.toArray('.ann-tag')
