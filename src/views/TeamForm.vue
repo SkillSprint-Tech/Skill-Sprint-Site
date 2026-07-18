@@ -76,7 +76,7 @@
           <!-- Top accent bar -->
           <div class="h-2 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-400 rounded-full mb-8"></div>
 
-          <Transition name="fade-slide" mode="out-in">
+          <Transition name="fade-slide">
             <!-- Success State -->
             <div v-if="saveSuccess" class="flex flex-col items-center justify-center text-center py-8 min-h-[400px]">
               <div class="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-3xl flex items-center justify-center mb-6 border border-emerald-100 shadow-inner">
@@ -87,10 +87,12 @@
               <div class="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 text-emerald-600 text-xs font-black px-4 py-2 rounded-full mb-5 uppercase tracking-widest">
                 🎉 Welcome to the Team!
               </div>
-              <h2 class="text-2xl font-extrabold text-gray-900 mb-2 leading-none">Member Registered!</h2>
-              <p class="text-gray-500 text-sm sm:text-base leading-relaxed max-w-sm mb-8 font-medium">
-                <span class="font-bold text-gray-800">{{ newMember.name }}</span> has been added to the core team. They'll show up on the Team page shortly.
+              <h2 class="text-2xl font-extrabold text-gray-900 mb-2 leading-none">Member Added!</h2>
+              <p class="text-gray-500 text-sm sm:text-base leading-relaxed max-w-md mb-8 font-medium">
+                <span class="font-bold text-gray-800">{{ newMember.name }}</span> has been saved to the database and now
+                appears on the Team page for every visitor.
               </p>
+
               <div class="flex flex-col sm:flex-row gap-3">
                 <router-link to="/team">
                   <button class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition shadow-md shadow-blue-200 cursor-pointer text-sm">
@@ -216,16 +218,24 @@ const saveSuccess = ref(false)
 const errorMsg = ref('')
 const dragOver = ref(false)
 
+// Existing roster, loaded from the database, for the side-panel preview.
 const panelMembers = ref([])
 
-onMounted(() => {
-  const stored = JSON.parse(localStorage.getItem('team_members') || '[]')
-  // Show max 3 existing members in the panel preview
-  panelMembers.value = stored.slice(0, 3).map(m => ({
-    name: m.name,
-    role: m.role,
-    img: m.image
-  }))
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/team-members')
+    if (res.ok) {
+      const data = await res.json()
+      const members = Array.isArray(data.members) ? data.members : []
+      panelMembers.value = members.slice(0, 3).map(m => ({
+        name: m.name,
+        role: m.role,
+        img: m.image
+      }))
+    }
+  } catch (e) {
+    // No existing roster available — panel just shows the "your spot is waiting" row.
+  }
 })
 
 const triggerFileInput = () => fileInput.value?.click()
@@ -244,21 +254,34 @@ const handleFileSelect = (e) => processFile(e.target.files[0])
 const handleFileDrop = (e) => { dragOver.value = false; processFile(e.dataTransfer.files[0]) }
 const clearImage = () => { imagePreview.value = ''; if (fileInput.value) fileInput.value.value = '' }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (!imagePreview.value) { errorMsg.value = 'Please select a profile photo.'; return }
-  isSaving.value = true; errorMsg.value = ''
-  setTimeout(() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem('team_members') || '[]')
-      stored.push({ name: newMember.name, role: newMember.role, bio: newMember.bio, image: imagePreview.value })
-      localStorage.setItem('team_members', JSON.stringify(stored))
+  isSaving.value = true
+  errorMsg.value = ''
+  try {
+    // Save the new member straight to the database. It then appears on the Team page for everyone.
+    const res = await fetch('/api/team-members', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: newMember.name.trim(),
+        role: newMember.role.trim(),
+        bio: newMember.bio.trim(),
+        focus: ['Core Builder', 'Collaborator'],
+        image: imagePreview.value
+      })
+    })
+    // Decide on the status alone — we don't need (and don't read) the response body.
+    if (res.ok) {
       saveSuccess.value = true
-    } catch (e) {
-      errorMsg.value = 'Failed to save. Local storage may be full.'
-    } finally {
-      isSaving.value = false
+    } else {
+      errorMsg.value = `Couldn't save the member (server responded ${res.status}). Please try again.`
     }
-  }, 1000)
+  } catch (e) {
+    errorMsg.value = 'Could not reach the server. Please check the connection and try again.'
+  } finally {
+    isSaving.value = false
+  }
 }
 
 const resetForm = () => {

@@ -52,21 +52,21 @@
 <script setup>
 const footerLinks = [
   {
-    title: 'Menu',
+    title: 'Navigate',
     links: [
-      { label: 'Approach',   url: '/' },
-      { label: 'Instructor', url: '/' },
-      { label: 'Curriculum', url: '/' },
-      { label: 'Pricing',    url: '/' },
+      { label: 'Home',        url: '/' },
+      { label: 'About',       url: '/about' },
+      { label: 'Initiatives', url: '/initiatives' },
+      { label: 'Sprints',     url: '/sprints' },
     ],
   },
   {
-    title: 'Support',
+    title: 'Community',
     links: [
-      { label: 'Email Us',   url: '/contact-us' },
-      { label: 'Telegram',   url: '/', external: true },
-      { label: 'Live Chat',  url: '/' },
-      { label: 'Help Center',url: '/' },
+      { label: 'Our Community',   url: '/community' },
+      { label: 'Team',            url: '/team' },
+      { label: 'Mission',         url: '/mission' },
+      { label: 'Contact',         url: '/contact-us' },
     ],
   },
   {
@@ -78,11 +78,10 @@ const footerLinks = [
     ],
   },
   {
-    title: 'Explore',
+    title: 'Connect',
     links: [
-      { label: 'Templates', url: '/' },
-      { label: 'NutsDev',   url: '/' },
-      { label: 'Temply',    url: '/' },
+      { label: 'Email Us',    url: '/contact-us' },
+      { label: 'Join Sprint', url: '/contact-us' },
     ],
   },
 ]

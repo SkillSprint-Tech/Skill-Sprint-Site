@@ -1,1 +1,41 @@
+/* Import Inter (sans-serif) and JetBrains Mono (monospace) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 @import "tailwindcss";
+
+/* Design System Font Stacks */
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+
+/* Accessibility: honor the user's reduced-motion preference.
+   GSAP reveals are handled in useGSAP.js; this neutralizes CSS animations/transitions. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* The "fanned" desktop card decks are positioned by GSAP (JS). With motion disabled that
+     JS never runs, so lay the cards out as a plain, readable, wrapping row instead of
+     letting them stack on top of each other. */
+  .desktop-how-container,
+  .desktop-team-container {
+    height: auto !important;
+    flex-wrap: wrap !important;
+    gap: 1.5rem !important;
+  }
+  .desktop-how-card,
+  .desktop-team-card {
+    position: static !important;
+    inset: auto !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+  }
+}

@@ -39,10 +39,11 @@
                       bg-gray-200 px-6 lg:px-8 py-3 lg:py-4 
                       rounded-full text-sm lg:text-base font-medium text-gray-500">
             <router-link to="/" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Home</router-link>
-            <router-link to="/community" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Community</router-link>
+            <router-link to="/about" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">About</router-link>
+            <router-link to="/initiatives" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Initiatives</router-link>
             <router-link to="/sprints" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Sprints</router-link>
+            <router-link to="/community" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Community</router-link>
             <router-link to="/team" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Team</router-link>
-            <router-link to="/AboutUs" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">About Us</router-link>
           </div>
 
           <!-- Button -->
@@ -66,17 +67,20 @@
           <router-link to="/" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
             Home
           </router-link>
-          <router-link to="/community" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
-            Community
+          <router-link to="/about" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
+            About
+          </router-link>
+          <router-link to="/initiatives" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
+            Initiatives
           </router-link>
           <router-link to="/sprints" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
             Sprints
           </router-link>
+          <router-link to="/community" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
+            Community
+          </router-link>
           <router-link to="/team" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
             Team
-          </router-link>
-          <router-link to="/AboutUs" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
-            About Us
           </router-link>
           <div class="pt-3 pb-1">
             <router-link to="/contact-us" @click="closeMenu" class="block">

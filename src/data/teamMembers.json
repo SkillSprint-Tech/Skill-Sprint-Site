@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Ada Lovelace",
+    "role": "Backend Engineer",
+    "bio": "Builds and maintains the core API services and database layer for the community platform.",
+    "focus": ["Core Builder", "Collaborator"],
+    "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAEklEQVR42mP8z8BQz0AEYBxVSFwFAG1yBhBS9x9GAAAAAElFTkSuQmCC"
+  }
+]
+
