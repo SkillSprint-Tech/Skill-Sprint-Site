@@ -33,7 +33,7 @@ async function ensureSchema(pool) {
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 
   if (req.method === 'OPTIONS') {
@@ -74,6 +74,25 @@ export default async function handler(req, res) {
         [name, role, bio, focus, image]
       )
       return res.status(201).json({ success: true, member: rows[0] })
+    }
+
+    if (req.method === 'DELETE') {
+      // Accept id from query string (?id=...) or request body
+      const id = req.query?.id || (req.body && req.body.id)
+      if (!id) {
+        return res.status(400).json({ success: false, message: 'Member id is required.' })
+      }
+
+      const { rowCount } = await pool.query(
+        'DELETE FROM team_members WHERE id = $1',
+        [id]
+      )
+
+      if (rowCount === 0) {
+        return res.status(404).json({ success: false, message: 'Member not found.' })
+      }
+
+      return res.status(200).json({ success: true, message: 'Member deleted.' })
     }
 
     return res.status(405).json({ success: false, message: 'Method Not Allowed' })

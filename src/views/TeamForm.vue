@@ -200,12 +200,151 @@
           </Transition>
         </div>
       </div>
+
+      <!-- ── MANAGE EXISTING MEMBERS ── -->
+      <div class="mt-10 relative z-10 manage-section">
+        <button
+          @click="showManagePanel = !showManagePanel"
+          class="w-full flex items-center justify-between px-8 py-5 bg-white rounded-[2rem] border border-gray-150 shadow-[0_10px_40px_rgba(0,0,0,0.04)] cursor-pointer hover:shadow-[0_15px_50px_rgba(0,0,0,0.07)] transition-all group"
+        >
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-red-50 rounded-2xl flex items-center justify-center text-red-500 border border-red-100 shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </div>
+            <div class="text-left">
+              <p class="text-sm font-extrabold text-gray-900">Manage Existing Members</p>
+              <p class="text-xs text-gray-400 font-medium">Remove a member if they were added by mistake</p>
+            </div>
+          </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 transition-transform duration-300"
+            :class="{ 'rotate-180': showManagePanel }"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <Transition name="panel-slide">
+          <div v-if="showManagePanel" class="mt-4 bg-white rounded-[2rem] border border-gray-150 shadow-[0_20px_60px_rgba(0,0,0,0.05)] overflow-hidden">
+            <!-- Loading state -->
+            <div v-if="membersLoading" class="p-10 flex flex-col items-center justify-center gap-3">
+              <svg class="w-7 h-7 animate-spin text-blue-500" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+              <p class="text-sm text-gray-400 font-semibold">Loading members…</p>
+            </div>
+
+            <!-- Error state -->
+            <div v-else-if="membersError" class="p-8 text-center">
+              <p class="text-sm text-red-500 font-semibold mb-3">{{ membersError }}</p>
+              <button @click="loadAllMembers" class="text-xs font-bold text-blue-600 hover:text-blue-700 transition cursor-pointer">Try Again →</button>
+            </div>
+
+            <!-- Empty state -->
+            <div v-else-if="allMembers.length === 0" class="p-10 text-center">
+              <div class="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center text-2xl mx-auto border border-gray-100 mb-4">👥</div>
+              <p class="text-sm font-bold text-gray-700">No members yet</p>
+              <p class="text-xs text-gray-400 font-medium mt-1">Members you add will appear here</p>
+            </div>
+
+            <!-- Member list -->
+            <div v-else class="divide-y divide-gray-100">
+              <div
+                v-for="member in allMembers" :key="member.id"
+                class="flex items-center gap-4 px-8 py-5 hover:bg-gray-50/50 transition-colors member-row"
+              >
+                <!-- Avatar -->
+                <div class="w-12 h-12 rounded-2xl overflow-hidden bg-gray-100 border-2 border-gray-150 shrink-0 shadow-sm">
+                  <img v-if="member.image" :src="member.image" :alt="member.name" class="w-full h-full object-cover" />
+                  <div v-else class="w-full h-full flex items-center justify-center text-gray-400 text-sm font-bold">{{ member.name?.charAt(0)?.toUpperCase() }}</div>
+                </div>
+
+                <!-- Info -->
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-extrabold text-gray-900 truncate">{{ member.name }}</p>
+                  <p class="text-xs text-gray-400 font-medium truncate">{{ member.role }}</p>
+                </div>
+
+                <!-- Delete button -->
+                <button
+                  @click="confirmDelete(member)"
+                  :disabled="deletingId === member.id"
+                  class="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-gray-300 hover:text-red-500 hover:bg-red-50 border border-transparent hover:border-red-100 transition-all cursor-pointer disabled:opacity-50"
+                  :title="'Delete ' + member.name"
+                >
+                  <svg v-if="deletingId === member.id" class="w-4 h-4 animate-spin text-red-400" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                  </svg>
+                  <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </Transition>
+      </div>
+
+      <!-- ── DELETE CONFIRMATION MODAL ── -->
+      <Teleport to="body">
+        <Transition name="modal-fade">
+          <div v-if="deleteTarget" class="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="cancelDelete"></div>
+
+            <!-- Modal -->
+            <div class="relative bg-white rounded-[2rem] shadow-2xl max-w-sm w-full p-8 text-center modal-card">
+              <div class="w-16 h-16 bg-red-50 rounded-3xl flex items-center justify-center mx-auto mb-5 border border-red-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </div>
+
+              <h3 class="text-lg font-extrabold text-gray-900 mb-2">Remove Member?</h3>
+              <p class="text-sm text-gray-500 font-medium mb-6 leading-relaxed">
+                Are you sure you want to delete <span class="font-bold text-gray-800">{{ deleteTarget?.name }}</span>?
+                This action cannot be undone.
+              </p>
+
+              <div v-if="deleteError" class="mb-4 p-3 bg-red-50 border border-red-100 text-red-600 text-xs rounded-xl font-semibold">
+                {{ deleteError }}
+              </div>
+
+              <div class="flex gap-3">
+                <button
+                  @click="cancelDelete"
+                  class="flex-1 py-3.5 bg-gray-100 hover:bg-gray-150 text-gray-700 font-bold rounded-full transition cursor-pointer text-sm"
+                >
+                  Cancel
+                </button>
+                <button
+                  @click="executeDelete"
+                  :disabled="deletingId"
+                  class="flex-1 py-3.5 bg-red-500 hover:bg-red-600 text-white font-bold rounded-full transition cursor-pointer text-sm shadow-lg shadow-red-200 disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  <svg v-if="deletingId" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                  </svg>
+                  {{ deletingId ? 'Deleting…' : 'Yes, Delete' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </Transition>
+      </Teleport>
+
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { useGSAP } from '../composables/useGSAP'
 
 const formScope = ref(null)
@@ -220,6 +359,73 @@ const dragOver = ref(false)
 
 // Existing roster, loaded from the database, for the side-panel preview.
 const panelMembers = ref([])
+
+// ── Manage / Delete members ──
+const showManagePanel = ref(false)
+const allMembers = ref([])
+const membersLoading = ref(false)
+const membersError = ref('')
+const deleteTarget = ref(null)
+const deletingId = ref(null)
+const deleteError = ref('')
+
+const loadAllMembers = async () => {
+  membersLoading.value = true
+  membersError.value = ''
+  try {
+    const res = await fetch('/api/team-members')
+    if (res.ok) {
+      const data = await res.json()
+      allMembers.value = Array.isArray(data.members) ? data.members : []
+    } else {
+      membersError.value = 'Failed to load members. Please try again.'
+    }
+  } catch (e) {
+    membersError.value = 'Could not reach the server. Please check the connection.'
+  } finally {
+    membersLoading.value = false
+  }
+}
+
+
+watch(showManagePanel, (open) => {
+  if (open) loadAllMembers()
+})
+
+const confirmDelete = (member) => {
+  deleteTarget.value = member
+  deleteError.value = ''
+}
+
+const cancelDelete = () => {
+  deleteTarget.value = null
+  deleteError.value = ''
+}
+
+const executeDelete = async () => {
+  if (!deleteTarget.value) return
+  deletingId.value = deleteTarget.value.id
+  deleteError.value = ''
+  try {
+    const res = await fetch(`/api/team-members?id=${deleteTarget.value.id}`, {
+      method: 'DELETE'
+    })
+    if (res.ok) {
+      // Remove from local list
+      allMembers.value = allMembers.value.filter(m => m.id !== deleteTarget.value.id)
+      // Also update the side panel if needed
+      panelMembers.value = panelMembers.value.filter(m => m.name !== deleteTarget.value.name)
+      deleteTarget.value = null
+    } else {
+      const data = await res.json().catch(() => ({}))
+      deleteError.value = data.message || `Server responded with ${res.status}`
+    }
+  } catch (e) {
+    deleteError.value = 'Could not reach the server. Please try again.'
+  } finally {
+    deletingId.value = null
+  }
+}
 
 onMounted(async () => {
   try {
@@ -311,4 +517,20 @@ useGSAP((self) => {
 .fade-slide-enter-active, .fade-slide-leave-active { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 .fade-slide-enter-from { opacity: 0; transform: translateY(20px); }
 .fade-slide-leave-to   { opacity: 0; transform: translateY(-20px); }
+
+/* Manage panel slide */
+.panel-slide-enter-active { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.panel-slide-leave-active { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.panel-slide-enter-from { opacity: 0; transform: translateY(-12px); max-height: 0; }
+.panel-slide-enter-to { opacity: 1; transform: translateY(0); max-height: 800px; }
+.panel-slide-leave-from { opacity: 1; transform: translateY(0); max-height: 800px; }
+.panel-slide-leave-to { opacity: 0; transform: translateY(-12px); max-height: 0; }
+
+/* Delete confirmation modal */
+.modal-fade-enter-active { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+.modal-fade-leave-active { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+.modal-fade-enter-from { opacity: 0; }
+.modal-fade-leave-to { opacity: 0; }
+.modal-fade-enter-from .modal-card { transform: scale(0.92) translateY(10px); }
+.modal-fade-leave-to .modal-card { transform: scale(0.96) translateY(4px); }
 </style>
