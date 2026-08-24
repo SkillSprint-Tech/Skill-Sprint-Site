@@ -4,7 +4,7 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- HERO SPLIT SECTION -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="heroScope" class="w-full bg-[#F8FAFC] py-10 md:py-20">
+    <section ref="heroScope" class="w-full bg-[#F8FAFC] section-tight">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
         <div class="bg-white rounded-2xl md:rounded-3xl shadow-md overflow-hidden">
           <div class="flex flex-col md:flex-row">
@@ -22,7 +22,7 @@
                     About Us
                   </span>
                 </div>
-                <h1 class="hero-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
+                <h1 class="hero-heading h-display text-gray-900 mb-4">
                   So… What's Skill Sprint, <span class="text-blue-600">Really?</span>
                 </h1>
                 <p class="hero-sub text-gray-600 text-sm sm:text-base leading-relaxed mb-6">
@@ -45,9 +45,9 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- INTERACTIVE TIMELINE (Light Section) -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="timelineScope" class="bg-slate-50 py-16 sm:py-20 md:py-28 px-4 sm:px-6 overflow-hidden border-y border-gray-100">
+    <section ref="timelineScope" class="bg-slate-50 section overflow-hidden border-y border-gray-100">
       <div class="max-w-3xl mx-auto text-center mb-14 md:mb-20">
-        <h2 class="timeline-heading text-gray-900 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3">
+        <h2 class="timeline-heading text-gray-900 h-section mb-3">
           The Sprint So Far
         </h2>
         <p class="timeline-sub text-gray-500 text-base sm:text-lg font-medium">
@@ -71,9 +71,9 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- HOW A SPRINT WORKS -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="stepsScope" class="bg-[#F8FAFC] py-16 sm:py-20 md:py-28 px-4 sm:px-6">
+    <section ref="stepsScope" class="bg-[#F8FAFC] section">
       <div class="max-w-3xl mx-auto text-center mb-14 md:mb-20">
-        <h2 class="steps-heading text-gray-900 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3">
+        <h2 class="steps-heading text-gray-900 h-section mb-3">
           How a Sprint Works
         </h2>
         <p class="steps-sub text-gray-500 text-base sm:text-lg font-medium">
@@ -100,7 +100,7 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- PARTNERS & COLLABORATIONS -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="partnersScope" class="bg-[#F8FAFC] py-10 md:py-16 px-4 sm:px-6">
+    <section ref="partnersScope" class="bg-[#F8FAFC] section-tight">
       <div class="max-w-7xl mx-auto">
         <div class="border-t border-gray-100 pt-8">
           <p class="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 text-center">
@@ -117,14 +117,14 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- CTA -->
     <!-- ═══════════════════════════════════════ -->
-    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] py-16 sm:py-20 overflow-hidden">
+    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] section overflow-hidden">
       <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div class="relative bg-white rounded-3xl shadow-lg px-6 sm:px-10 py-12 sm:py-16 text-center overflow-hidden cta-card">
+        <div class="relative bg-white rounded-3xl shadow-lg px-6 sm:px-10 section-tight text-center overflow-hidden cta-card">
           <div class="absolute right-0 bottom-0 pointer-events-none select-none" aria-hidden="true">
             <img src="/sidelogo.png" alt="" class="w-32 sm:w-48 md:w-64 h-auto object-contain opacity-90" style="transform: rotate(-15deg) translate(20%, 15%);" />
           </div>
           <div class="relative z-10">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-snug mb-3">
+            <h2 class="h-sub text-gray-900 leading-snug mb-3">
               Be Part of the
               <span class="text-blue-600 relative inline-block ml-1">Movement
                 <span class="absolute left-0 -bottom-1 w-full h-[2px] bg-blue-500 rotate-[-2deg]"></span>

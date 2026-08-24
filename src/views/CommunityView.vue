@@ -4,7 +4,7 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- HERO -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="heroScope" class="relative bg-[#F8FAFC] pt-10 sm:pt-14 md:pt-20 pb-10 md:pb-16 text-center px-4 overflow-hidden">
+    <section ref="heroScope" class="px-4 sm:px-6 relative bg-[#F8FAFC] pt-10 sm:pt-14 md:pt-20 pb-10 md:pb-16 text-center overflow-hidden">
 
       <!-- Floating Annotations -->
       <div class="hidden sm:block pointer-events-none select-none" aria-hidden="true">
@@ -31,7 +31,7 @@
       </div>
 
       <div class="relative z-10">
-        <h1 class="hero-heading text-[2.4rem] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-4">
+        <h1 class="hero-heading h-display text-gray-900 leading-[1.1] mb-4">
           Built by Students,<br/>
           <span class="text-blue-600">For Students.</span>
         </h1>
@@ -49,11 +49,11 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- COMMUNITY STATS (Light Section) -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="statsScope" class="bg-slate-50 py-16 sm:py-20 md:py-28 px-4 sm:px-6 overflow-hidden border-y border-gray-100">
+    <section ref="statsScope" class="bg-slate-50 section overflow-hidden border-y border-gray-100">
       <div class="max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row justify-between items-start gap-6 mb-10 md:mb-14">
           <div>
-            <h2 class="stats-heading text-gray-900 text-3xl sm:text-4xl font-extrabold tracking-tight">
+            <h2 class="stats-heading text-gray-900 h-section">
               Our Damage So Far
             </h2>
             <p class="stats-sub text-gray-500 text-base sm:text-lg mt-2 font-medium">
@@ -80,9 +80,9 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- WALL OF FAME (Testimonials) -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="testimonialScope" class="bg-[#F8FAFC] py-16 sm:py-20 md:py-28 px-4 sm:px-6 overflow-hidden">
+    <section ref="testimonialScope" class="bg-[#F8FAFC] section overflow-hidden">
       <div class="max-w-3xl mx-auto text-center mb-12 md:mb-20 relative">
-        <h2 class="wall-heading text-gray-900 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3">
+        <h2 class="wall-heading text-gray-900 h-section mb-3">
           Student Receipts
         </h2>
         <p class="wall-sub text-gray-500 text-base sm:text-lg font-medium">
@@ -109,7 +109,7 @@
       <!-- Desktop: fanned layout -->
       <div class="hidden md:block relative max-w-4xl mx-auto h-[580px] lg:h-[520px]">
         <div v-for="(t, i) in testimonials" :key="i"
-             class="absolute bg-white border border-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.07)] p-7 rounded-[1.75rem]
+             class="absolute bg-white border border-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.07)] p-7 rounded-2xl
                     transition-all duration-300 hover:scale-105 hover:z-50 hover:shadow-xl cursor-default testimonial-desktop"
              :style="t.desktopStyle">
           <p class="text-gray-600 text-[14px] leading-relaxed mb-5 italic">"{{ t.quote }}"</p>
@@ -126,9 +126,9 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- EVENT GALLERY -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="galleryScope" class="bg-[#F8FAFC] py-10 md:py-16 px-4 sm:px-6">
+    <section ref="galleryScope" class="bg-[#F8FAFC] section-tight">
       <div class="max-w-3xl mx-auto text-center mb-10">
-        <h2 class="gallery-heading text-gray-900 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+        <h2 class="gallery-heading text-gray-900 h-section mb-3">
           Sprint Highlights
         </h2>
         <p class="gallery-sub text-gray-500 text-base sm:text-lg font-medium">
@@ -157,14 +157,14 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- CTA -->
     <!-- ═══════════════════════════════════════ -->
-    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] py-16 sm:py-20 overflow-hidden">
+    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] section overflow-hidden">
       <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div class="relative bg-white rounded-3xl shadow-lg px-6 sm:px-10 py-12 sm:py-16 text-center overflow-hidden cta-card">
+        <div class="relative bg-white rounded-3xl shadow-lg px-6 sm:px-10 section-tight text-center overflow-hidden cta-card">
           <div class="absolute right-0 bottom-0 pointer-events-none select-none" aria-hidden="true">
             <img src="/sidelogo.png" alt="" class="w-32 sm:w-48 md:w-64 h-auto object-contain opacity-90" style="transform: rotate(-15deg) translate(20%, 15%);" />
           </div>
           <div class="relative z-10">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-snug mb-3">
+            <h2 class="h-sub text-gray-900 leading-snug mb-3">
               Become Part of the
               <span class="text-blue-600 relative inline-block ml-1">Network
                 <span class="absolute left-0 -bottom-1 w-full h-[2px] bg-blue-500 rotate-[-2deg]"></span>
@@ -190,12 +190,83 @@
       </div>
     </section>
 
+    <!-- ═══════════════════════════════════════ -->
+    <!-- WHATSAPP COMMUNITY -->
+    <!-- ═══════════════════════════════════════ -->
+    <section ref="whatsappScope" class="bg-[#0B101B] section relative overflow-hidden">
+      <div class="max-w-5xl mx-auto relative z-10">
+        <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+
+          <div class="flex-1 text-center lg:text-left whatsapp-copy">
+            <span class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 text-xs font-extrabold
+                         px-4 py-1.5 rounded-full border border-emerald-500/20 uppercase tracking-widest mb-6">
+              <i class="fab fa-whatsapp text-sm" aria-hidden="true"></i>
+              The group chat
+            </span>
+            <h2 class="text-white h-section leading-[1.1] mb-5">
+              Where it actually<br />
+              <span class="bg-gradient-to-r from-emerald-400 to-emerald-200 bg-clip-text text-transparent">
+                happens.
+              </span>
+            </h2>
+            <p class="text-gray-400 text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 mb-8">
+              Workshop announcements, debugging at midnight, internship leads, and people who
+              answer when you're stuck. No fees, no vetting — just show up.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+              <a :href="whatsappGroup.url" target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center justify-center gap-2.5 bg-emerald-500 text-white
+                        px-8 py-4 rounded-full font-bold hover:bg-emerald-600
+                        transition-colors duration-200">
+                <i class="fab fa-whatsapp text-xl" aria-hidden="true"></i>
+                Join the WhatsApp group
+              </a>
+              <router-link to="/workshops"
+                           class="inline-flex items-center justify-center border border-white/15 text-gray-300
+                                  px-8 py-4 rounded-full font-semibold hover:border-white/30 hover:text-white
+                                  transition-colors duration-200">
+                See the workshops
+              </router-link>
+            </div>
+          </div>
+
+          <!-- Mock chat, hinting at what the group is actually like -->
+          <div class="flex-shrink-0 w-full max-w-sm whatsapp-card">
+            <div class="bg-[#111B21] rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
+              <div class="flex items-center gap-3 px-4 py-3 bg-[#202C33] border-b border-white/5">
+                <div class="w-9 h-9 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                  <i class="fab fa-whatsapp text-emerald-400" aria-hidden="true"></i>
+                </div>
+                <div class="min-w-0">
+                  <p class="text-white text-sm font-bold truncate">SkillSprint Community</p>
+                  <p class="text-gray-500 text-[11px]">online</p>
+                </div>
+              </div>
+              <div class="p-4 flex flex-col gap-2.5">
+                <div v-for="(msg, i) in chatPreview" :key="i"
+                     class="max-w-[85%] rounded-xl px-3.5 py-2"
+                     :class="msg.own
+                       ? 'bg-emerald-600/90 text-white self-end rounded-br-sm'
+                       : 'bg-[#202C33] text-gray-200 self-start rounded-bl-sm'">
+                  <p v-if="!msg.own" class="text-[11px] font-bold text-emerald-400 mb-0.5">{{ msg.from }}</p>
+                  <p class="text-[13px] leading-snug">{{ msg.text }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { useGSAP } from '../composables/useGSAP'
+import { whatsappGroup } from '../data/site'
 
 const pageScope = ref(null)
 const heroScope = ref(null)
@@ -249,6 +320,16 @@ const testimonials = [
   { quote: 'The bootcamps are intense but that\'s why they work. You come out actually knowing how to structure a real project.', name: 'Sara M.', initials: 'SM', avatarClass: 'bg-pink-100 text-pink-600', desktopStyle: 'width:280px; top:25px; right:0; z-index:20; transform:rotate(6deg);' },
   { quote: 'Being part of an open-source track as a freshman was intimidating but the peer reviews taught me more than any course ever did.', name: 'Hassan A.', initials: 'HA', avatarClass: 'bg-green-100 text-green-600', desktopStyle: 'width:285px; bottom:20px; left:50px; z-index:15; transform:rotate(-3deg);' },
   { quote: 'No paywalls, no gatekeeping. Just students helping students get better at engineering. That\'s rare.', name: 'Fatima Z.', initials: 'FZ', avatarClass: 'bg-orange-100 text-orange-600', desktopStyle: 'width:285px; bottom:20px; right:60px; z-index:15; transform:rotate(3deg);' },
+]
+
+// WhatsApp section
+const whatsappScope = ref(null)
+
+const chatPreview = [
+  { from: 'Hassan', text: 'anyone free to look at my CV before the Sunday session?' },
+  { from: 'Ayesha', text: 'send it, I just did mine in the workshop 😄' },
+  { own: true, text: 'reminder: Git & GitHub session tonight at 7 ⚡' },
+  { from: 'Sara', text: 'got my first interview from the job search session!! 🎉' },
 ]
 
 // Event images

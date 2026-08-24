@@ -4,7 +4,7 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- HERO SECTION -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="heroScope" class="relative bg-[#F8FAFC] pt-10 sm:pt-14 md:pt-20 pb-10 md:pb-16 text-center px-4 overflow-hidden">
+    <section ref="heroScope" class="px-4 sm:px-6 relative bg-[#F8FAFC] pt-10 sm:pt-14 md:pt-20 pb-10 md:pb-16 text-center overflow-hidden">
 
       <!-- Floating Annotations -->
       <div class="hidden sm:block pointer-events-none select-none" aria-hidden="true">
@@ -31,7 +31,7 @@
       </div>
 
       <div class="relative z-10">
-        <h1 class="hero-heading text-[2.4rem] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-4">
+        <h1 class="hero-heading h-display text-gray-900 leading-[1.1] mb-4">
           The Core Infrastructure<br/>
           <span class="text-blue-600">Team.</span>
         </h1>
@@ -49,7 +49,7 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- TEAM GRID (Fanned on desktop) -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="teamSection" class="bg-[#F8FAFC] px-4 sm:px-6 pb-6 md:pb-10">
+    <section ref="teamSection" class="px-4 sm:px-6 bg-[#F8FAFC] pb-6 md:pb-10">
       <div class="max-w-4xl mx-auto">
 
         <!-- Mobile: vertical stack -->
@@ -88,9 +88,9 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- RECRUITMENT STATUS (Dark Section) -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="recruitSection" class="bg-slate-50 py-16 sm:py-20 md:py-28 px-4 sm:px-6 overflow-hidden border-y border-gray-100">
+    <section ref="recruitSection" class="bg-slate-50 section overflow-hidden border-y border-gray-100">
       <div class="max-w-3xl mx-auto text-center mb-12 md:mb-16">
-        <h2 class="recruit-heading text-gray-900 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3">
+        <h2 class="recruit-heading text-gray-900 h-section mb-3">
           Core Team Allocation Windows
         </h2>
         <p class="recruit-sub text-gray-500 text-base sm:text-lg font-medium">
@@ -128,14 +128,14 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- CTA -->
     <!-- ═══════════════════════════════════════ -->
-    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] py-16 sm:py-20 overflow-hidden">
+    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] section overflow-hidden">
       <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div class="relative bg-white rounded-3xl shadow-lg px-6 sm:px-10 py-12 sm:py-16 text-center overflow-hidden cta-card">
+        <div class="relative bg-white rounded-3xl shadow-lg px-6 sm:px-10 section-tight text-center overflow-hidden cta-card">
           <div class="absolute right-0 bottom-0 pointer-events-none select-none" aria-hidden="true">
             <img src="/sidelogo.png" alt="" class="w-32 sm:w-48 md:w-64 h-auto object-contain opacity-90" style="transform: rotate(-15deg) translate(20%, 15%);" />
           </div>
           <div class="relative z-10">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-snug mb-3">
+            <h2 class="h-sub text-gray-900 leading-snug mb-3">
               Want to join when positions
               <span class="text-blue-600 relative inline-block ml-1">open?
                 <span class="absolute left-0 -bottom-1 w-full h-[2px] bg-blue-500 rotate-[-2deg]"></span>
@@ -215,7 +215,7 @@ const getInitials = (name) => {
   return name.slice(0, 2).toUpperCase()
 }
 
-// Team members are loaded from the database (CockroachDB) via the /api/team-members endpoint,
+// Team members are loaded from the database (Neon Postgres) via the /api/team-members endpoint,
 // so every visitor sees the same live roster. New members are added through the hidden
 // /team-form, which writes straight to the same database.
 const addedMembers = ref([])

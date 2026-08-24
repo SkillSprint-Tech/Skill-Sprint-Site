@@ -20,7 +20,7 @@ These block specific tasks; everything else can proceed without them.
 
 1. **Real social URLs** — Instagram handle, LinkedIn company page, WhatsApp group invite link.
 2. **Sending domain** — e.g. `workshops@skillsprint.tech`. Required before any real email goes out (see §6.6).
-3. **Current `DB_URI`** — the comment in `api/team-members.js` says CockroachDB. Confirm whether we repoint it at Neon (and migrate `team_members`) or run Neon alongside as a second connection.
+3. ~~Current `DB_URI`~~ — **Resolved.** CockroachDB is removed entirely. Neon is the single database for every feature, `team_members` included.
 4. **Workshop seed data** — titles, dates, speakers for the first batch, so the page ships with real content rather than placeholders.
 
 ---
@@ -421,7 +421,7 @@ PUBLIC_SITE_URL
 | 5 | Brevo free tier brands the email | Route Resend first; upgrade Brevo if branding is unacceptable |
 | 6 | 60s function cap kills a long batch | Bounded batch (~30), drains across runs |
 | 7 | Double-send from cron + admin click | `FOR UPDATE SKIP LOCKED` + unique constraint |
-| 8 | `DB_URI` may point at CockroachDB today | Confirm before migrating (§0.1) |
+| 8 | ~~Mixed database backends~~ | Resolved — Neon is the only database; Cockroach removed |
 | 9 | 400/day ceiling vs. a spike in signups | Queue absorbs it; dashboard shows the backlog and drain rate |
 | 10 | Local dev API plugin gaps | Fixed in Phase 0 (§1.2) |
 

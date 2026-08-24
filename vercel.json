@@ -4,5 +4,21 @@
       "source": "/((?!api/.*).*)",
       "destination": "/index.html"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/process-emails",
+      "schedule": "0 3 * * *"
+    }
+  ],
+  "functions": {
+    "api/cron/process-emails.js": { "maxDuration": 60 },
+    "api/admin/send-email.js": { "maxDuration": 60 }
+  },
+  "headers": [
+    {
+      "source": "/admin",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    }
   ]
 }

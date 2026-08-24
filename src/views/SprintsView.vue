@@ -4,7 +4,7 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- HERO -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="heroScope" class="relative bg-[#F8FAFC] pt-10 sm:pt-14 md:pt-20 pb-10 md:pb-16 text-center px-4 overflow-hidden">
+    <section ref="heroScope" class="px-4 sm:px-6 relative bg-[#F8FAFC] pt-10 sm:pt-14 md:pt-20 pb-10 md:pb-16 text-center overflow-hidden">
 
       <div class="hidden sm:block pointer-events-none select-none" aria-hidden="true">
         <div class="absolute left-4 md:left-[10%] lg:left-[16%] top-[16%] -rotate-6
@@ -30,7 +30,7 @@
       </div>
 
       <div class="relative z-10">
-        <h1 class="hero-heading text-[2.4rem] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-4">
+        <h1 class="hero-heading h-display text-gray-900 leading-[1.1] mb-4">
           Real Projects.<br/>
           <span class="text-blue-600">Real Deadlines.</span>
         </h1>
@@ -48,10 +48,10 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- ACTIVE SPRINTS -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="activeScope" class="bg-[#F8FAFC] px-4 sm:px-6 pb-16 sm:pb-24">
+    <section ref="activeScope" class="px-4 sm:px-6 bg-[#F8FAFC] pb-16 sm:pb-24">
       <div class="max-w-7xl mx-auto">
         <div class="mb-10">
-          <h2 class="active-heading text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+          <h2 class="active-heading h-sub text-gray-900">
             Active Tracks
           </h2>
           <p class="active-sub text-gray-500 text-base mt-2 font-medium">
@@ -73,9 +73,9 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- HOW IT WORKS (Light Section — Fanned Cards) -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="howSection" class="bg-slate-50 py-16 sm:py-20 md:py-28 px-4 sm:px-6 overflow-hidden border-y border-gray-100">
+    <section ref="howSection" class="bg-slate-50 section overflow-hidden border-y border-gray-100">
       <div class="max-w-3xl mx-auto text-center mb-14 md:mb-20">
-        <h2 class="how-heading text-gray-900 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3">
+        <h2 class="how-heading text-gray-900 h-section mb-3">
           How Sprints Work
         </h2>
         <p class="how-sub text-gray-500 text-base sm:text-lg font-medium">
@@ -120,10 +120,10 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- PAST SPRINTS -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="pastScope" class="bg-[#F8FAFC] py-16 sm:py-20 px-4 sm:px-6">
+    <section ref="pastScope" class="bg-[#F8FAFC] section">
       <div class="max-w-7xl mx-auto">
         <div class="mb-10">
-          <h2 class="past-heading text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+          <h2 class="past-heading h-sub text-gray-900">
             Completed Sprints
           </h2>
           <p class="past-sub text-gray-500 text-base mt-2 font-medium">
@@ -145,14 +145,14 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- CTA -->
     <!-- ═══════════════════════════════════════ -->
-    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] py-16 sm:py-20 overflow-hidden">
+    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] section overflow-hidden">
       <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div class="relative bg-white rounded-3xl shadow-lg px-6 sm:px-10 py-12 sm:py-16 text-center overflow-hidden cta-card">
+        <div class="relative bg-white rounded-3xl shadow-lg px-6 sm:px-10 section-tight text-center overflow-hidden cta-card">
           <div class="absolute right-0 bottom-0 pointer-events-none select-none" aria-hidden="true">
             <img src="/sidelogo.png" alt="" class="w-32 sm:w-48 md:w-64 h-auto object-contain opacity-90" style="transform: rotate(-15deg) translate(20%, 15%);" />
           </div>
           <div class="relative z-10">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-snug mb-3">
+            <h2 class="h-sub text-gray-900 leading-snug mb-3">
               Ready to
               <span class="text-blue-600 relative inline-block ml-1">Sprint?
                 <span class="absolute left-0 -bottom-1 w-full h-[2px] bg-blue-500 rotate-[-2deg]"></span>

@@ -33,14 +33,32 @@
         <!-- Right side: social + legal -->
         <div class="flex flex-col items-center sm:items-end gap-3">
           <div class="flex gap-5 text-base text-gray-400">
-            <a href="#" aria-label="Instagram" class="hover:text-blue-600 transition"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="TikTok" class="hover:text-blue-600 transition"><i class="fab fa-tiktok"></i></a>
-            <a href="#" aria-label="YouTube" class="hover:text-red-600 transition"><i class="fab fa-youtube"></i></a>
+            <a
+              v-for="social in socials"
+              :key="social.label"
+              :href="social.url"
+              :aria-label="social.label"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="transition-colors duration-200"
+              :class="social.hoverClass"
+            >
+              <i :class="social.icon" aria-hidden="true"></i>
+            </a>
+            <a
+              :href="whatsappGroup.url"
+              :aria-label="whatsappGroup.label"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-emerald-500 transition-colors duration-200"
+            >
+              <i :class="whatsappGroup.icon" aria-hidden="true"></i>
+            </a>
           </div>
           <div class="flex gap-4 text-xs text-gray-400">
-            <a href="/privacy" class="hover:text-blue-600 transition">Privacy Policy</a>
+            <a href="/privacy" class="hover:text-blue-600 transition-colors duration-200">Privacy Policy</a>
             <span class="text-gray-200">|</span>
-            <a href="/licenses" class="hover:text-blue-600 transition">Licenses</a>
+            <a href="/licenses" class="hover:text-blue-600 transition-colors duration-200">Licenses</a>
           </div>
         </div>
 
@@ -50,6 +68,8 @@
 </template>
 
 <script setup>
+import { socials, whatsappGroup } from '../../data/site'
+
 const footerLinks = [
   {
     title: 'Navigate',
@@ -63,25 +83,22 @@ const footerLinks = [
   {
     title: 'Community',
     links: [
-      { label: 'Our Community',   url: '/community' },
-      { label: 'Team',            url: '/team' },
-      { label: 'Mission',         url: '/mission' },
-      { label: 'Contact',         url: '/contact-us' },
+      { label: 'Our Community', url: '/community' },
+      { label: 'Workshops',     url: '/workshops' },
+      { label: 'Team',          url: '/team' },
+      { label: 'Mission',       url: '/mission' },
     ],
   },
   {
     title: 'Follow',
-    links: [
-      { label: 'Instagram', url: 'https://instagram.com', external: true },
-      { label: 'TikTok',    url: 'https://tiktok.com',   external: true },
-      { label: 'YouTube',   url: 'https://youtube.com',  external: true },
-    ],
+    links: socials.map((s) => ({ label: s.label, url: s.url, external: true })),
   },
   {
     title: 'Connect',
     links: [
-      { label: 'Email Us',    url: '/contact-us' },
-      { label: 'Join Sprint', url: '/contact-us' },
+      { label: whatsappGroup.label, url: whatsappGroup.url, external: true },
+      { label: 'Email Us',          url: '/contact-us' },
+      { label: 'Join Sprint',       url: '/contact-us' },
     ],
   },
 ]

@@ -4,7 +4,7 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- FULL-WIDTH HERO (Light) -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="heroScope" class="relative bg-[#F8FAFC] py-20 sm:py-28 md:py-36 px-4 sm:px-6 overflow-hidden text-center">
+    <section ref="heroScope" class="relative bg-[#F8FAFC] section overflow-hidden text-center">
 
       <!-- Floating Annotations -->
       <div class="hidden sm:block pointer-events-none select-none" aria-hidden="true">
@@ -31,7 +31,7 @@
       </div>
 
       <div class="relative z-10 max-w-4xl mx-auto">
-        <h1 class="hero-heading text-[2.4rem] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-6">
+        <h1 class="hero-heading h-display text-gray-900 leading-[1.1] mb-6">
           We Believe in<br/>
           <span class="text-blue-600">Learning by Doing.</span>
         </h1>
@@ -49,9 +49,9 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- CORE VALUES (Fanned Cards) -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="valuesScope" class="bg-[#F8FAFC] py-16 sm:py-20 md:py-28 px-4 sm:px-6 overflow-hidden">
+    <section ref="valuesScope" class="bg-[#F8FAFC] section overflow-hidden">
       <div class="max-w-3xl mx-auto text-center mb-14 md:mb-20">
-        <h2 class="values-heading text-gray-900 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3">
+        <h2 class="values-heading text-gray-900 h-section mb-3">
           What We Stand For
         </h2>
         <p class="values-sub text-gray-500 text-base sm:text-lg font-medium">
@@ -96,12 +96,12 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- THE PROBLEM WE SOLVE (Light Split) -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="problemScope" class="bg-slate-50 py-16 sm:py-20 md:py-28 px-4 sm:px-6 overflow-hidden border-y border-gray-100">
+    <section ref="problemScope" class="bg-slate-50 section overflow-hidden border-y border-gray-100">
       <div class="max-w-6xl mx-auto">
         <div class="flex flex-col md:flex-row items-center gap-10 md:gap-16">
           <!-- Left: Text -->
           <div class="flex-1 problem-text">
-            <h2 class="text-gray-900 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-6 leading-tight">
+            <h2 class="text-gray-900 h-section mb-6 leading-tight">
               Students are stuck between <span class="text-blue-600">theory</span> and <span class="text-blue-600">practice.</span>
             </h2>
             <p class="text-gray-500 text-base sm:text-lg leading-relaxed mb-6">
@@ -134,7 +134,7 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- BIG QUOTE -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="quoteScope" class="bg-[#F8FAFC] py-20 sm:py-28 md:py-36 px-4 sm:px-6 text-center">
+    <section ref="quoteScope" class="bg-[#F8FAFC] section text-center">
       <div class="max-w-4xl mx-auto">
         <blockquote class="big-quote text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.15] tracking-tight" style="font-family: 'Handlee', cursive;">
           "No paywalls.<br/>No secret handshakes."
@@ -148,14 +148,14 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- CTA -->
     <!-- ═══════════════════════════════════════ -->
-    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] py-16 sm:py-20 overflow-hidden">
+    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] section overflow-hidden">
       <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div class="relative bg-white rounded-3xl shadow-lg px-6 sm:px-10 py-12 sm:py-16 text-center overflow-hidden cta-card">
+        <div class="relative bg-white rounded-3xl shadow-lg px-6 sm:px-10 section-tight text-center overflow-hidden cta-card">
           <div class="absolute right-0 bottom-0 pointer-events-none select-none" aria-hidden="true">
             <img src="/sidelogo.png" alt="" class="w-32 sm:w-48 md:w-64 h-auto object-contain opacity-90" style="transform: rotate(-15deg) translate(20%, 15%);" />
           </div>
           <div class="relative z-10">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-snug mb-3">
+            <h2 class="h-sub text-gray-900 leading-snug mb-3">
               Join the
               <span class="text-blue-600 relative inline-block ml-1">Movement
                 <span class="absolute left-0 -bottom-1 w-full h-[2px] bg-blue-500 rotate-[-2deg]"></span>

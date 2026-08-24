@@ -143,7 +143,7 @@
             :disabled="isLoading"
             class="flex-1 px-4 py-2.5 bg-transparent text-[15px]
                    text-gray-800 placeholder-gray-400
-                   focus:outline-none
+                   focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2
                    disabled:opacity-50 transition-all duration-200"
           />
           <button

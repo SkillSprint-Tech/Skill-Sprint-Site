@@ -36,6 +36,11 @@ const routes = [
     component: () => import('../views/SprintsView.vue')
   },
   {
+    path: '/workshops',
+    name: 'workshops',
+    component: () => import('../views/WorkshopsView.vue')
+  },
+  {
     path: '/community',
     name: 'community',
     component: () => import('../views/CommunityView.vue')
@@ -50,15 +55,25 @@ const routes = [
     name: 'mission',
     component: () => import('../views/MissionView.vue')
   },
+  // Team management moved into the admin panel (Team tab) so it sits behind the same
+  // login as everything else. These paths were public and unauthenticated — redirect
+  // rather than 404 so old bookmarks land somewhere useful.
+  { path: '/team-members-form', redirect: '/admin' },
+  { path: '/team-form', redirect: '/admin' },
+  // Target of the unsubscribe link in every email. Kept out of nav; noindex so the
+  // parameterised URLs never get crawled.
   {
-    path: '/team-members-form',
-    name: 'team-members-form',
-    component: () => import('../views/TeamForm.vue')
+    path: '/unsubscribe',
+    name: 'unsubscribe',
+    component: () => import('../views/UnsubscribeView.vue'),
+    meta: { noindex: true }
   },
+  // Admin panel — intentionally absent from nav and footer, and marked noindex below.
   {
-    path: '/team-form',
-    name: 'team-form',
-    component: () => import('../views/TeamForm.vue')
+    path: '/admin',
+    name: 'admin',
+    component: () => import('../views/AdminView.vue'),
+    meta: { noindex: true, bareLayout: true }
   },
   // Catch-all redirect
   {
@@ -80,9 +95,23 @@ const router = createRouter({
 })
 
 // Force manual scroll reset immediately on completion of route transitions
-router.afterEach(() => {
+router.afterEach((to) => {
   if (typeof window !== 'undefined') {
     window.scrollTo({ left: 0, top: 0, behavior: 'instant' })
+  }
+
+  // Keep admin out of search results. Added/removed per navigation so it never leaks
+  // onto a public route.
+  if (typeof document === 'undefined') return
+  const existing = document.querySelector('meta[name="robots"]')
+  if (to.meta?.noindex) {
+    if (existing) return
+    const meta = document.createElement('meta')
+    meta.name = 'robots'
+    meta.content = 'noindex, nofollow'
+    document.head.appendChild(meta)
+  } else if (existing) {
+    existing.remove()
   }
 })
 

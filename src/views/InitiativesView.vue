@@ -4,7 +4,7 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- HERO SECTION -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="heroScope" class="relative bg-[#F8FAFC] pt-10 sm:pt-14 md:pt-20 pb-10 md:pb-16 text-center px-4 overflow-hidden">
+    <section ref="heroScope" class="px-4 sm:px-6 relative bg-[#F8FAFC] pt-10 sm:pt-14 md:pt-20 pb-10 md:pb-16 text-center overflow-hidden">
 
       <!-- Floating Annotation Tags -->
       <div class="hidden sm:block pointer-events-none select-none" aria-hidden="true">
@@ -32,7 +32,7 @@
 
       <!-- Heading -->
       <div class="relative z-10">
-        <h1 class="hero-heading text-[2.4rem] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-4">
+        <h1 class="hero-heading h-display text-gray-900 leading-[1.1] mb-4">
           Concrete Community<br/>
           <span class="text-blue-600">Engineering.</span>
         </h1>
@@ -53,7 +53,7 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- FILTER BAR + GRID -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="gridScope" class="bg-[#F8FAFC] px-4 sm:px-6 pb-16 sm:pb-24">
+    <section ref="gridScope" class="px-4 sm:px-6 bg-[#F8FAFC] pb-16 sm:pb-24">
       <div class="max-w-7xl mx-auto">
 
         <!-- Filter Bar -->
@@ -116,14 +116,14 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- CTA SECTION -->
     <!-- ═══════════════════════════════════════ -->
-    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] py-16 sm:py-20 overflow-hidden">
+    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] section overflow-hidden">
       <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div ref="ctaCard" class="relative bg-white rounded-3xl shadow-lg px-6 sm:px-10 py-12 sm:py-16 text-center overflow-hidden cta-card">
+        <div ref="ctaCard" class="relative bg-white rounded-3xl shadow-lg px-6 sm:px-10 section-tight text-center overflow-hidden cta-card">
           <div class="absolute right-0 bottom-0 pointer-events-none select-none" aria-hidden="true">
             <img src="/sidelogo.png" alt="" class="w-32 sm:w-48 md:w-64 h-auto object-contain opacity-90" style="transform: rotate(-15deg) translate(20%, 15%);" />
           </div>
           <div class="relative z-10">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-snug mb-3">
+            <h2 class="h-sub text-gray-900 leading-snug mb-3">
               Start <span class="text-blue-600 relative inline-block ml-1">Contributing
                 <span class="absolute left-0 -bottom-1 w-full h-[2px] bg-blue-500 rotate-[-2deg]"></span>
               </span>

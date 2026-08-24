@@ -14,14 +14,23 @@ const vercelApiPlugin = () => ({
     server.middlewares.use(async (req, res, next) => {
       if (req.url.startsWith('/api/')) {
         try {
-          const apiFile = req.url.split('?')[0].replace('/api/', '') + '.js'
+          const [rawPath, rawQuery] = req.url.split('?')
+          // Supports nested routes too (e.g. /api/admin/login -> api/admin/login.js)
+          const apiFile = rawPath.replace('/api/', '') + '.js'
           const filePath = path.resolve(__dirname, 'api', apiFile)
-          
+
           if (fs.existsSync(filePath)) {
-            if (req.method === 'POST' || req.method === 'PUT') {
+            // Vercel populates req.query; the dev server does not, so mirror it here.
+            // Without this, handlers reading req.query.<name> silently see undefined.
+            req.query = Object.fromEntries(new URLSearchParams(rawQuery || ''))
+
+            // Parse a body for every method that can carry one. PATCH and DELETE were
+            // previously omitted, which silently dropped their payloads in local dev.
+            if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
               let body = ''
               req.on('data', chunk => { body += chunk.toString() })
               await new Promise(resolve => req.on('end', resolve))
+              req.rawBody = body
               if (body) {
                 try {
                   req.body = JSON.parse(body)
@@ -30,7 +39,7 @@ const vercelApiPlugin = () => ({
                 }
               }
             }
-            
+
             // Add some express-like helpers to res for Vercel functions
             res.status = (code) => {
               res.statusCode = code
@@ -43,7 +52,7 @@ const vercelApiPlugin = () => ({
             res.send = (data) => {
               res.end(data)
             }
-            
+
             const module = await import(`file://${filePath}?update=${Date.now()}`)
             const handler = module.default
             

@@ -42,6 +42,7 @@
             <router-link to="/about" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">About</router-link>
             <router-link to="/initiatives" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Initiatives</router-link>
             <router-link to="/sprints" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Sprints</router-link>
+            <router-link to="/workshops" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Workshops</router-link>
             <router-link to="/community" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Community</router-link>
             <router-link to="/team" class="transition cursor-pointer hover:text-blue-600 text-gray-500" exact-active-class="text-blue-600 font-bold">Team</router-link>
           </div>
@@ -75,6 +76,9 @@
           </router-link>
           <router-link to="/sprints" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
             Sprints
+          </router-link>
+          <router-link to="/workshops" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
+            Workshops
           </router-link>
           <router-link to="/community" @click="closeMenu" class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-blue-600 text-sm transition-colors duration-150" exact-active-class="text-blue-600 font-bold bg-blue-50">
             Community

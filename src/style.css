@@ -9,6 +9,96 @@
   --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design system primitives.
+
+   The secondary pages had drifted into seven different section paddings and four
+   card radii. These classes are the single source of truth — change the rhythm of
+   the whole site here rather than page by page.
+
+   The homepage and contact page deliberately do not use them: they are the style
+   anchor and stay untouched.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@layer components {
+  /* Vertical rhythm ------------------------------------------------------- */
+  .section {
+    padding-block: 4rem;
+    padding-inline: 1rem;
+  }
+  .section-tight {
+    padding-block: 3rem;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) {
+    .section       { padding-block: 5rem;   padding-inline: 1.5rem; }
+    .section-tight { padding-block: 3.5rem; padding-inline: 1.5rem; }
+  }
+  @media (min-width: 768px) {
+    .section       { padding-block: 7rem; }
+    .section-tight { padding-block: 4.5rem; }
+  }
+
+  /* Type scale ------------------------------------------------------------ */
+  /* Page-level display heading (one per page). */
+  .h-display {
+    font-size: 2.4rem;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+  }
+  /* Major section heading. */
+  .h-section {
+    font-size: 1.875rem;
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.022em;
+  }
+  /* Secondary heading — CTA cards, sub-blocks. A real second tier, not drift. */
+  .h-sub {
+    font-size: 1.5rem;
+    line-height: 1.25;
+    font-weight: 800;
+    letter-spacing: -0.018em;
+  }
+  @media (min-width: 640px) {
+    .h-display { font-size: 3rem; }
+    .h-section { font-size: 2.25rem; }
+    .h-sub     { font-size: 1.875rem; }
+  }
+  @media (min-width: 768px) {
+    .h-display { font-size: 3.75rem; }
+    .h-section { font-size: 3rem; }
+    .h-sub     { font-size: 2.25rem; }
+  }
+  @media (min-width: 1024px) {
+    .h-display { font-size: 4.5rem; }
+    .h-section { font-size: 3.75rem; }
+  }
+
+  /* Surfaces -------------------------------------------------------------- */
+  /* One border/radius/hover contract for every card on the secondary pages. */
+  .card {
+    background-color: #fff;
+    border: 1px solid var(--color-gray-100, #f3f4f6);
+    border-radius: 1rem;
+    transition-property: color, background-color, border-color;
+    transition-duration: 200ms;
+  }
+  .card-hover:hover {
+    border-color: var(--color-blue-200, #bfdbfe);
+  }
+}
+
+/* Accessibility: every interactive element gets a visible keyboard focus ring.
+   Several pages previously relied on focus:outline-none with no replacement, which
+   makes the site unusable by keyboard. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-blue-600, #2563eb);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
 /* Accessibility: honor the user's reduced-motion preference.
    GSAP reveals are handled in useGSAP.js; this neutralizes CSS animations/transitions. */
 @media (prefers-reduced-motion: reduce) {
