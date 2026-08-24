@@ -1,19 +1,31 @@
 {
   "rewrites": [
     {
+      "source": "/api/admin/:action",
+      "destination": "/api/admin?action=:action"
+    },
+    {
+      "source": "/api/webhooks/:provider",
+      "destination": "/api/webhooks?provider=:provider"
+    },
+    {
+      "source": "/api/cron/process-emails",
+      "destination": "/api/cron"
+    },
+    {
       "source": "/((?!api/.*).*)",
       "destination": "/index.html"
     }
   ],
   "crons": [
     {
-      "path": "/api/cron/process-emails",
+      "path": "/api/cron",
       "schedule": "0 3 * * *"
     }
   ],
   "functions": {
-    "api/cron/process-emails.js": { "maxDuration": 60 },
-    "api/admin/send-email.js": { "maxDuration": 60 }
+    "api/cron.js": { "maxDuration": 60 },
+    "api/admin.js": { "maxDuration": 60 }
   },
   "headers": [
     {

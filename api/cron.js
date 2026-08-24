@@ -1,7 +1,7 @@
-import { ensureSchema } from '../_schema.js'
-import { runWorker } from '../_email/worker.js'
-import { isAuthenticated } from '../_auth.js'
-import { ok, fail, getQueryParam } from '../_http.js'
+import { ensureSchema } from '../lib/schema.js'
+import { runWorker } from '../lib/email/worker.js'
+import { isAuthenticated } from '../lib/auth.js'
+import { ok, fail, getQueryParam } from '../lib/http.js'
 
 /**
  * Drains the email queue. Triggered by:

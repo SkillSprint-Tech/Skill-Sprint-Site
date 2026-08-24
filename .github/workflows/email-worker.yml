@@ -34,7 +34,7 @@ jobs:
             --max-time 90 \
             --write-out '\n%{http_code}' \
             --header "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            "${{ secrets.SITE_URL }}/api/cron/process-emails")
+            "${{ secrets.SITE_URL }}/api/cron")
 
           status=$(echo "$response" | tail -n1)
           body=$(echo "$response" | sed '$d')

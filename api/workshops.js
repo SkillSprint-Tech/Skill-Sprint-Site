@@ -1,7 +1,7 @@
-import { query } from './_db.js'
-import { ensureSchema } from './_schema.js'
-import { applyCors, ok, fail, methodNotAllowed, getQueryParam } from './_http.js'
-import { requireAdmin, isAuthenticated } from './_auth.js'
+import { query } from '../lib/db.js'
+import { ensureSchema } from '../lib/schema.js'
+import { applyCors, ok, fail, methodNotAllowed, getQueryParam } from '../lib/http.js'
+import { requireAdmin, isAuthenticated } from '../lib/auth.js'
 
 const VALID_STATUS = ['upcoming', 'live', 'completed', 'cancelled']
 

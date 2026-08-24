@@ -14,8 +14,27 @@ const vercelApiPlugin = () => ({
     server.middlewares.use(async (req, res, next) => {
       if (req.url.startsWith('/api/')) {
         try {
-          const [rawPath, rawQuery] = req.url.split('?')
-          // Supports nested routes too (e.g. /api/admin/login -> api/admin/login.js)
+          let [rawPath, rawQuery] = req.url.split('?')
+
+          // Mirror the rewrites in vercel.json. The admin and webhook routes are
+          // collapsed behind single dispatchers to stay under the Hobby plan's
+          // 12-function cap, so the same path -> query mapping has to happen locally
+          // or every /api/admin/* call 404s in dev but works in production.
+          const REWRITES = [
+            [/^\/api\/admin\/([^/]+)$/, (m) => ['/api/admin', `action=${m[1]}`]],
+            [/^\/api\/webhooks\/([^/]+)$/, (m) => ['/api/webhooks', `provider=${m[1]}`]],
+            [/^\/api\/cron\/process-emails$/, () => ['/api/cron', '']],
+          ]
+          for (const [pattern, map] of REWRITES) {
+            const m = rawPath.match(pattern)
+            if (m) {
+              const [target, extra] = map(m)
+              rawPath = target
+              rawQuery = [rawQuery, extra].filter(Boolean).join('&')
+              break
+            }
+          }
+
           const apiFile = rawPath.replace('/api/', '') + '.js'
           const filePath = path.resolve(__dirname, 'api', apiFile)
 
@@ -23,6 +42,9 @@ const vercelApiPlugin = () => ({
             // Vercel populates req.query; the dev server does not, so mirror it here.
             // Without this, handlers reading req.query.<name> silently see undefined.
             req.query = Object.fromEntries(new URLSearchParams(rawQuery || ''))
+            // getQueryParam falls back to parsing req.url, so keep it consistent with
+            // the rewritten path rather than the original request.
+            req.url = rawQuery ? `${rawPath}?${rawQuery}` : rawPath
 
             // Parse a body for every method that can carry one. PATCH and DELETE were
             // previously omitted, which silently dropped their payloads in local dev.

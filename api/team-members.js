@@ -1,7 +1,7 @@
-import { query } from './_db.js'
-import { ensureSchema } from './_schema.js'
-import { applyCors, ok, fail, methodNotAllowed, getQueryParam } from './_http.js'
-import { requireAdmin } from './_auth.js'
+import { query } from '../lib/db.js'
+import { ensureSchema } from '../lib/schema.js'
+import { applyCors, ok, fail, methodNotAllowed, getQueryParam } from '../lib/http.js'
+import { requireAdmin } from '../lib/auth.js'
 
 const ALLOWED = ['GET', 'POST', 'DELETE']
 const DEFAULT_FOCUS = ['Core Builder', 'Collaborator']

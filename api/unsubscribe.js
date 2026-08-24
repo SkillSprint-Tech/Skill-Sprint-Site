@@ -1,7 +1,7 @@
-import { query } from './_db.js'
-import { ensureSchema } from './_schema.js'
-import { applyCors, ok, fail, methodNotAllowed, getQueryParam } from './_http.js'
-import { verifyUnsubscribeToken } from './_email/unsubscribeToken.js'
+import { query } from '../lib/db.js'
+import { ensureSchema } from '../lib/schema.js'
+import { applyCors, ok, fail, methodNotAllowed, getQueryParam } from '../lib/http.js'
+import { verifyUnsubscribeToken } from '../lib/email/unsubscribeToken.js'
 
 /**
  * Honours the unsubscribe link in every email.

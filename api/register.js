@@ -1,8 +1,8 @@
 import crypto from 'node:crypto'
-import { withTransaction, query } from './_db.js'
-import { ensureSchema } from './_schema.js'
-import { applyCors, ok, fail, methodNotAllowed, clientIp } from './_http.js'
-import { runWorker } from './_email/worker.js'
+import { withTransaction, query } from '../lib/db.js'
+import { ensureSchema } from '../lib/schema.js'
+import { applyCors, ok, fail, methodNotAllowed, clientIp } from '../lib/http.js'
+import { runWorker } from '../lib/email/worker.js'
 
 // Deliberately permissive but structurally strict — matches the context.md rule of a
 // single @, a dotted domain, and no whitespace. Over-clever regexes reject valid addresses.

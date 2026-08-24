@@ -1,4 +1,4 @@
-import { createSkillSprintReply } from './groqChat.js'
+import { createSkillSprintReply } from '../lib/groqChat.js'
 
 export default async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json')
