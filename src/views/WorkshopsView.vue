@@ -104,7 +104,21 @@
                   {{ dayOf(w.starts_at) }}
                 </span>
               </div>
-              <StatusBadge v-if="w.status === 'upcoming'" status="Active" />
+              <StatusBadge :status="badgeLabel(w)" />
+            </div>
+
+            <div v-if="w.status === 'live'"
+                 class="flex items-start gap-2 bg-red-50 border border-red-100 rounded-xl px-3 py-2 mb-3">
+              <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse mt-1.5 flex-shrink-0" aria-hidden="true"></span>
+              <p class="text-red-700 text-xs font-semibold leading-relaxed">
+                Happening right now.
+                <template v-if="w.has_meeting_link">
+                  The join link is in the email we sent you.
+                </template>
+                <template v-else>
+                  We're sharing the join link by email shortly.
+                </template>
+              </p>
             </div>
 
             <h3 class="text-lg font-extrabold text-gray-900 tracking-tight mb-1.5 group-hover:text-blue-600 transition-colors duration-200">
@@ -136,8 +150,42 @@
                 <dt class="sr-only">Seats</dt>
                 <dd><span aria-hidden="true">💺</span> {{ w.seats }} seats</dd>
               </div>
+              <div class="flex gap-2">
+                <dt class="sr-only">Join link</dt>
+                <dd :class="w.has_meeting_link ? 'text-emerald-600' : 'text-gray-400'">
+                  <span aria-hidden="true">🔗</span>
+                  {{ w.has_meeting_link ? 'Join link ready — emailed to registrants' : 'Join link emailed before the session' }}
+                </dd>
+              </div>
             </dl>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- CANCELLED -->
+    <!-- A cancelled session is not "already delivered", so it gets its own block rather
+         than being quietly filed under past sessions. -->
+    <!-- ═══════════════════════════════════════ -->
+    <section v-if="cancelled.length" class="bg-slate-50 section border-b border-gray-100">
+      <div class="max-w-7xl mx-auto">
+        <div class="mb-8">
+          <h2 class="text-gray-900 h-section">Called Off</h2>
+          <p class="text-gray-500 text-base sm:text-lg mt-2 font-medium">
+            These sessions won't be running. We'll reschedule what we can.
+          </p>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div v-for="w in cancelled" :key="w.id"
+               class="bg-white border border-red-100 rounded-xl px-5 py-4 flex items-center gap-4">
+            <span class="text-xs font-mono text-gray-400 tabular-nums flex-shrink-0 line-through">
+              {{ shortDate(w.starts_at) }}
+            </span>
+            <span class="text-sm font-bold text-gray-500 truncate line-through">{{ w.title }}</span>
+            <StatusBadge status="Cancelled" class="ml-auto flex-shrink-0" />
+          </div>
         </div>
       </div>
     </section>
@@ -242,36 +290,52 @@
               </div>
 
               <div class="flex flex-col gap-1.5">
-                <label for="university" class="text-gray-300 text-sm font-semibold">University</label>
+                <label for="university" class="text-gray-300 text-sm font-semibold">
+                  University <span class="text-blue-400">*</span>
+                </label>
                 <input id="university" v-model="form.university" type="text" autocomplete="organization"
-                       :class="inputClass()" placeholder="UET Lahore" />
+                       :class="inputClass(fieldErrors.university)" placeholder="UET Lahore" />
+                <p v-if="fieldErrors.university" class="text-red-400 text-xs">{{ fieldErrors.university }}</p>
               </div>
 
               <div class="flex flex-col gap-1.5">
-                <label for="phone" class="text-gray-300 text-sm font-semibold">Phone <span class="text-gray-600">(optional)</span></label>
+                <label for="phone" class="text-gray-300 text-sm font-semibold">
+                  Phone <span class="text-blue-400">*</span>
+                </label>
                 <input id="phone" v-model="form.phone" type="tel" autocomplete="tel"
-                       :class="inputClass()" placeholder="03xx xxxxxxx" />
+                       :class="inputClass(fieldErrors.phone)" placeholder="03xx xxxxxxx" />
+                <p v-if="fieldErrors.phone" class="text-red-400 text-xs">{{ fieldErrors.phone }}</p>
               </div>
 
               <div class="flex flex-col gap-1.5">
-                <label for="year_of_study" class="text-gray-300 text-sm font-semibold">Year of study</label>
-                <select id="year_of_study" v-model="form.year_of_study" :class="inputClass()">
-                  <option value="">Select…</option>
+                <label for="year_of_study" class="text-gray-300 text-sm font-semibold">
+                  Year of study <span class="text-blue-400">*</span>
+                </label>
+                <select id="year_of_study" v-model="form.year_of_study"
+                        :class="selectClass(fieldErrors.year_of_study)">
+                  <option value="" disabled>Select…</option>
                   <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
                 </select>
+                <p v-if="fieldErrors.year_of_study" class="text-red-400 text-xs">{{ fieldErrors.year_of_study }}</p>
               </div>
 
               <div class="flex flex-col gap-1.5">
-                <label for="skill_level" class="text-gray-300 text-sm font-semibold">Experience level</label>
-                <select id="skill_level" v-model="form.skill_level" :class="inputClass()">
-                  <option value="">Select…</option>
+                <label for="skill_level" class="text-gray-300 text-sm font-semibold">
+                  Experience level <span class="text-blue-400">*</span>
+                </label>
+                <select id="skill_level" v-model="form.skill_level"
+                        :class="selectClass(fieldErrors.skill_level)">
+                  <option value="" disabled>Select…</option>
                   <option v-for="lvl in skillLevels" :key="lvl" :value="lvl">{{ lvl }}</option>
                 </select>
+                <p v-if="fieldErrors.skill_level" class="text-red-400 text-xs">{{ fieldErrors.skill_level }}</p>
               </div>
             </div>
 
             <fieldset class="flex flex-col gap-2.5">
-              <legend class="text-gray-300 text-sm font-semibold mb-2">What are you interested in?</legend>
+              <legend class="text-gray-300 text-sm font-semibold mb-2">
+                What are you interested in? <span class="text-blue-400">*</span>
+              </legend>
               <div class="flex flex-wrap gap-2">
                 <button v-for="topic in topics" :key="topic" type="button"
                         @click="toggleInterest(topic)"
@@ -283,6 +347,7 @@
                   {{ topic }}
                 </button>
               </div>
+              <p v-if="fieldErrors.interests" class="text-red-400 text-xs">{{ fieldErrors.interests }}</p>
             </fieldset>
 
             <label class="flex items-start gap-3 cursor-pointer">
@@ -319,7 +384,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { useGSAP } from '../composables/useGSAP'
 import StatusBadge from '../components/StatusBadge.vue'
 import { whatsappGroup } from '../data/site'
@@ -344,26 +409,58 @@ const topics = ['Web Development', 'APIs & Backend', 'Git & Collaboration', 'UI/
 // ── Schedule ────────────────────────────────────────────────────────────────
 const upcoming = ref([])
 const past = ref([])
+const cancelled = ref([])
 const loading = ref(true)
 const loadError = ref('')
 
-const loadWorkshops = async () => {
-  loading.value = true
+const loadWorkshops = async ({ quiet = false } = {}) => {
+  if (!quiet) loading.value = true
   loadError.value = ''
   try {
-    const res = await fetch('/api/workshops')
+    // cache: 'no-store' on top of the server's no-store header. A stale schedule is the
+    // one thing this page must never show — an admin flipping a session to Live or
+    // Cancelled has to be visible on the next load, not after a hard refresh.
+    const res = await fetch('/api/workshops', { cache: 'no-store' })
     const data = await res.json().catch(() => ({}))
     if (!res.ok || !data.ok) throw new Error(data.message || `Server responded ${res.status}`)
     upcoming.value = data.upcoming || []
     past.value = data.past || []
+    cancelled.value = data.cancelled || []
   } catch (e) {
-    loadError.value = e.message || 'Could not reach the server.'
+    if (!quiet) loadError.value = e.message || 'Could not reach the server.'
   } finally {
     loading.value = false
   }
 }
 
-onMounted(loadWorkshops)
+/** Label for the card badge, driven entirely by the status an admin set. */
+const badgeLabel = (w) => ({
+  live: 'Live now',
+  completed: 'Completed',
+  cancelled: 'Cancelled',
+}[w.status] || 'Active')
+
+// A session going live is time-sensitive, so an open tab picks the change up on its own:
+// on refocus, and on a slow poll while the tab is visible.
+const REFRESH_MS = 60_000
+let refreshTimer = null
+
+const refreshIfVisible = () => {
+  if (document.visibilityState === 'visible') loadWorkshops({ quiet: true })
+}
+
+onMounted(() => {
+  loadWorkshops()
+  refreshTimer = setInterval(refreshIfVisible, REFRESH_MS)
+  document.addEventListener('visibilitychange', refreshIfVisible)
+  window.addEventListener('focus', refreshIfVisible)
+})
+
+onUnmounted(() => {
+  clearInterval(refreshTimer)
+  document.removeEventListener('visibilitychange', refreshIfVisible)
+  window.removeEventListener('focus', refreshIfVisible)
+})
 
 // ── Date formatting ─────────────────────────────────────────────────────────
 const asDate = (value) => new Date(value)
@@ -379,7 +476,12 @@ const form = reactive({
   website: '', // honeypot
 })
 
-const fieldErrors = reactive({ full_name: '', email: '', consent: '' })
+// Every field on this form is required, so every field needs somewhere to put its error.
+const blankErrors = () => ({
+  full_name: '', email: '', university: '', phone: '',
+  year_of_study: '', skill_level: '', interests: '', consent: '',
+})
+const fieldErrors = reactive(blankErrors())
 const submitting = ref(false)
 const submitted = ref(false)
 const submittedName = ref('')
@@ -393,25 +495,65 @@ const inputClass = (hasError) => [
   hasError ? 'border-red-500/60' : 'border-white/10 hover:border-white/20',
 ]
 
+/**
+ * Selects need one extra class beyond the shared input styling.
+ *
+ * The native dropdown list is painted by the OS using the select's own background and
+ * colour. With a translucent `bg-white/5` on a dark panel that resolved to a white popup
+ * with white text — the options were there, just invisible. `dark-select` pins a solid
+ * dark background and `color-scheme: dark` so the browser renders the popup to match.
+ */
+const selectClass = (hasError) => [...inputClass(hasError), 'dark-select']
+
 const toggleInterest = (topic) => {
   const i = form.interests.indexOf(topic)
   if (i === -1) form.interests.push(topic)
   else form.interests.splice(i, 1)
+  if (form.interests.length) fieldErrors.interests = ''
 }
 
 // Mirrors the server rule exactly so the client never accepts what the server rejects.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
+// Digits only, so "+92 300 1234567" and "0300-1234567" both pass. Mirrors api/register.js.
+const phoneDigits = (value) => String(value).replace(/\D/g, '')
+
 const validate = () => {
   fieldErrors.full_name = form.full_name.trim().length < 2 ? 'Please enter your full name.' : ''
   fieldErrors.email = EMAIL_RE.test(form.email.trim()) ? '' : 'Please enter a valid email address.'
+  fieldErrors.university = form.university.trim().length < 2
+    ? 'Please tell us where you study or work.' : ''
+
+  const digits = phoneDigits(form.phone)
+  fieldErrors.phone = digits.length < 10 || digits.length > 15
+    ? 'Please enter a valid phone number.' : ''
+
+  fieldErrors.year_of_study = form.year_of_study ? '' : 'Please select your year of study.'
+  fieldErrors.skill_level = form.skill_level ? '' : 'Please select your experience level.'
+  fieldErrors.interests = form.interests.length ? '' : 'Pick at least one topic.'
   fieldErrors.consent = form.consent ? '' : 'We need your consent to email you the schedule.'
-  return !fieldErrors.full_name && !fieldErrors.email && !fieldErrors.consent
+
+  return !Object.values(fieldErrors).some(Boolean)
+}
+
+/** With eight required fields, an error above the fold is easy to miss. Take them to it. */
+const focusFirstError = () => {
+  const field = Object.keys(fieldErrors).find((key) => fieldErrors[key])
+  if (!field) return
+  const el = document.getElementById(field)
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    el.focus({ preventScroll: true })
+  }
 }
 
 const submit = async () => {
   submitError.value = ''
-  if (!validate()) return
+  if (!validate()) {
+    submitError.value = 'Please fill in every field before registering.'
+    focusFirstError()
+    return
+  }
 
   submitting.value = true
   try {
@@ -442,6 +584,7 @@ const resetForm = () => {
     full_name: '', email: '', phone: '', university: '',
     year_of_study: '', skill_level: '', interests: [], consent: true, website: '',
   })
+  Object.assign(fieldErrors, blankErrors())
   submitted.value = false
   submittedName.value = ''
   alreadyRegistered.value = false
@@ -479,3 +622,31 @@ useGSAP((self) => {
   })
 }, pageScope)
 </script>
+
+<style scoped>
+/**
+ * The native <select> popup is drawn by the operating system, not by us. It inherits the
+ * control's own background and text colour, and `bg-white/5` over a dark panel resolves
+ * to a white list — which, with `text-white` options, rendered every choice invisible.
+ *
+ * `color-scheme: dark` tells the browser to paint its own widgets (the popup, the
+ * scrollbar, the arrow) in dark mode, and the explicit option colours cover the browsers
+ * that ignore it. Both are needed: Chrome honours color-scheme, Firefox leans on the
+ * option rules.
+ */
+.dark-select {
+  color-scheme: dark;
+  /* Opaque, so the popup never inherits a see-through white. Matches bg-white/5 over #0B101B. */
+  background-color: #151b28;
+}
+
+.dark-select option {
+  background-color: #151b28;
+  color: #e5e7eb;
+}
+
+/* The placeholder row reads as a prompt, not as a pickable answer. */
+.dark-select option[value=''] {
+  color: #9ca3af;
+}
+</style>

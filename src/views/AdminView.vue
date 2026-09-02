@@ -285,7 +285,7 @@
             <table class="w-full text-sm">
               <thead>
                 <tr class="bg-gray-50 border-b border-gray-200">
-                  <th v-for="h in ['When', 'Title', 'Status', 'Live', 'Meeting link', 'Actions']" :key="h"
+                  <th v-for="h in ['When', 'Title', 'Status', 'Published', 'Meeting link', 'Actions']" :key="h"
                       class="text-left px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider text-gray-500 whitespace-nowrap">{{ h }}</th>
                 </tr>
               </thead>
@@ -301,21 +301,37 @@
                     {{ w.title }}
                     <div v-if="w.speaker" class="text-xs font-normal text-gray-400">{{ w.speaker }}</div>
                   </td>
-                  <td class="px-4 py-3">
-                    <span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wide"
-                          :class="statusClass(w.status)">{{ w.status }}</span>
-                  </td>
-                  <td class="px-4 py-3">
-                    <span :class="w.is_published ? 'text-emerald-600' : 'text-gray-300'">
-                      {{ w.is_published ? 'Yes' : 'No' }}
-                    </span>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <select :value="w.status" @change="changeStatus(w, $event.target.value)"
+                            :disabled="updatingId === w.id"
+                            class="px-2 py-1 rounded text-[11px] font-bold uppercase tracking-wide border-0
+                                   cursor-pointer disabled:opacity-50"
+                            :class="statusClass(w.status)">
+                      <option v-for="opt in WORKSHOP_STATUSES" :key="opt" :value="opt">{{ opt }}</option>
+                    </select>
                   </td>
                   <td class="px-4 py-3 whitespace-nowrap">
-                    <span v-if="!w.meeting_link" class="text-xs text-gray-400">Not set</span>
+                    <button @click="togglePublished(w)" :disabled="updatingId === w.id"
+                            class="text-xs font-bold transition-colors duration-200 disabled:opacity-50 cursor-pointer"
+                            :class="w.is_published ? 'text-emerald-600 hover:text-emerald-800' : 'text-gray-400 hover:text-gray-600'"
+                            :title="w.is_published ? 'Visible on /workshops — click to unpublish' : 'Hidden from /workshops — click to publish'">
+                      {{ w.is_published ? 'Live on site' : 'Draft' }}
+                    </button>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <span v-if="!w.meeting_link"
+                          class="text-xs font-semibold"
+                          :class="needsLink(w) ? 'text-amber-600' : 'text-gray-400'">
+                      {{ needsLink(w) ? '⚠ Not set' : 'Not set' }}
+                    </span>
                     <template v-else>
                       <span class="text-xs text-emerald-600 font-semibold">Set</span>
                       <div v-if="w.link_sent_at" class="text-[11px] text-gray-400 tabular-nums">
                         sent {{ shortDate(w.link_sent_at) }}
+                      </div>
+                      <div v-else class="text-[11px] font-semibold"
+                           :class="needsLink(w) ? 'text-amber-600' : 'text-gray-400'">
+                        not emailed yet
                       </div>
                     </template>
                   </td>
@@ -708,11 +724,100 @@ const downloadCsv = (scope) => {
 }
 
 // ── Workshops CRUD ──────────────────────────────────────────────────────────
+const WORKSHOP_STATUSES = ['upcoming', 'live', 'completed', 'cancelled']
+
 const blankWorkshop = () => ({
   title: '', description: '', speaker: '', speaker_role: '',
   starts_at: '', duration_mins: 90, location: 'Online', seats: '',
   status: 'upcoming', is_published: true, meeting_link: '',
 })
+
+const updatingId = ref(null)
+
+/**
+ * A session people are about to join needs a link. This is what drives the amber warning
+ * in the table and the confirmation before going live — a workshop that is live, or
+ * starts within the day, and has no link, is not actually ready to run.
+ */
+const needsLink = (w) => {
+  if (w.status === 'completed' || w.status === 'cancelled') return false
+  if (w.status === 'live') return true
+  const hoursAway = (new Date(w.starts_at).getTime() - Date.now()) / 3.6e6
+  return hoursAway <= 24
+}
+
+/**
+ * Patch a single field and refresh from the server rather than mutating the local row.
+ * The row shown in the table is then always what /workshops will serve, so there is no
+ * way for the panel to claim a change that did not land.
+ */
+const patchWorkshop = async (w, changes, successTitle, successBody = '') => {
+  updatingId.value = w.id
+  try {
+    const res = await fetch(`/api/workshops?id=${w.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(changes),
+    })
+    const data = await res.json().catch(() => ({}))
+    if (!data.ok) {
+      toast('error', 'Could not update', data.message || 'The change was not saved.')
+      return null
+    }
+    toast('success', successTitle, successBody)
+    await loadWorkshops()
+    return data.workshop
+  } catch {
+    toast('error', 'Could not update', 'Could not reach the server.')
+    return null
+  } finally {
+    updatingId.value = null
+  }
+}
+
+const changeStatus = async (w, status) => {
+  if (status === w.status) return
+
+  // Going live without a join link means registrants get a "we're live" card and nothing
+  // to click. Worth stopping for.
+  if (status === 'live' && !w.meeting_link) {
+    const proceed = window.confirm(
+      `"${w.title}" has no meeting link yet.\n\n` +
+      'Mark it live anyway? Nobody will have a link to join with until you add one and press Send link.'
+    )
+    if (!proceed) {
+      await loadWorkshops() // put the select back where it was
+      return
+    }
+  }
+
+  if (status === 'cancelled' && !window.confirm(
+    `Cancel "${w.title}"?\n\nIt moves to the "Called Off" section on /workshops straight away.`
+  )) {
+    await loadWorkshops()
+    return
+  }
+
+  const WHERE_IT_SHOWS = {
+    upcoming: "Showing under “What's Coming Up” on /workshops.",
+    live: 'Showing as happening now on /workshops.',
+    completed: 'Moved to "Already Delivered" on /workshops.',
+    cancelled: 'Moved to "Called Off" on /workshops.',
+  }
+
+  const updated = await patchWorkshop(w, { status }, `Status set to ${status}`,
+    w.is_published ? WHERE_IT_SHOWS[status] : 'Saved — still a draft, so not on the site yet.')
+
+  if (updated && status === 'live' && updated.meeting_link && !updated.link_sent_at) {
+    toast('warn', 'Link not emailed yet',
+      'This session is live but nobody has been sent the join link. Press Send link.', 9000)
+  }
+}
+
+const togglePublished = (w) =>
+  patchWorkshop(w, { is_published: !w.is_published },
+    w.is_published ? 'Unpublished' : 'Published',
+    w.is_published ? 'Removed from /workshops.' : "It's on /workshops now.")
 
 // ── Meeting link ────────────────────────────────────────────────────────────
 const sendingLinkId = ref(null)
@@ -783,6 +888,19 @@ const editWorkshop = (w) => {
 }
 
 const saveWorkshop = async () => {
+  if (!wForm.title.trim()) {
+    toast('error', 'Title is required')
+    return
+  }
+  if (!wForm.starts_at || Number.isNaN(new Date(wForm.starts_at).getTime())) {
+    toast('error', 'A valid start date is required')
+    return
+  }
+  // Same check the table's status control makes, applied on the way in.
+  if (wForm.status === 'live' && !wForm.meeting_link.trim() && !window.confirm(
+    'This workshop is marked live but has no meeting link.\n\nSave anyway?'
+  )) return
+
   savingWorkshop.value = true
   try {
     const payload = { ...wForm, starts_at: new Date(wForm.starts_at).toISOString() }
@@ -796,8 +914,13 @@ const saveWorkshop = async () => {
     })
     const data = await res.json().catch(() => ({}))
     if (data.ok) {
+      const saved = data.workshop || {}
       toast('success', editing.value ? 'Workshop updated' : 'Workshop added',
-        wForm.is_published ? "It's live on /workshops now." : 'Saved as a draft.')
+        wForm.is_published ? "It's on /workshops now." : 'Saved as a draft, not on the site yet.')
+      if (saved.meeting_link && !saved.link_sent_at) {
+        toast('warn', 'Join link not emailed yet',
+          'The link is saved but nobody has received it. Press Send link when you are ready.', 9000)
+      }
       resetWorkshopForm()
       await Promise.all([loadWorkshops(), loadStats()])
     } else {
