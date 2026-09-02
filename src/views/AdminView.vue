@@ -76,6 +76,14 @@
           </div>
         </div>
 
+        <!-- Sender misconfiguration. Providers report a bad From domain per message, so
+             without this it only ever shows up as a cryptic error on individual rows. -->
+        <div v-if="senderWarning"
+             class="bg-amber-50 border border-amber-300 rounded-xl px-5 py-4 mb-6">
+          <p class="text-amber-900 font-bold text-sm mb-1">{{ senderWarning.title }}</p>
+          <p class="text-amber-800 text-sm leading-relaxed">{{ senderWarning.body }}</p>
+        </div>
+
         <!-- Quota -->
         <div v-if="stats" class="bg-white border border-gray-200 rounded-xl px-5 py-4 mb-6">
           <div class="flex flex-wrap items-center justify-between gap-4">
@@ -95,6 +103,12 @@
               </div>
             </div>
             <span class="text-xs text-gray-400 font-mono">resets {{ resetCountdown }}</span>
+          </div>
+          <div v-if="senderSummary" class="mt-3 pt-3 border-t border-gray-100">
+            <span class="text-xs text-gray-500">Sending as </span>
+            <span class="text-xs font-mono" :class="senderWarning ? 'text-amber-700 font-bold' : 'text-gray-700'">
+              {{ senderSummary }}
+            </span>
           </div>
         </div>
 
@@ -122,6 +136,13 @@
                   class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700
                          transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
             {{ sendingAll ? 'Sending…' : `Send all pending (${stats?.email.notReceived ?? 0})` }}
+          </button>
+
+          <button v-if="stats?.email.failed" @click="retryFailed" :disabled="sendingAll"
+                  class="border border-amber-300 bg-amber-50 text-amber-800 px-4 py-2 rounded-lg text-sm font-semibold
+                         hover:bg-amber-100 transition-colors duration-200 disabled:opacity-40 cursor-pointer"
+                  title="Put failed emails back in the queue and try again — use after fixing a configuration problem">
+            {{ sendingAll ? 'Retrying…' : `Retry failed (${stats.email.failed})` }}
           </button>
 
           <button @click="downloadCsv('view')"
@@ -565,6 +586,50 @@ const summaryCards = computed(() => {
   ]
 })
 
+/**
+ * Which provider the panel should complain about. A provider with a key but no usable
+ * From address cannot send anything, and the per-row error names the placeholder domain
+ * rather than the setting that is wrong — so name the setting.
+ */
+const senderWarning = computed(() => {
+  const sender = stats.value?.sender
+  if (!sender) return null
+
+  const envVar = { resend: 'RESEND_FROM', brevo: 'BREVO_FROM' }
+  for (const name of ['resend', 'brevo']) {
+    const configured = stats.value.quota.usage?.[name]?.configured
+    if (!configured) continue // no API key: the "no key" chip already says so
+
+    const info = sender[name]
+    if (info?.placeholder) {
+      return {
+        title: `${envVar[name]} is still the example address`,
+        body: `${name} is sending from @${info.domain}, which is the placeholder in ` +
+          `.env.example — not a domain you have verified. Set ${envVar[name]} to an address ` +
+          'on your verified domain, redeploy, then press "Retry failed".',
+      }
+    }
+    if (!info?.set) {
+      return {
+        title: `${envVar[name]} is not set`,
+        body: `${name} has an API key but no From address, so every send fails. ` +
+          `Set ${envVar[name]} and redeploy.`,
+      }
+    }
+  }
+  return null
+})
+
+/** "resend @skillsprint.pk · brevo @skillsprint.pk" — what it is actually sending as. */
+const senderSummary = computed(() => {
+  const sender = stats.value?.sender
+  if (!sender) return ''
+  return ['resend', 'brevo']
+    .filter((name) => stats.value.quota.usage?.[name]?.configured)
+    .map((name) => `${name} @${sender[name]?.domain || '(not set)'}`)
+    .join(' · ')
+})
+
 const now = ref(Date.now())
 let ticker = null
 
@@ -712,6 +777,49 @@ const sendAll = async () => {
     }
   } catch {
     toast('error', 'Could not send', 'Could not reach the server.')
+  } finally {
+    sendingAll.value = false
+    await Promise.all([loadStats(), loadRegistrations()])
+  }
+}
+
+/**
+ * Put failed jobs back in the queue and drain. The button exists because a configuration
+ * problem (wrong From domain, revoked key) fails every job it touches and burns an
+ * attempt each time — past the retry ceiling, fixing the config alone leaves them stuck.
+ */
+const retryFailed = async () => {
+  if (!window.confirm(
+    `Put ${stats.value?.email.failed ?? 0} failed email${stats.value?.email.failed === 1 ? '' : 's'} ` +
+    'back in the queue and try again?\n\nDo this after fixing the configuration problem, ' +
+    'otherwise they will just fail again.'
+  )) return
+
+  sendingAll.value = true
+  try {
+    const res = await fetch('/api/admin/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ retryFailed: true }),
+    })
+    const data = await res.json().catch(() => ({}))
+
+    if (data.code === 'QUOTA_EXHAUSTED' || data.code === 'NO_PROVIDER') {
+      reportSendResult(data, '')
+    } else if (data.ok) {
+      const summary = data.summary || {}
+      toast(
+        summary.sent ? 'success' : 'warn',
+        `Requeued ${data.requeued ?? 0} · sent ${summary.sent ?? 0}`,
+        summary.failed
+          ? `${summary.failed} failed again — check the error on those rows.`
+          : 'All requeued emails went out.'
+      )
+    } else {
+      toast('error', 'Could not retry', data.message || 'Unknown error.')
+    }
+  } catch {
+    toast('error', 'Could not retry', 'Could not reach the server.')
   } finally {
     sendingAll.value = false
     await Promise.all([loadStats(), loadRegistrations()])
