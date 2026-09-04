@@ -31,21 +31,25 @@
             Collaborate with us to empower students globally.
           </p>
 
-          <div class="flex flex-wrap gap-3 sm:gap-4 justify-center items-center">
-            <button
-              class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold
-                     px-8 py-3 rounded-full text-sm transition-all duration-200 shadow-md shadow-blue-200"
-              aria-label="Join the Sprint"
-            >
-              Join the Sprint
-            </button>
-            <button
-              class="w-full sm:w-auto bg-white border-2 border-gray-200 hover:border-blue-400 hover:text-blue-600
-                     text-gray-700 font-semibold px-8 py-3 rounded-full text-sm transition-all duration-200"
-              aria-label="Contact us"
-            >
-              Contact us
-            </button>
+          <div class="flex flex-wrap gap-3 sm:gap-4 justify-center items-center mt-6">
+            <router-link to="/contact-us" class="w-full sm:w-auto">
+              <button
+                class="w-full bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold
+                       px-8 py-3 rounded-full text-sm transition-all duration-200 shadow-md shadow-blue-200 cursor-pointer"
+                aria-label="Join the Sprint"
+              >
+                Join the Sprint
+              </button>
+            </router-link>
+            <router-link to="/contact-us" class="w-full sm:w-auto">
+              <button
+                class="w-full bg-white border-2 border-gray-200 hover:border-blue-400 hover:text-blue-600
+                       text-gray-700 font-semibold px-8 py-3 rounded-full text-sm transition-all duration-200 cursor-pointer"
+                aria-label="Contact us"
+              >
+                Contact us
+              </button>
+            </router-link>
           </div>
         </div>
 
