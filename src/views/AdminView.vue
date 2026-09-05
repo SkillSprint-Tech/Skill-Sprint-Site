@@ -76,6 +76,12 @@
           </div>
         </div>
 
+        <div v-if="stuckWarning"
+             class="bg-amber-50 border border-amber-300 rounded-xl px-5 py-4 mb-6">
+          <p class="text-amber-900 font-bold text-sm mb-1">{{ stuckWarning.title }}</p>
+          <p class="text-amber-800 text-sm leading-relaxed">{{ stuckWarning.body }}</p>
+        </div>
+
         <!-- Sender misconfiguration. Providers report a bad From domain per message, so
              without this it only ever shows up as a cryptic error on individual rows. -->
         <div v-if="senderWarning"
@@ -124,7 +130,9 @@
                          focus-visible:outline-2 focus-visible:outline-blue-600">
             <option value="all">All statuses</option>
             <option value="not_received">Not received</option>
+            <option value="stuck">Stuck (abandoned)</option>
             <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
             <option value="deferred">Deferred</option>
             <option value="sent">Sent</option>
             <option value="delivered">Delivered</option>
@@ -186,8 +194,13 @@
                   <td class="px-4 py-3 text-gray-400 text-xs whitespace-nowrap tabular-nums">{{ shortDate(r.created_at) }}</td>
                   <td class="px-4 py-3 whitespace-nowrap">
                     <span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wide"
-                          :class="statusClass(r.email_status)">
-                      {{ r.email_status }}
+                          :class="r.is_stuck ? 'bg-amber-100 text-amber-800' : statusClass(r.email_status)">
+                      {{ r.is_stuck ? 'stuck' : r.email_status }}
+                    </span>
+                    <span v-if="r.email_status === 'processing'"
+                          class="ml-1.5 text-[10px] font-mono"
+                          :class="r.is_stuck ? 'text-amber-700' : 'text-gray-400'">
+                      {{ lockAge(r.locked_at) }}
                     </span>
                     <span v-if="r.provider" class="ml-1.5 text-[10px] text-gray-400 font-mono">{{ r.provider }}</span>
                     <div v-if="r.last_error" class="text-[11px] text-red-500 mt-1 max-w-xs truncate" :title="r.last_error">
@@ -196,10 +209,14 @@
                   </td>
                   <td class="px-4 py-3 whitespace-nowrap">
                     <button v-if="r.email_status !== 'delivered'"
-                            @click="sendOne(r)" :disabled="sendingId === r.id"
+                            @click="sendOne(r)"
+                            :disabled="sendingId === r.id || (r.email_status === 'processing' && !r.is_stuck)"
                             class="text-blue-600 text-xs font-bold hover:text-blue-800 transition-colors duration-200
-                                   disabled:opacity-40 cursor-pointer">
-                      {{ sendingId === r.id ? 'Sending…' : (r.email_status === 'sent' ? 'Resend' : 'Send email') }}
+                                   disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                            :title="r.email_status === 'processing' && !r.is_stuck
+                              ? 'A worker is sending this right now — wait for it to finish or time out'
+                              : ''">
+                      {{ sendingId === r.id ? 'Sending…' : sendLabel(r) }}
                     </button>
                     <span v-else class="text-gray-300 text-xs">—</span>
                   </td>
@@ -584,6 +601,45 @@ const summaryCards = computed(() => {
       valueClass: s.email.failed ? 'text-red-600' : 'text-gray-900',
     },
   ]
+})
+
+/**
+ * How long a job has been claimed. The whole point of showing this is that 'processing'
+ * on its own is ambiguous — two minutes means a worker is mid-send, three hours means the
+ * worker died and nothing has touched the row since.
+ */
+const lockAge = (lockedAt) => {
+  if (!lockedAt) return ''
+  const mins = Math.floor((now.value - new Date(lockedAt).getTime()) / 60000)
+  if (mins < 1) return 'just now'
+  if (mins < 60) return `${mins}m`
+  const h = Math.floor(mins / 60)
+  return h < 24 ? `${h}h ${mins % 60}m` : `${Math.floor(h / 24)}d ${h % 24}h`
+}
+
+const sendLabel = (r) => {
+  if (r.is_stuck) return 'Release & send'
+  if (r.email_status === 'processing') return 'Sending…'
+  return r.email_status === 'sent' ? 'Resend' : 'Send email'
+}
+
+/**
+ * A stranded queue explains itself here rather than making someone notice three grey
+ * PROCESSING chips and guess what they mean.
+ */
+const stuckWarning = computed(() => {
+  const email = stats.value?.email
+  if (!email?.stuck) return null
+  const n = email.stuck
+  return {
+    title: `${n} email${n === 1 ? '' : 's'} stranded mid-send`,
+    body:
+      `A worker claimed ${n === 1 ? 'it' : 'them'} and never finished — usually a serverless ` +
+      `invocation frozen right after it returned its response. ${n === 1 ? 'It is' : 'They are'} ` +
+      'not retrying and not failed, just held. Press "Send all pending" to release and send ' +
+      `${n === 1 ? 'it' : 'them'} now; otherwise the nightly worker picks ${n === 1 ? 'it' : 'them'} up.` +
+      (email.oldest_lock ? ` Oldest has been held ${lockAge(email.oldest_lock)}.` : ''),
+  }
 })
 
 /**
