@@ -118,6 +118,29 @@
           </div>
         </div>
 
+        <!-- Which email this whole view describes. Without it the table could only ever
+             answer "who got the registration email", and there was no way at all to see
+             who received a workshop's meeting link. -->
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+          <label for="email-view" class="text-xs font-bold uppercase tracking-wider text-gray-500">
+            Showing
+          </label>
+          <select id="email-view" v-model="emailView" @change="onEmailViewChange"
+                  class="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white cursor-pointer
+                         focus-visible:outline-2 focus-visible:outline-blue-600 max-w-full">
+            <option :value="WELCOME_TEMPLATE">Registration email (welcome + schedule)</option>
+            <option v-for="w in workshops" :key="w.id" :value="`reminder:${w.id}`">
+              Meeting link — {{ w.title }}
+            </option>
+          </select>
+          <span v-if="emailView !== WELCOME_TEMPLATE && !workshops.length"
+                class="text-xs text-gray-400">No workshops yet</span>
+          <span v-if="stats?.email.notQueued && emailView !== WELCOME_TEMPLATE"
+                class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 font-semibold">
+            {{ stats.email.notQueued }} never queued for this email
+          </span>
+        </div>
+
         <!-- Controls -->
         <div class="flex flex-wrap items-center gap-2 mb-4">
           <input v-model="search" @input="debouncedLoad" type="search"
@@ -130,6 +153,7 @@
                          focus-visible:outline-2 focus-visible:outline-blue-600">
             <option value="all">All statuses</option>
             <option value="not_received">Not received</option>
+            <option value="not_queued">Never queued</option>
             <option value="stuck">Stuck (abandoned)</option>
             <option value="pending">Pending</option>
             <option value="processing">Processing</option>
@@ -583,6 +607,17 @@ const loading = ref(false)
 const search = ref('')
 const statusFilter = ref('all')
 
+// Which email the Registrations tab is describing: the welcome mail, or one workshop's
+// meeting link (`reminder:<workshopId>`, the key lib/admin/sendLink.js queues under).
+const WELCOME_TEMPLATE = 'welcome_schedule'
+const emailView = ref(WELCOME_TEMPLATE)
+
+const onEmailViewChange = () => {
+  page.value = 1
+  statusFilter.value = 'all'
+  return Promise.all([loadStats(), loadRegistrations()])
+}
+
 const summaryCards = computed(() => {
   if (!stats.value) return []
   const s = stats.value
@@ -620,7 +655,8 @@ const lockAge = (lockedAt) => {
 const sendLabel = (r) => {
   if (r.is_stuck) return 'Release & send'
   if (r.email_status === 'processing') return 'Sending…'
-  return r.email_status === 'sent' ? 'Resend' : 'Send email'
+  if (r.email_status === 'sent') return 'Resend'
+  return emailView.value === WELCOME_TEMPLATE ? 'Send email' : 'Send link'
 }
 
 /**
@@ -706,6 +742,7 @@ const statusClass = (status) => ({
   sent: 'bg-blue-50 text-blue-700',
   pending: 'bg-gray-100 text-gray-600',
   processing: 'bg-gray-100 text-gray-600',
+  not_queued: 'bg-gray-100 text-gray-500',
   deferred: 'bg-amber-50 text-amber-700',
   failed: 'bg-red-50 text-red-700',
   bounced: 'bg-red-50 text-red-700',
@@ -718,7 +755,7 @@ const statusClass = (status) => ({
 // ── Loading ─────────────────────────────────────────────────────────────────
 const loadStats = async () => {
   try {
-    const res = await fetch('/api/admin/stats')
+    const res = await fetch(`/api/admin/stats?template=${encodeURIComponent(emailView.value)}`)
     const data = await res.json().catch(() => ({}))
     if (data.ok) stats.value = data
   } catch { /* the refresh button surfaces this */ }
@@ -728,7 +765,7 @@ const loadRegistrations = async () => {
   loading.value = true
   try {
     const qs = new URLSearchParams({
-      search: search.value, status: statusFilter.value,
+      search: search.value, status: statusFilter.value, template: emailView.value,
       page: String(page.value), limit: String(limit),
     })
     const res = await fetch(`/api/admin/registrations?${qs}`)
@@ -800,7 +837,11 @@ const sendOne = async (row) => {
     const res = await fetch('/api/admin/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(row.job_id ? { jobId: row.job_id } : { registrationId: row.id }),
+      body: JSON.stringify(
+        row.job_id
+          ? { jobId: row.job_id }
+          : { registrationId: row.id, template: emailView.value }
+      ),
     })
     const data = await res.json().catch(() => ({}))
     reportSendResult(data, `Email sent to ${row.full_name}`)
@@ -883,7 +924,9 @@ const retryFailed = async () => {
 }
 
 const downloadCsv = (scope) => {
-  const qs = new URLSearchParams({ scope, search: search.value, status: statusFilter.value })
+  const qs = new URLSearchParams({
+    scope, search: search.value, status: statusFilter.value, template: emailView.value,
+  })
   window.location.href = `/api/admin/export?${qs}`
 }
 
