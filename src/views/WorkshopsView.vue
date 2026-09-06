@@ -140,7 +140,10 @@
               </div>
               <div class="flex gap-2">
                 <dt class="sr-only">Time</dt>
-                <dd><span aria-hidden="true">🕒</span> {{ timeOf(w.starts_at) }} · {{ w.duration_mins }} min</dd>
+                <dd>
+                  <span aria-hidden="true">🕒</span>
+                  {{ timeOf(w.starts_at) }} {{ SITE_TIME_ZONE_LABEL }} · {{ w.duration_mins }} min
+                </dd>
               </div>
               <div v-if="w.location" class="flex gap-2">
                 <dt class="sr-only">Location</dt>
@@ -388,6 +391,7 @@ import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { useGSAP } from '../composables/useGSAP'
 import StatusBadge from '../components/StatusBadge.vue'
 import { whatsappGroup } from '../data/site'
+import { monthOf, dayOf, timeOf, shortDate, SITE_TIME_ZONE_LABEL } from '../utils/datetime'
 
 const pageScope = ref(null)
 const heroScope = ref(null)
@@ -463,11 +467,10 @@ onUnmounted(() => {
 })
 
 // ── Date formatting ─────────────────────────────────────────────────────────
-const asDate = (value) => new Date(value)
-const monthOf = (v) => asDate(v).toLocaleDateString('en-GB', { month: 'short' })
-const dayOf = (v) => asDate(v).getDate()
-const timeOf = (v) => asDate(v).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
-const shortDate = (v) => asDate(v).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })
+// Every one of these used to omit `timeZone`, which meant the schedule rendered in the
+// viewer's device zone while the emails committed to Pakistan time. A session at
+// 8 Sept 00:30 PKT showed as "7 Sept" on any machine behind PKT, contradicting the join
+// details already sitting in that person's inbox.
 
 // ── Form ────────────────────────────────────────────────────────────────────
 const form = reactive({

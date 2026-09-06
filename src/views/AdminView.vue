@@ -278,7 +278,9 @@
                         placeholder="What people will actually walk away able to do."></textarea>
             </div>
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-gray-500">Starts at *</label>
+              <label class="text-xs font-bold uppercase tracking-wider text-gray-500">
+                Starts at * <span class="text-blue-600">({{ SITE_TIME_ZONE_LABEL }})</span>
+              </label>
               <input v-model="wForm.starts_at" type="datetime-local" required :class="adminInput" />
             </div>
             <div class="flex flex-col gap-1.5">
@@ -521,6 +523,7 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
+import { dateTime, toZonedInput, fromZonedInput, SITE_TIME_ZONE_LABEL } from '../utils/datetime'
 
 const adminInput =
   'border border-gray-200 rounded-lg px-3.5 py-2 text-sm text-gray-900 bg-white ' +
@@ -734,8 +737,9 @@ const resetCountdown = computed(() => {
   return `in ${h}h ${m}m`
 })
 
-const shortDate = (v) =>
-  new Date(v).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit' })
+// Site time, not the operator's — an admin abroad must see the same clock as the
+// students they are scheduling for.
+const shortDate = (v) => dateTime(v)
 
 const statusClass = (status) => ({
   delivered: 'bg-emerald-50 text-emerald-700',
@@ -1075,12 +1079,14 @@ const resetWorkshopForm = () => {
   editing.value = null
 }
 
-/** datetime-local needs `YYYY-MM-DDTHH:mm` in local time, not an ISO UTC string. */
-const toLocalInput = (iso) => {
-  const d = new Date(iso)
-  const pad = (n) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
-}
+/**
+ * datetime-local carries a bare wall clock with no zone, so both directions have to be
+ * pinned explicitly. This used to build the string from getFullYear/getHours — the
+ * browser's zone — and read it back with `new Date(value)`, likewise the browser's zone.
+ * An admin outside Pakistan would therefore schedule a session hours away from the time
+ * registrants are emailed, without either side looking wrong.
+ */
+const toLocalInput = (iso) => toZonedInput(iso)
 
 const editWorkshop = (w) => {
   Object.assign(wForm, {
@@ -1099,7 +1105,8 @@ const saveWorkshop = async () => {
     toast('error', 'Title is required')
     return
   }
-  if (!wForm.starts_at || Number.isNaN(new Date(wForm.starts_at).getTime())) {
+  const startsAtIso = fromZonedInput(wForm.starts_at)
+  if (!startsAtIso) {
     toast('error', 'A valid start date is required')
     return
   }
@@ -1110,7 +1117,7 @@ const saveWorkshop = async () => {
 
   savingWorkshop.value = true
   try {
-    const payload = { ...wForm, starts_at: new Date(wForm.starts_at).toISOString() }
+    const payload = { ...wForm, starts_at: startsAtIso }
     if (payload.seats === '' || payload.seats == null) payload.seats = null
 
     const url = editing.value ? `/api/workshops?id=${editing.value}` : '/api/workshops'
