@@ -344,6 +344,33 @@
           </form>
         </div>
 
+        <!-- Test send. Renders and sends the real template to one address without
+             touching the queue, so the copy can be checked before it goes to the list. -->
+        <div v-if="testWorkshop"
+             class="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-6">
+          <h3 class="font-extrabold text-gray-900 text-sm mb-1">
+            Send a test of “{{ testWorkshop.title }}”
+          </h3>
+          <p class="text-gray-600 text-xs mb-3">
+            Goes to one address only. Nobody registered receives anything, and no delivery
+            status is recorded — but it does count against the daily provider quota.
+          </p>
+          <form @submit.prevent="sendTest" class="flex flex-wrap items-center gap-2">
+            <input v-model="testEmail" type="email" required placeholder="you@example.com"
+                   class="flex-1 min-w-[220px] border border-gray-200 rounded-lg px-3.5 py-2 text-sm bg-white
+                          focus-visible:outline-2 focus-visible:outline-blue-600" />
+            <button type="submit" :disabled="sendingTest"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700
+                           transition-colors duration-200 disabled:opacity-50 cursor-pointer">
+              {{ sendingTest ? 'Sending…' : 'Send test' }}
+            </button>
+            <button type="button" @click="testWorkshop = null"
+                    class="text-gray-500 text-sm font-semibold hover:text-gray-800 cursor-pointer">
+              Close
+            </button>
+          </form>
+        </div>
+
         <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full text-sm">
@@ -403,8 +430,23 @@
                     <button @click="sendLink(w)" :disabled="sendingLinkId === w.id || !w.meeting_link"
                             class="text-emerald-600 text-xs font-bold hover:text-emerald-800 mr-3
                                    disabled:text-gray-300 disabled:cursor-not-allowed cursor-pointer"
-                            :title="w.meeting_link ? 'Email the link to everyone registered' : 'Add a meeting link first'">
-                      {{ sendingLinkId === w.id ? 'Sending…' : (w.link_sent_at ? 'Resend link' : 'Send link') }}
+                            :title="w.meeting_link
+                              ? 'Email the link to anyone who has not received it yet'
+                              : 'Add a meeting link first'">
+                      {{ sendingLinkId === w.id ? 'Sending…' : (w.link_sent_at ? 'Send to new' : 'Send link') }}
+                    </button>
+                    <button v-if="w.link_sent_at" @click="sendLink(w, { resendAll: true })"
+                            :disabled="sendingLinkId === w.id || !w.meeting_link"
+                            class="text-amber-600 text-xs font-bold hover:text-amber-800 mr-3
+                                   disabled:text-gray-300 disabled:cursor-not-allowed cursor-pointer"
+                            title="Email the link to everyone again, including people who already received it">
+                      Resend to all
+                    </button>
+                    <button @click="openTest(w)" :disabled="!w.meeting_link"
+                            class="text-blue-600 text-xs font-bold hover:text-blue-800 mr-3
+                                   disabled:text-gray-300 disabled:cursor-not-allowed cursor-pointer"
+                            title="Send this exact email to one address to check it">
+                      Test
                     </button>
                     <button @click="editWorkshop(w)" class="text-blue-600 text-xs font-bold hover:text-blue-800 mr-3 cursor-pointer">Edit</button>
                     <button @click="deleteWorkshop(w)" class="text-red-500 text-xs font-bold hover:text-red-700 cursor-pointer">Delete</button>
@@ -1033,19 +1075,70 @@ const togglePublished = (w) =>
 // ── Meeting link ────────────────────────────────────────────────────────────
 const sendingLinkId = ref(null)
 
-const sendLink = async (w) => {
+// ── Test send ───────────────────────────────────────────────────────────────
+const testWorkshop = ref(null)
+const testEmail = ref('')
+const sendingTest = ref(false)
+
+const openTest = (w) => {
+  testWorkshop.value = w
+  // Nothing to prefill from — the operator types whichever inbox they want to check.
+  if (!testEmail.value) testEmail.value = ''
+}
+
+const sendTest = async () => {
+  const w = testWorkshop.value
+  if (!w) return
+
+  sendingTest.value = true
+  try {
+    const res = await fetch('/api/admin/send-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ workshopId: w.id, testEmail: testEmail.value.trim() }),
+    })
+    const data = await res.json().catch(() => ({}))
+
+    if (data.ok && data.test) {
+      toast('success', `Test sent to ${data.to}`,
+        `${data.provider ? `Via ${data.provider}. ` : ''}Subject: ${data.subject}`, 9000)
+    } else if (data.code === 'QUOTA_EXHAUSTED' || data.code === 'NO_PROVIDER') {
+      reportSendResult(data, '')
+    } else {
+      toast('error', 'Could not send the test', data.message || 'Unknown error.')
+    }
+  } catch {
+    toast('error', 'Could not send the test', 'Could not reach the server.')
+  } finally {
+    sendingTest.value = false
+    await loadStats()
+  }
+}
+
+/**
+ * @param {boolean} resendAll  true = mail the whole list again, including people who
+ *                             already received it. The default send is idempotent, which
+ *                             is right for topping up new registrants and wrong when you
+ *                             deliberately want everyone to get it a second time.
+ */
+const sendLink = async (w, { resendAll = false } = {}) => {
   const count = stats.value?.totals.registrations ?? 0
-  if (!window.confirm(
-    `Email the meeting link for "${w.title}" to ${count} registered ${count === 1 ? 'person' : 'people'}?` +
-    (w.link_sent_at ? '\n\nAlready sent once — only people who registered since will receive it.' : '')
-  )) return
+  const who = `${count} registered ${count === 1 ? 'person' : 'people'}`
+
+  const message = resendAll
+    ? `Resend the meeting link for "${w.title}" to ALL ${who}?` +
+      '\n\nEveryone gets it again, including people who already received it.'
+    : `Email the meeting link for "${w.title}" to ${who}?` +
+      (w.link_sent_at ? '\n\nAlready sent once — only people who registered since will receive it.' : '')
+
+  if (!window.confirm(message)) return
 
   sendingLinkId.value = w.id
   try {
     const res = await fetch('/api/admin/send-link', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ workshopId: w.id }),
+      body: JSON.stringify({ workshopId: w.id, resendAll }),
     })
     const data = await res.json().catch(() => ({}))
 
@@ -1055,10 +1148,15 @@ const sendLink = async (w) => {
       reportSendResult(data, '')
     } else if (data.ok) {
       const s = data.summary || {}
+      const detail = [
+        data.requeued ? `${data.requeued} resent` : '',
+        data.newlyQueued ? `${data.newlyQueued} newly queued` : '',
+        s.deferred ? `${s.deferred} deferred` : '',
+        s.failed ? `${s.failed} failed` : '',
+      ].filter(Boolean).join(' · ')
+
       toast('success', `Meeting link sent — ${s.sent ?? 0} email${s.sent === 1 ? '' : 's'}`,
-        data.newlyQueued === 0
-          ? 'Everyone registered had already received it.'
-          : `${data.newlyQueued} newly queued.` + (s.deferred ? ` ${s.deferred} deferred.` : ''))
+        detail || 'Everyone registered had already received it.')
     } else {
       toast('error', 'Could not send the link', data.message || 'Unknown error.')
     }
