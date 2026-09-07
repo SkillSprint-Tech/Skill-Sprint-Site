@@ -433,7 +433,9 @@
                             :title="w.meeting_link
                               ? 'Email the link to anyone who has not received it yet'
                               : 'Add a meeting link first'">
-                      {{ sendingLinkId === w.id ? 'Sending…' : (w.link_sent_at ? 'Send to new' : 'Send link') }}
+                      {{ sendingLinkId === w.id
+                        ? (sendProgress ? `Sending… ${sendProgress.sent}` : 'Sending…')
+                        : (w.link_sent_at ? 'Send to new' : 'Send link') }}
                     </button>
                     <button v-if="w.link_sent_at" @click="sendLink(w, { resendAll: true })"
                             :disabled="sendingLinkId === w.id || !w.meeting_link"
@@ -629,6 +631,7 @@ const toast = (kind, title, body = '', ms = 6000) => {
 
 const toastClass = (kind) => ({
   success: 'bg-emerald-50 border-emerald-200 text-emerald-900',
+  info: 'bg-blue-50 border-blue-200 text-blue-900',
   warn: 'bg-amber-50 border-amber-300 text-amber-900',
   error: 'bg-red-50 border-red-200 text-red-900',
 }[kind] || 'bg-white border-gray-200 text-gray-900')
@@ -1075,6 +1078,9 @@ const togglePublished = (w) =>
 // ── Meeting link ────────────────────────────────────────────────────────────
 const sendingLinkId = ref(null)
 
+/** Live count while a multi-pass send is running, so the operator sees it moving. */
+const sendProgress = ref(null)
+
 // ── Test send ───────────────────────────────────────────────────────────────
 const testWorkshop = ref(null)
 const testEmail = ref('')
@@ -1135,12 +1141,55 @@ const sendLink = async (w, { resendAll = false } = {}) => {
 
   sendingLinkId.value = w.id
   try {
-    const res = await fetch('/api/admin/send-link', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ workshopId: w.id, resendAll }),
-    })
-    const data = await res.json().catch(() => ({}))
+    // The server stops sending before its time limit rather than being killed mid-flight,
+    // so a long list takes several passes. Keep going until nothing is left, or the pass
+    // stops making progress — otherwise a 134-person resend would quietly deliver the
+    // first batch and drop the rest.
+    const MAX_PASSES = 12
+    let data = {}
+    let totalSent = 0
+    let totalRequeued = 0
+    let totalNewlyQueued = 0
+
+    for (let pass = 0; pass < MAX_PASSES; pass++) {
+      const res = await fetch('/api/admin/send-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // Only the first pass requeues; later passes just drain what is already queued.
+        body: JSON.stringify({ workshopId: w.id, resendAll: resendAll && pass === 0 }),
+      })
+
+      if (res.status === 504 || res.status === 502) {
+        toast('warn', 'That pass timed out',
+          `${totalSent} sent so far. The rest stay queued — press the button again to continue.`, 9000)
+        return
+      }
+
+      data = await res.json().catch(() => ({}))
+      if (!data.ok) break
+
+      const s = data.summary || {}
+      totalSent += s.sent ?? 0
+      totalRequeued += data.requeued ?? 0
+      totalNewlyQueued += data.newlyQueued ?? 0
+
+      if (!data.remaining) break
+      // No progress this pass means retrying will not help either.
+      if (!(s.sent ?? 0)) break
+
+      toast('info', `Sending… ${totalSent} done`, `${data.remaining} to go.`, 4000)
+      sendProgress.value = { sent: totalSent, remaining: data.remaining }
+    }
+
+    sendProgress.value = null
+    if (data.ok) {
+      data = {
+        ...data,
+        summary: { ...(data.summary || {}), sent: totalSent },
+        requeued: totalRequeued,
+        newlyQueued: totalNewlyQueued,
+      }
+    }
 
     if (data.code === 'NO_LINK') {
       toast('warn', 'No meeting link set', 'Add one to this workshop first, then send.')
