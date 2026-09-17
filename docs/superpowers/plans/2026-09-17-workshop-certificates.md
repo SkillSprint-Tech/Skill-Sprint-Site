@@ -3797,15 +3797,14 @@ async function reload({ notify = true } = {}) {
   if (!data.ok) return props.toast('error', 'Could not load this workshop', data.message)
 
   const previousFetch = detail.value?.template?.fetched_at
-  const firstLoad = !detail.value
   detail.value = data
 
   const t = data.template
   if (t) {
     if (!canvaUrl.value) canvaUrl.value = t.canva_url
     const saved = { x: t.name_x, y: t.name_y, size: t.name_size, color: t.name_color, maxWidth: t.name_max_width }
-    // Never clobber placement the admin is still adjusting.
-    if (firstLoad || !styleDirty.value) {
+    // Take the saved placement unless the admin is mid-adjustment.
+    if (!savedStyleKey.value || !styleDirty.value) {
       style.value = { ...saved }
       savedStyleKey.value = styleKey(saved)
     }
