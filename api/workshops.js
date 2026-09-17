@@ -105,16 +105,27 @@ export default async function handler(req, res) {
       // Only an authenticated admin ever sees meeting_link.
       const visible = admin ? rows : rows.map(publicView)
 
+      // Status set by an admin always wins over the clock, so flipping a workshop to
+      // `live` or back to `upcoming` in /admin is visible on /workshops immediately.
+      // Only `completed` and an elapsed end time move a session into the past, and a
+      // cancelled session is its own bucket — it was never "already delivered".
       const now = Date.now()
+      const hasEnded = (w) =>
+        new Date(w.starts_at).getTime() + (w.duration_mins || 0) * 60_000 < now
+
+      const isCancelled = (w) => w.status === 'cancelled'
+      const isLive = (w) => w.status === 'live'
       const isPast = (w) =>
-        w.status === 'completed' ||
-        w.status === 'cancelled' ||
-        new Date(w.starts_at).getTime() + w.duration_mins * 60_000 < now
+        !isCancelled(w) && !isLive(w) && (w.status === 'completed' || hasEnded(w))
 
       return ok(res, {
         workshops: visible,
-        upcoming: visible.filter((w) => !isPast(w)),
+        upcoming: visible.filter((w) => !isCancelled(w) && !isPast(w)),
         past: visible.filter(isPast).reverse(),
+        cancelled: visible.filter(isCancelled),
+        // Lets the page render a "happening now" state without another round trip.
+        live: visible.filter(isLive),
+        server_time: new Date(now).toISOString(),
       })
     }
 

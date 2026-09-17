@@ -8,6 +8,12 @@ import { runWorker } from '../lib/email/worker.js'
 // single @, a dotted domain, and no whitespace. Over-clever regexes reject valid addresses.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
+// Every field on the form is required, so the server enforces the same rule the page
+// does. A phone number is checked on digit count only — Pakistani mobiles, landlines and
+// international formats vary far too much for a pattern that would not reject real people.
+const MIN_PHONE_DIGITS = 10
+const MAX_PHONE_DIGITS = 15
+
 // Generous enough for a lab full of students sharing one campus NAT, tight enough that a
 // script cannot drain a 400/day email quota unattended.
 const RATE_WINDOW_MINUTES = 60
@@ -53,11 +59,37 @@ export default async function handler(req, res) {
     const full_name = clean(body.full_name ?? body.name, 'full_name')
     const email = clean(body.email, 'email').toLowerCase()
 
+    const phone = clean(body.phone, 'phone')
+    const university = clean(body.university, 'university')
+    const year_of_study = clean(body.year_of_study, 'year_of_study')
+    const skill_level = clean(body.skill_level, 'skill_level')
+
+    const interests = Array.isArray(body.interests)
+      ? body.interests.map((i) => String(i).trim()).filter(Boolean).slice(0, 20)
+      : []
+
     if (full_name.length < 2) {
       return fail(res, 'INVALID_NAME', 'Please enter your full name.')
     }
     if (!EMAIL_RE.test(email)) {
       return fail(res, 'INVALID_EMAIL', 'Please enter a valid email address.')
+    }
+    if (university.length < 2) {
+      return fail(res, 'INVALID_UNIVERSITY', 'Please tell us where you study or work.')
+    }
+
+    const phoneDigits = phone.replace(/\D/g, '')
+    if (phoneDigits.length < MIN_PHONE_DIGITS || phoneDigits.length > MAX_PHONE_DIGITS) {
+      return fail(res, 'INVALID_PHONE', 'Please enter a valid phone number.')
+    }
+    if (!year_of_study) {
+      return fail(res, 'INVALID_YEAR', 'Please select your year of study.')
+    }
+    if (!skill_level) {
+      return fail(res, 'INVALID_SKILL_LEVEL', 'Please select your experience level.')
+    }
+    if (!interests.length) {
+      return fail(res, 'INVALID_INTERESTS', 'Please pick at least one topic you are interested in.')
     }
     if (body.consent === false) {
       return fail(res, 'CONSENT_REQUIRED', 'We need your consent to email you the schedule.')
@@ -84,17 +116,13 @@ export default async function handler(req, res) {
       )
     }
 
-    const interests = Array.isArray(body.interests)
-      ? body.interests.map((i) => String(i).trim()).filter(Boolean).slice(0, 20)
-      : []
-
     const record = {
       full_name,
       email,
-      phone: clean(body.phone, 'phone'),
-      university: clean(body.university, 'university'),
-      year_of_study: clean(body.year_of_study, 'year_of_study'),
-      skill_level: clean(body.skill_level, 'skill_level'),
+      phone,
+      university,
+      year_of_study,
+      skill_level,
       interests,
       source: clean(body.source, 'source'),
       ip_hash: ipHash,

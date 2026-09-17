@@ -18,9 +18,9 @@ const attachments = [{ filename: 'cert.pdf', content: 'JVBERi0=' }]
 const message = { to: 'x@example.com', toName: 'X', subject: 's', html: 'h', text: 't' }
 
 process.env.RESEND_API_KEY = 'test'
-process.env.RESEND_FROM = 'from@example.com'
+process.env.RESEND_FROM = 'SkillSprint <from@skillsprint.test>'
 process.env.BREVO_API_KEY = 'test'
-process.env.BREVO_FROM = 'from@example.com'
+process.env.BREVO_FROM = 'from@skillsprint.test'
 
 test('Resend receives attachments as filename/content', async () => {
   const calls = captureFetch()

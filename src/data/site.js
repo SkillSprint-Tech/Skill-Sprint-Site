@@ -10,6 +10,12 @@
 
 export const socials = [
   {
+    label: 'Facebook',
+    url: 'https://www.facebook.com/skillsprint.pk/',
+    icon: 'fab fa-facebook-f',
+    hoverClass: 'hover:text-blue-600',
+  },
+  {
     label: 'Instagram',
     url: 'https://www.instagram.com/skillsprint.pk/',
     icon: 'fab fa-instagram',

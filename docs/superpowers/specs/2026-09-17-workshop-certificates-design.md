@@ -247,7 +247,7 @@ Certificate jobs use `template = 'certificate'`. That gives one certificate job 
   - renders the certificate and attaches it, then sends through the same provider/quota loop;
   - a missing template, font or placement fails the job with a clear `last_error`.
 - The unsubscribe check applies only to registration jobs.
-- **Deadline:** `runWorker({ limit, deadlineMs })` stops starting new jobs once the deadline passes and releases the unstarted claimed jobs back to `pending` (without counting an attempt). This keeps a 60-second function from being killed mid-batch, which could otherwise leave jobs to be reclaimed and double-sent. The default is 45 s.
+- **Run time:** certificates use the worker's existing time budget and concurrent send lanes (from `main`). The per-workshop template cache holds a promise, so parallel lanes share one load.
 
 **Admin operations** (`lib/admin/certificates.js`, dispatched from `api/admin.js`, so there are no new serverless functions):
 
