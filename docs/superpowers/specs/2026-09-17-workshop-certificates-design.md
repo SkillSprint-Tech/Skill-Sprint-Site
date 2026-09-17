@@ -102,7 +102,7 @@ The four workshops must exist in the Workshops tab. The existing CRUD there cove
    - `https://canva.link/<slug>` → one manual-redirect `GET`; the `Location` must be a `www.canva.com/design/<ID>/` URL.
    - Any other host is rejected, and the slug must be alphanumeric. Only these two URL shapes are ever fetched, which prevents server-side request forgery.
 2. `GET /v1/designs/{id}` returns the title and page count. Only page 1 is used, and there is a warning if there are more pages.
-3. `POST /v1/exports {design_id, format:{type:'pdf', pages:[1]}}`, then poll `GET /v1/exports/{id}` about once a second, for up to 40 seconds. Download `urls[0]`.
+3. `POST /v1/exports {design_id, format:{type:'pdf', pages:[1]}}`, then poll `GET /v1/exports/{id}` every 1.5 seconds, for up to 35 seconds. Download `urls[0]`. The PDF and PNG exports run in parallel so they fit inside a 60-second function.
 4. Same again with `{type:'png', pages:[1], width:1600, lossless:false}` for the preview.
 5. Read the page size with `pdf-lib`. Store the PDF, PNG, dimensions, design ID, title and fetch time.
 6. **Errors become messages the admin can act on:**
@@ -123,13 +123,13 @@ The four workshops must exist in the Workshops tab. The existing CRUD there cove
 renderCertificate({ templatePdf, fontBytes, style, name, title }) → Uint8Array
 ```
 
-- Uses `pdf-lib` with `@pdf-lib/fontkit` and embeds the font subset.
+- Uses `pdf-lib` with `@pdf-lib/fontkit`. The whole font is embedded, not a subset: pdf-lib's subsetter garbles some fonts.
 - **Style fields:**
   - `x` and `y` are fractions (0–1) of the page, measured from the top-left, and give the baseline centre.
   - `size` is in points.
   - `color` is `#rrggbb`.
   - `maxWidth` is a fraction of the page width.
-- **Layout:** `layoutName(font, name, style, page)` is exported separately for tests:
+- **Layout:** `layoutName({ name, style, pageWidth, pageHeight, measure })` lives in the dependency-free `lib/certificates/layout.js`, which the browser preview also uses:
   - `width = font.widthOfTextAtSize(name, size)`
   - if `width > maxWidth·W`, then `size = size · maxWidth·W / width`
   - `drawX = x·W − width/2`
@@ -139,7 +139,7 @@ renderCertificate({ templatePdf, fontBytes, style, name, title }) → Uint8Array
 - **Missing glyphs:** if the font lacks a glyph for a character in the name, rendering throws `MissingGlyphError`. That job fails permanently, and the admin sees the reason.
 - **PDF metadata:** the document title is `Certificate — <name> — <workshop>`.
 - **Attachment filename:** `SkillSprint-Certificate-<Workshop>-<Name>.pdf`, with anything other than `[A-Za-z0-9-]` replaced by `-`.
-- **Fonts:** accepts TTF/OTF up to 2 MB. They are validated with fontkit on upload, and the family name is stored.
+- **Fonts:** accepts TTF/OTF up to 2 MB. The file signature is checked (collections and WOFF are rejected), the font is parsed with fontkit, and the family name is stored.
 
 ---
 
