@@ -71,6 +71,9 @@ const routes = [
   // Admin panel — intentionally absent from nav and footer, and marked noindex below.
   {
     path: '/admin',
+    // Canva's OAuth redirect lands here; AdminView finishes the connection and
+    // replaces the URL with /admin.
+    alias: ['/admin/canva/callback'],
     name: 'admin',
     component: () => import('../views/AdminView.vue'),
     meta: { noindex: true, bareLayout: true }

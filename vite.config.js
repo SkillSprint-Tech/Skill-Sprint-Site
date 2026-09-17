@@ -106,5 +106,11 @@ export default defineConfig(({ mode }) => {
       tailwindcss(), // 👉 Add this to enable Tailwind
       vercelApiPlugin(),
     ],
+    server: {
+      // Canva's OAuth redirect for local development is registered as 127.0.0.1 (their docs
+      // advise against localhost). On Windows Vite otherwise listens on ::1 only, so the
+      // redirect would land nowhere. Browsers still reach http://localhost:5173 via IPv4.
+      host: '127.0.0.1',
+    },
   }
 })

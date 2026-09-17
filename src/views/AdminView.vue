@@ -550,6 +550,12 @@
           </div>
         </div>
       </div>
+
+      <!-- ─────────── CERTIFICATES TAB ─────────── -->
+      <!-- Mounted on first visit, then kept so an in-progress send survives tab switches. -->
+      <div v-if="certificatesOpened" v-show="tab === 'certificates'">
+        <CertificatesTab ref="certificatesTab" :toast="toast" />
+      </div>
     </div>
 
     <!-- ═══════════════════ TOASTS ═══════════════════ -->
@@ -566,8 +572,11 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { dateTime, toZonedInput, fromZonedInput, SITE_TIME_ZONE_LABEL } from '../utils/datetime'
+import CertificatesTab from '../components/admin/CertificatesTab.vue'
+import { apiPost } from '../utils/adminApi.js'
 
 const adminInput =
   'border border-gray-200 rounded-lg px-3.5 py-2 text-sm text-gray-900 bg-white ' +
@@ -641,8 +650,13 @@ const tabs = [
   { id: 'people', label: 'Registrations' },
   { id: 'workshops', label: 'Workshops' },
   { id: 'team', label: 'Team' },
+  { id: 'certificates', label: 'Certificates' },
 ]
 const tab = ref('people')
+
+const certificatesTab = ref(null)
+const certificatesOpened = ref(false)
+watch(tab, (t) => { if (t === 'certificates') certificatesOpened.value = true }, { immediate: true })
 
 // ── Data ────────────────────────────────────────────────────────────────────
 const stats = ref(null)
@@ -839,7 +853,10 @@ const loadWorkshops = async () => {
 }
 
 const refreshAll = () =>
-  Promise.all([loadStats(), loadRegistrations(), loadWorkshops(), loadMembers()])
+  Promise.all([
+    loadStats(), loadRegistrations(), loadWorkshops(), loadMembers(),
+    certificatesTab.value?.reload(),
+  ])
 
 let debounceTimer = null
 const debouncedLoad = () => {
@@ -1423,6 +1440,37 @@ const deleteMember = async (m) => {
     toast('error', 'Could not remove', 'Could not reach the server.')
   }
 }
+
+// ── Canva OAuth callback ────────────────────────────────────────────────────
+// Canva redirects to /admin/canva/callback?code=…&state=…. The code is read once at setup
+// and exchanged as soon as the admin is signed in (immediately, if the session survived).
+const route = useRoute()
+const router = useRouter()
+let pendingCanva = route.path === '/admin/canva/callback'
+  ? { code: route.query.code, state: route.query.state, error: route.query.error }
+  : null
+if (pendingCanva) tab.value = 'certificates'
+
+const finishCanvaConnect = async () => {
+  if (!pendingCanva) return
+  const { code, state, error } = pendingCanva
+  pendingCanva = null
+  router.replace('/admin')
+
+  if (error) {
+    toast('warn', 'Canva connection cancelled', String(error))
+    return
+  }
+  const data = await apiPost('/api/admin/canva', { op: 'callback', code, state })
+  if (data.ok) {
+    toast('success', 'Canva connected', data.displayName ? `Signed in as ${data.displayName}.` : '')
+  } else {
+    toast('error', 'Could not connect Canva', data.message, 10000)
+  }
+  certificatesTab.value?.reload()
+}
+
+watch(authed, (value) => { if (value) finishCanvaConnect() })
 
 // ── Lifecycle ───────────────────────────────────────────────────────────────
 onMounted(() => {
