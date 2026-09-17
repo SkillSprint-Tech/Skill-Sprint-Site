@@ -287,11 +287,12 @@ Certificate jobs use `template = 'certificate'`. That gives one certificate job 
 - `src/components/admin/CertificateStylePreview.vue`: canvas, click-to-place and live text.
 - `src/components/admin/CertificateImport.vue`: source input, flagged preview table and import.
 - `src/components/admin/CertificateRecipients.vue`: the saved list, statuses, resend, edit and delete.
-- `src/composables/useAdminApi.js`: a small `fetch` wrapper returning parsed JSON, used by the new components.
+- `src/components/admin/CertificateSend.vue`: counts, test send, and the Send all drain loop.
+- `src/utils/adminApi.js`: `fetch` wrappers returning parsed JSON, plus the shared class strings.
 
 `AdminView.vue` changes:
 - add the tab;
-- handle the `/admin/canva/callback` route (`router`: add the path with `bareLayout` and `noindex`);
+- handle the `/admin/canva/callback` route (`router`: an alias of `/admin`, so the same view instance handles it);
 - pass `toast` down.
 
 ---
