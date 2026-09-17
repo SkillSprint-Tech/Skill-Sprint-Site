@@ -6,6 +6,8 @@ import registrations from '../lib/admin/registrations.js'
 import exportCsv from '../lib/admin/export.js'
 import sendEmail from '../lib/admin/sendEmail.js'
 import sendLink from '../lib/admin/sendLink.js'
+import canva from '../lib/admin/canva.js'
+import certificates from '../lib/admin/certificates.js'
 
 /**
  * Single entry point for every admin endpoint.
@@ -23,6 +25,8 @@ const ROUTES = {
   export: exportCsv,
   'send-email': sendEmail,
   'send-link': sendLink,
+  canva,
+  certificates,
 }
 
 export default async function handler(req, res) {
