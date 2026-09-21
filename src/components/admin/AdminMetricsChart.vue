@@ -2,7 +2,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 mb-4">
     <!-- ════════ REGISTRATION VELOCITY (AREA CHART) ════════ (8 cols on lg) -->
     <div
-      class="lg:col-span-8 bg-white border border-slate-200/80 rounded-xl p-4 shadow-[0_1px_2px_0_rgba(0,0,0,0.03)] flex flex-col justify-between"
+      class="lg:col-span-8 bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] flex flex-col justify-between"
     >
       <!-- Header with Time-Range Selector -->
       <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
@@ -13,7 +13,7 @@
             </h3>
             <span
               v-if="hoveredPoint"
-              class="text-[11px] font-mono font-semibold text-slate-900 bg-slate-100 px-2 py-0.5 rounded transition-all"
+              class="text-[11px] font-mono font-semibold text-blue-700 bg-blue-50 border border-blue-200/60 px-2 py-0.5 rounded-lg transition-all"
             >
               {{ hoveredPoint.day }}: {{ hoveredPoint.count }} signups
             </span>
@@ -25,19 +25,19 @@
 
         <div class="flex items-center gap-2">
           <span class="text-[10px] font-mono text-slate-400 hidden sm:inline">
-            Peak: <strong class="text-slate-700 font-semibold">{{ peakCount }}</strong>/day
+            Peak: <strong class="text-blue-700 font-semibold">{{ peakCount }}</strong>/day
           </span>
-          <div class="flex bg-slate-100 p-0.5 rounded-lg text-xs font-semibold text-slate-600">
+          <div class="flex bg-slate-100/90 p-0.5 rounded-xl text-xs font-semibold text-slate-600 border border-slate-200/60">
             <button
               v-for="r in ranges"
               :key="r.days"
               type="button"
               @click="selectedDays = r.days"
-              class="px-2 py-0.5 rounded text-[11px] font-mono transition-all cursor-pointer"
+              class="px-2.5 py-1 rounded-lg text-[11px] font-mono transition-all cursor-pointer"
               :class="
                 selectedDays === r.days
-                  ? 'bg-white text-slate-900 shadow-2xs font-bold'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'bg-blue-600 text-white shadow-xs font-bold'
+                  : 'text-slate-600 hover:text-blue-600'
               "
             >
               {{ r.label }}
@@ -60,12 +60,12 @@
         >
           <defs>
             <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#475569" stop-opacity="0.2" />
-              <stop offset="90%" stop-color="#475569" stop-opacity="0.0" />
+              <stop offset="0%" stop-color="#2563eb" stop-opacity="0.22" />
+              <stop offset="100%" stop-color="#2563eb" stop-opacity="0.0" />
             </linearGradient>
             <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#0f172a" />
-              <stop offset="100%" stop-color="#334155" />
+              <stop offset="0%" stop-color="#2563eb" />
+              <stop offset="100%" stop-color="#3b82f6" />
             </linearGradient>
           </defs>
 
@@ -98,7 +98,7 @@
             :d="linePathD"
             fill="none"
             stroke="url(#lineGradient)"
-            stroke-width="2"
+            stroke-width="2.5"
             stroke-linecap="round"
             stroke-linejoin="round"
             class="transition-all duration-300"
@@ -112,25 +112,25 @@
               y1="0"
               :x2="hoveredCoord.x"
               :y2="viewHeight"
-              stroke="#0f172a"
-              stroke-width="1"
+              stroke="#2563eb"
+              stroke-width="1.5"
               stroke-dasharray="2 2"
-              class="opacity-40"
+              class="opacity-60"
             />
             <!-- Outer halo -->
             <circle
               :cx="hoveredCoord.x"
               :cy="hoveredCoord.y"
-              r="6"
-              fill="#0f172a"
-              fill-opacity="0.15"
+              r="7"
+              fill="#2563eb"
+              fill-opacity="0.25"
             />
             <!-- Inner dot -->
             <circle
               :cx="hoveredCoord.x"
               :cy="hoveredCoord.y"
-              r="3.5"
-              fill="#0f172a"
+              r="4"
+              fill="#2563eb"
               stroke="#ffffff"
               stroke-width="2"
             />
@@ -144,9 +144,9 @@
           class="absolute pointer-events-none -top-1 transform -translate-x-1/2 -translate-y-full mb-1 z-20"
         >
           <div
-            class="bg-slate-900 text-white text-[11px] py-1 px-2 rounded-md shadow-lg border border-slate-800 flex items-center gap-1.5 whitespace-nowrap font-mono"
+            class="bg-slate-900/95 backdrop-blur-md text-white text-[11px] py-1.5 px-2.5 rounded-lg shadow-xl shadow-blue-900/20 border border-blue-500/30 flex items-center gap-2 whitespace-nowrap font-mono"
           >
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-blue-400 ring-2 ring-blue-400/30"></span>
             <span class="text-slate-300">{{ hoveredPoint.day }}:</span>
             <span class="font-bold text-white">{{ hoveredPoint.count }} signups</span>
           </div>
@@ -163,7 +163,7 @@
 
     <!-- ════════ TOP INSTITUTIONS (4 cols on lg) ════════ -->
     <div
-      class="lg:col-span-4 bg-white border border-slate-200/80 rounded-xl p-4 shadow-[0_1px_2px_0_rgba(0,0,0,0.03)] flex flex-col justify-between"
+      class="lg:col-span-4 bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] flex flex-col justify-between"
     >
       <div>
         <div class="flex items-center justify-between mb-3">
@@ -175,7 +175,7 @@
               Attendee university distribution
             </p>
           </div>
-          <span class="text-[10px] font-mono font-semibold text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded">
+          <span class="text-[10px] font-mono font-semibold text-blue-700 bg-blue-50 border border-blue-200/60 px-2 py-0.5 rounded-md">
             Ranked
           </span>
         </div>
@@ -202,7 +202,7 @@
             </div>
             <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
               <div
-                class="h-full rounded-full bg-slate-800 transition-all duration-500"
+                class="h-full rounded-full bg-gradient-to-r from-blue-600 to-indigo-500 transition-all duration-500 shadow-xs"
                 :style="{ width: `${uni.percentage}%` }"
               ></div>
             </div>

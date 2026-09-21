@@ -1,18 +1,18 @@
 <template>
-  <div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-4">
     <!-- Canva connection -->
-    <div class="bg-white border border-gray-200 rounded-xl p-5 flex flex-wrap items-center justify-between gap-4">
+    <div class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] flex flex-wrap items-center justify-between gap-4">
       <div>
-        <h2 class="font-extrabold text-gray-900">Canva</h2>
+        <h2 class="font-extrabold text-slate-900">Canva Integration</h2>
         <p v-if="!canva.configured" class="text-sm text-amber-700 mt-0.5">
-          Add <code class="font-mono">CANVA_CLIENT_ID</code> and
-          <code class="font-mono">CANVA_CLIENT_SECRET</code> to the environment, then reload.
+          Add <code class="font-mono text-xs bg-amber-100/70 px-1.5 py-0.5 rounded">CANVA_CLIENT_ID</code> and
+          <code class="font-mono text-xs bg-amber-100/70 px-1.5 py-0.5 rounded">CANVA_CLIENT_SECRET</code> to the environment, then reload.
         </p>
-        <p v-else-if="canva.connected" class="text-sm text-gray-500 mt-0.5">
+        <p v-else-if="canva.connected" class="text-sm text-slate-500 mt-0.5">
           Connected{{ canva.displayName ? ` as ${canva.displayName}` : '' }}.
           Templates are exported from this account.
         </p>
-        <p v-else class="text-sm text-gray-500 mt-0.5">
+        <p v-else class="text-sm text-slate-500 mt-0.5">
           Connect the Canva account that owns the certificate designs.
         </p>
       </div>
@@ -24,40 +24,40 @@
       </div>
     </div>
 
-    <p v-if="usage" class="text-xs text-gray-500 font-mono tabular-nums">
+    <p v-if="usage" class="text-xs text-slate-500 font-mono tabular-nums px-1">
       Sending today:
       <span v-for="(q, name) in usage" :key="name" class="mr-3">{{ name }} {{ q.used }}/{{ q.limit }}</span>
       · resets {{ untilLabel(resetsAt) }}
     </p>
 
-    <p v-if="loading && !loaded" class="text-sm text-gray-500">Loading…</p>
+    <p v-if="loading && !loaded" class="text-sm text-slate-500">Loading…</p>
     <div v-else-if="!workshops.length"
-         class="bg-white border border-gray-200 rounded-xl p-8 text-center text-sm text-gray-500">
+         class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl p-8 text-center text-sm text-slate-500 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)]">
       No workshops yet. Add them in the Workshops tab first.
     </div>
 
-    <div v-for="w in workshops" :key="w.id" class="bg-white border border-gray-200 rounded-xl">
+    <div v-for="w in workshops" :key="w.id" class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] overflow-hidden transition-all">
       <button type="button" :aria-expanded="open === w.id"
               class="w-full flex flex-wrap items-center justify-between gap-3 p-5 text-left cursor-pointer
-                     focus-visible:outline-2 focus-visible:outline-blue-600 rounded-xl"
+                     focus-visible:outline-2 focus-visible:outline-blue-600 rounded-2xl hover:bg-blue-50/30 transition-colors"
               @click="toggle(w.id)">
         <div>
-          <div class="font-extrabold text-gray-900">{{ w.title }}</div>
-          <div class="text-xs text-gray-500 mt-0.5 tabular-nums">{{ shortDate(w.starts_at) }}</div>
+          <div class="font-extrabold text-slate-900">{{ w.title }}</div>
+          <div class="text-xs text-slate-500 mt-0.5 tabular-nums font-mono">{{ shortDate(w.starts_at) }}</div>
         </div>
         <div class="flex flex-wrap items-center gap-2 text-xs">
-          <span v-for="s in steps(w)" :key="s.label" class="px-2 py-1 rounded-full font-semibold"
-                :class="s.done ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-500'">
+          <span v-for="s in steps(w)" :key="s.label" class="px-2.5 py-1 rounded-full font-semibold"
+                :class="s.done ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' : 'bg-slate-100 text-slate-500'">
             {{ s.done ? '✓' : '○' }} {{ s.label }}
           </span>
-          <span class="font-mono tabular-nums text-gray-500 ml-1">{{ w.sent }}/{{ w.recipients }} sent</span>
+          <span class="font-mono tabular-nums text-slate-500 ml-1">{{ w.sent }}/{{ w.recipients }} sent</span>
           <span v-if="w.waiting" class="font-mono tabular-nums text-amber-700">{{ w.waiting }} waiting</span>
-          <span v-if="w.failed" class="font-mono tabular-nums text-red-600">{{ w.failed }} failed</span>
+          <span v-if="w.failed" class="font-mono tabular-nums text-rose-600">{{ w.failed }} failed</span>
         </div>
       </button>
 
       <!-- Mounted on first open and then kept alive, so a send in progress survives collapsing. -->
-      <div v-if="opened.includes(w.id)" v-show="open === w.id" class="border-t border-gray-100 p-5">
+      <div v-if="opened.includes(w.id)" v-show="open === w.id" class="border-t border-slate-100 p-5 bg-slate-50/30">
         <CertificateWorkshop
           :workshop-id="w.id"
           :workshop-title="w.title"

@@ -1,31 +1,50 @@
 <template>
-  <div class="min-h-screen bg-slate-50 text-slate-800 antialiased font-sans">
+  <div class="min-h-screen bg-slate-50 text-slate-800 antialiased font-sans relative overflow-x-hidden selection:bg-blue-500/20 selection:text-blue-900">
+    <!-- Spatial Ambient Backlight (Subtle soft blue light originating from the top) -->
+    <div
+      class="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+      aria-hidden="true"
+    >
+      <div
+        class="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[1000px] h-[500px] rounded-full bg-gradient-to-b from-blue-500/10 via-blue-500/5 to-transparent blur-3xl"
+      ></div>
+      <div
+        class="absolute top-[30%] right-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-500/5 blur-3xl"
+      ></div>
+    </div>
+
     <!-- ═══════════════════ LOGIN SCREEN ═══════════════════ -->
     <div
       v-if="!authed"
-      class="min-h-screen flex items-center justify-center px-4 py-12 bg-slate-900 relative overflow-hidden"
+      class="min-h-screen flex items-center justify-center px-4 py-12 bg-slate-950 relative overflow-hidden"
     >
+      <!-- Spatial ambient glow spheres -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px]"></div>
+        <div class="absolute -top-20 -left-20 w-80 h-80 bg-indigo-500/15 rounded-full blur-[90px]"></div>
+      </div>
+
       <div class="w-full max-w-sm relative z-10">
         <!-- Logo & Header -->
         <div class="text-center mb-6">
           <div
-            class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-800 text-white font-bold text-sm shadow-xs border border-slate-700 mb-3"
+            class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/30 border border-blue-400/30 mb-3.5 transform transition-transform hover:scale-105"
           >
-            <svg class="w-5 h-5 text-slate-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h1 class="text-lg font-bold text-white tracking-tight">
+          <h1 class="text-xl font-extrabold text-white tracking-tight">
             SkillSprint Console
           </h1>
-          <p class="text-slate-400 text-xs mt-0.5 font-sans">
+          <p class="text-slate-400 text-xs mt-1 font-sans">
             Enter administrative credentials to proceed
           </p>
         </div>
 
         <form
           @submit.prevent="login"
-          class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl flex flex-col gap-3.5"
+          class="bg-slate-900/80 backdrop-blur-xl border border-slate-800/90 rounded-2xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)] flex flex-col gap-4"
         >
           <div class="flex flex-col gap-1.5">
             <label
@@ -41,25 +60,29 @@
               autocomplete="current-password"
               placeholder="••••••••••••"
               autofocus
-              class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus-visible:outline-2 focus-visible:outline-slate-400 transition-all font-mono"
+              class="bg-slate-950/90 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus-visible:outline-2 focus-visible:outline-blue-500 focus:border-blue-500/50 transition-all font-mono"
             />
           </div>
 
           <div
             v-if="loginError"
-            class="p-2.5 bg-rose-950/60 border border-rose-800/80 rounded-lg text-rose-300 text-xs font-semibold"
+            class="p-2.5 bg-rose-950/60 border border-rose-800/80 rounded-xl text-rose-300 text-xs font-semibold flex items-center gap-2"
           >
-            {{ loginError }}
+            <svg class="w-4 h-4 text-rose-400 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="8" cy="8" r="6" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 5v3m0 2.5h.01" />
+            </svg>
+            <span>{{ loginError }}</span>
           </div>
 
           <button
             type="submit"
             :disabled="loggingIn"
-            class="bg-white hover:bg-slate-100 text-slate-900 py-2 rounded-lg font-semibold text-xs transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.98] mt-1"
+            class="bg-blue-600 hover:bg-blue-500 text-white py-2.5 rounded-xl font-semibold text-xs transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 active:scale-[0.98] mt-1"
           >
             <svg
               v-if="loggingIn"
-              class="w-3.5 h-3.5 animate-spin text-slate-900"
+              class="w-3.5 h-3.5 animate-spin text-white"
               viewBox="0 0 16 16"
               fill="none"
             >
@@ -73,36 +96,36 @@
     </div>
 
     <!-- ═══════════════════ DASHBOARD SHELL ═══════════════════ -->
-    <div v-else class="min-h-screen flex flex-col">
+    <div v-else class="min-h-screen flex flex-col relative z-10">
       <!-- Top Navigation Bar -->
       <header
-        class="bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-[0_1px_2px_0_rgba(0,0,0,0.02)] backdrop-blur-md bg-white/95"
+        class="bg-white/80 border-b border-slate-200/70 sticky top-0 z-30 shadow-[0_2px_10px_0_rgba(0,0,0,0.03)] backdrop-blur-xl"
       >
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
-          <div class="flex items-center justify-between h-13 gap-4">
+          <div class="flex items-center justify-between h-14 gap-4">
             <!-- Brand & Context Trail -->
             <div class="flex items-center gap-2.5">
               <div
-                class="w-6 h-6 rounded-md bg-slate-900 flex items-center justify-center text-white font-bold text-xs shadow-xs"
+                class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-white font-bold text-xs shadow-sm shadow-blue-500/30 border border-blue-500/30"
               >
-                <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
 
               <div class="flex items-center gap-1.5 text-xs">
-                <span class="font-bold text-slate-900 tracking-tight">
+                <span class="font-extrabold text-slate-900 tracking-tight">
                   SkillSprint
                 </span>
                 <span class="text-slate-300">/</span>
-                <span class="font-mono text-slate-500 font-medium text-[11px]">
+                <span class="font-mono text-blue-600 font-semibold text-[11px] bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100">
                   Console
                 </span>
               </div>
 
               <!-- Database Active Pill -->
               <span
-                class="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-mono font-medium text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.2 rounded-full ml-1"
+                class="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-mono font-medium text-emerald-700 bg-emerald-50/80 border border-emerald-200/70 px-2 py-0.5 rounded-full ml-1"
               >
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20"></span>
                 DB Live
@@ -113,7 +136,7 @@
             <div class="flex items-center gap-2">
               <!-- Live Site Time in PKT -->
               <div
-                class="hidden lg:flex items-center gap-1.5 text-xs text-slate-500 font-mono bg-slate-50 border border-slate-200/60 px-2 py-0.5 rounded-md"
+                class="hidden lg:flex items-center gap-1.5 text-xs text-slate-500 font-mono bg-slate-50/80 border border-slate-200/70 px-2.5 py-1 rounded-lg"
                 title="Current site schedule time (PKT UTC+5)"
               >
                 <svg class="w-3 h-3 text-slate-400" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -127,7 +150,7 @@
               <button
                 @click="refreshAll"
                 :disabled="loading"
-                class="inline-flex items-center gap-1.5 border border-slate-200/80 bg-white hover:bg-slate-50 text-slate-700 px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer disabled:opacity-50 shadow-2xs active:scale-[0.98]"
+                class="inline-flex items-center gap-1.5 border border-slate-200/80 bg-white hover:bg-blue-50/50 hover:text-blue-700 hover:border-blue-200 text-slate-700 px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer disabled:opacity-50 shadow-2xs active:scale-[0.98]"
                 title="Refresh registrations and metrics"
               >
                 <svg
@@ -146,7 +169,7 @@
               <!-- Sign Out -->
               <button
                 @click="logout"
-                class="inline-flex items-center gap-1 border border-slate-200/80 bg-white hover:bg-slate-50 hover:text-rose-600 text-slate-600 px-2 py-1 rounded-md text-xs font-medium transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
+                class="inline-flex items-center gap-1 border border-slate-200/80 bg-white hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 text-slate-600 px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
               >
                 <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5H3a1 1 0 01-1-1v-9a1 1 0 011-1h3m4 8.5l3.5-3.5L10 5m3.5 3.5H6" />
@@ -165,11 +188,11 @@
               v-for="t in tabs"
               :key="t.id"
               @click="tab = t.id"
-              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer shrink-0 whitespace-nowrap active:scale-[0.98]"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer shrink-0 whitespace-nowrap active:scale-[0.98]"
               :class="
                 tab === t.id
-                  ? 'bg-slate-900 text-white shadow-2xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25 font-semibold'
+                  : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/60'
               "
             >
               <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -184,7 +207,7 @@
                 class="px-1.5 py-0.2 rounded font-mono text-[10px] font-semibold"
                 :class="
                   tab === t.id
-                    ? 'bg-slate-800 text-slate-200'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-slate-200/80 text-slate-600'
                 "
               >
@@ -233,7 +256,7 @@
 
           <!-- Compact Operational Toolbar (Above the Table) -->
           <div
-            class="bg-white border border-slate-200/80 rounded-xl p-2.5 mb-3 shadow-[0_1px_2px_0_rgba(0,0,0,0.02)] flex flex-wrap items-center justify-between gap-2.5"
+            class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl p-3 mb-3.5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] flex flex-wrap items-center justify-between gap-3"
           >
             <!-- Left: Scope Selector + Search Input -->
             <div class="flex flex-wrap items-center gap-2 flex-1 min-w-[280px]">
@@ -244,7 +267,7 @@
                 <select
                   v-model="emailView"
                   @change="onEmailViewChange"
-                  class="border border-slate-200/80 rounded-md px-2.5 py-1 text-xs font-semibold bg-slate-50 text-slate-800 cursor-pointer focus-visible:outline-slate-900"
+                  class="border border-slate-200/80 rounded-lg px-2.5 py-1.5 text-xs font-semibold bg-slate-50/80 text-slate-800 cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600"
                 >
                   <option :value="WELCOME_TEMPLATE">
                     Welcome Campaign
@@ -266,10 +289,10 @@
                   @input="debouncedLoad"
                   type="search"
                   placeholder="Filter name, email, university…"
-                  class="w-full pl-7 pr-3 py-1 text-xs rounded-md border border-slate-200/80 bg-slate-50/70 focus:bg-white text-slate-900 placeholder-slate-400 focus-visible:outline-slate-900 transition-all"
+                  class="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200/80 bg-slate-50/70 focus:bg-white text-slate-900 placeholder-slate-400 focus-visible:outline-2 focus-visible:outline-blue-600 focus:border-blue-400 transition-all"
                 />
                 <svg
-                  class="w-3.5 h-3.5 text-slate-400 absolute left-2 top-2 pointer-events-none"
+                  class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none"
                   viewBox="0 0 16 16"
                   fill="none"
                   stroke="currentColor"
@@ -286,7 +309,7 @@
               <button
                 @click="sendAll"
                 :disabled="sendingAll || !stats?.email.notReceived"
-                class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1 rounded-md text-xs font-semibold transition-all shadow-2xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5 active:scale-[0.98]"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-xs shadow-blue-500/25 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5 active:scale-[0.98]"
               >
                 <svg
                   v-if="sendingAll"
@@ -310,24 +333,24 @@
                 v-if="stats?.email.failed"
                 @click="retryFailed"
                 :disabled="sendingAll"
-                class="border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
+                class="border border-amber-300/80 bg-amber-50 hover:bg-amber-100 text-amber-900 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
                 title="Requeue failed emails"
               >
                 Retry Failed ({{ stats.email.failed }})
               </button>
 
               <!-- Export CSV Dropdown -->
-              <div class="flex items-center border border-slate-200/80 rounded-md overflow-hidden shadow-2xs font-mono text-xs">
+              <div class="flex items-center border border-slate-200/80 rounded-lg overflow-hidden shadow-2xs font-mono text-xs bg-white">
                 <button
                   @click="downloadCsv('view')"
-                  class="bg-white hover:bg-slate-50 text-slate-700 px-2.5 py-1 font-semibold transition-colors border-r border-slate-200/80 cursor-pointer"
+                  class="bg-white hover:bg-blue-50/60 hover:text-blue-700 text-slate-700 px-2.5 py-1.5 font-semibold transition-colors border-r border-slate-200/80 cursor-pointer"
                   title="Download current filtered list as CSV"
                 >
                   CSV
                 </button>
                 <button
                   @click="downloadCsv('all')"
-                  class="bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-700 px-2 py-1 font-semibold transition-colors cursor-pointer"
+                  class="bg-white hover:bg-blue-50/60 hover:text-blue-700 text-slate-500 hover:text-slate-700 px-2 py-1.5 font-semibold transition-colors cursor-pointer"
                   title="Export complete database registrations"
                 >
                   All
@@ -384,7 +407,7 @@
             <button
               type="button"
               @click="toggleWorkshopDrawer"
-              class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all shadow-xs cursor-pointer flex items-center gap-1.5 active:scale-[0.98]"
+              class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition-all shadow-xs shadow-blue-500/25 cursor-pointer flex items-center gap-1.5 active:scale-[0.98]"
             >
               <span>{{ showWorkshopForm ? "Hide Form" : "+ Add Workshop" }}</span>
             </button>
@@ -393,7 +416,7 @@
           <!-- Collapsible Add/Edit Workshop Drawer -->
           <div
             v-if="showWorkshopForm"
-            class="bg-white border border-slate-200/80 rounded-xl p-4 mb-4 shadow-[0_1px_2px_0_rgba(0,0,0,0.03)] transition-all"
+            class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl p-5 mb-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] transition-all"
           >
             <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-slate-100">
               <h3 class="font-bold text-slate-900 text-xs">
@@ -548,14 +571,14 @@
                 <button
                   type="submit"
                   :disabled="savingWorkshop"
-                  class="bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all disabled:opacity-50 cursor-pointer shadow-xs active:scale-[0.98]"
+                  class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs font-semibold transition-all disabled:opacity-50 cursor-pointer shadow-xs shadow-blue-500/25 active:scale-[0.98]"
                 >
                   {{ savingWorkshop ? "Saving…" : editing ? "Save Changes" : "Create Workshop" }}
                 </button>
                 <button
                   type="button"
                   @click="resetWorkshopForm"
-                  class="text-slate-500 text-xs font-medium hover:text-slate-800 px-3 py-1 cursor-pointer"
+                  class="text-slate-500 text-xs font-medium hover:text-slate-800 px-3 py-1.5 cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -566,7 +589,7 @@
           <!-- Test Send Box -->
           <div
             v-if="testWorkshop"
-            class="bg-slate-100 border border-slate-200 rounded-xl p-3.5 mb-4 shadow-2xs"
+            class="bg-slate-50/90 border border-slate-200/80 rounded-2xl p-4 mb-4 shadow-2xs"
           >
             <div class="flex items-start justify-between gap-3 mb-2">
               <div>
@@ -592,12 +615,12 @@
                 type="email"
                 required
                 placeholder="your.email@example.com"
-                class="flex-1 min-w-[240px] border border-slate-300 rounded-md px-2.5 py-1 text-xs bg-white focus-visible:outline-slate-900"
+                class="flex-1 min-w-[240px] border border-slate-200/80 rounded-lg px-3 py-1.5 text-xs bg-white focus-visible:outline-2 focus-visible:outline-blue-600"
               />
               <button
                 type="submit"
                 :disabled="sendingTest"
-                class="bg-slate-900 text-white px-3 py-1 rounded-md text-xs font-semibold hover:bg-slate-800 transition-colors disabled:opacity-50 cursor-pointer active:scale-[0.98]"
+                class="bg-blue-600 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 cursor-pointer active:scale-[0.98] shadow-xs shadow-blue-500/25"
               >
                 {{ sendingTest ? "Sending…" : "Dispatch Test" }}
               </button>
@@ -605,7 +628,7 @@
           </div>
 
           <!-- Workshops Table -->
-          <div class="bg-white border border-slate-200/80 rounded-xl overflow-hidden shadow-[0_1px_2px_0_rgba(0,0,0,0.03)]">
+          <div class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)]">
             <div class="overflow-x-auto">
               <table class="w-full text-xs text-left">
                 <thead>
@@ -767,7 +790,7 @@
             <button
               type="button"
               @click="showTeamForm = !showTeamForm"
-              class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all shadow-xs cursor-pointer active:scale-[0.98]"
+              class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition-all shadow-xs shadow-blue-500/25 cursor-pointer active:scale-[0.98]"
             >
               {{ showTeamForm ? "Hide Form" : "+ Add Member" }}
             </button>
@@ -776,7 +799,7 @@
           <!-- Collapsible Add Member Drawer -->
           <div
             v-if="showTeamForm"
-            class="bg-white border border-slate-200/80 rounded-xl p-4 mb-4 shadow-[0_1px_2px_0_rgba(0,0,0,0.03)]"
+            class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl p-5 mb-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)]"
           >
             <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-slate-100">
               <h3 class="font-bold text-slate-900 text-xs">
@@ -869,7 +892,7 @@
                 <button
                   type="submit"
                   :disabled="savingMember"
-                  class="bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all disabled:opacity-50 cursor-pointer shadow-xs active:scale-[0.98]"
+                  class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs font-semibold transition-all disabled:opacity-50 cursor-pointer shadow-xs shadow-blue-500/25 active:scale-[0.98]"
                 >
                   {{ savingMember ? "Saving…" : "Save Member" }}
                 </button>
@@ -881,7 +904,7 @@
           </div>
 
           <!-- Team Table -->
-          <div class="bg-white border border-slate-200/80 rounded-xl overflow-hidden shadow-[0_1px_2px_0_rgba(0,0,0,0.03)]">
+          <div class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)]">
             <div class="overflow-x-auto">
               <table class="w-full text-xs text-left">
                 <thead>
@@ -1011,8 +1034,8 @@ import AdminAttendeeDrawer from "../components/admin/AdminAttendeeDrawer.vue";
 import { apiPost } from "../utils/adminApi.js";
 
 const adminInput =
-  "border border-slate-200/80 rounded-md px-2.5 py-1.5 text-xs text-slate-900 bg-white " +
-  "focus-visible:outline-2 focus-visible:outline-slate-900 transition-colors";
+  "border border-slate-200/80 rounded-lg px-3 py-2 text-xs text-slate-900 bg-white " +
+  "focus-visible:outline-2 focus-visible:outline-blue-600 transition-colors shadow-2xs";
 
 // ── Auth ────────────────────────────────────────────────────────────────────
 const authed = ref(false);
@@ -1074,11 +1097,11 @@ const toast = (kind, title, body = "", ms = 5000) => {
 
 const toastClass = (kind) =>
   ({
-    success: "bg-slate-900 border-slate-800 text-white",
-    info: "bg-slate-900 border-slate-800 text-white",
-    warn: "bg-amber-950 border-amber-800 text-amber-100",
-    error: "bg-rose-950 border-rose-800 text-rose-100",
-  })[kind] || "bg-slate-900 border-slate-800 text-white";
+    success: "bg-slate-900/95 border-slate-800 text-white shadow-xl shadow-blue-900/10",
+    info: "bg-slate-900/95 border-slate-800 text-white shadow-xl",
+    warn: "bg-amber-950/95 border-amber-800 text-amber-100 shadow-xl",
+    error: "bg-rose-950/95 border-rose-800 text-rose-100 shadow-xl",
+  })[kind] || "bg-slate-900/95 border-slate-800 text-white";
 
 // ── Tabs ────────────────────────────────────────────────────────────────────
 const tab = ref("people");

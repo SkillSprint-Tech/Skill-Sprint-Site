@@ -2,19 +2,19 @@
   <div v-if="attendee" class="fixed inset-0 z-50 flex justify-end" role="dialog" aria-modal="true">
     <!-- Backdrop with subtle blur -->
     <div
-      class="fixed inset-0 bg-slate-900/30 backdrop-blur-xs transition-opacity"
+      class="fixed inset-0 bg-slate-900/25 backdrop-blur-sm transition-opacity"
       @click="$emit('close')"
     ></div>
 
     <!-- Slide-over panel -->
     <div
-      class="relative w-full max-w-md bg-white shadow-2xl border-l border-slate-200 h-full flex flex-col z-10 overflow-hidden"
+      class="relative w-full max-w-md bg-white/95 backdrop-blur-xl shadow-2xl border-l border-slate-200/80 h-full flex flex-col z-10 overflow-hidden"
     >
       <!-- Header -->
       <div class="p-4 border-b border-slate-100 flex items-start justify-between bg-slate-50/70">
         <div class="flex items-center gap-3">
           <div
-            class="w-9 h-9 rounded-lg bg-slate-900 text-white flex items-center justify-center font-mono font-bold text-xs select-none shadow-xs"
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center font-mono font-bold text-xs select-none shadow-md shadow-blue-500/25 border border-blue-400/30"
           >
             {{ initials(attendee.full_name) }}
           </div>
@@ -42,7 +42,7 @@
         <!-- Email Status & Diagnostic Section -->
         <div class="pb-1">
           <div class="flex items-center justify-between mb-2.5">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
               Email Dispatch State
             </span>
             <span
@@ -54,7 +54,7 @@
             </span>
           </div>
 
-          <div class="bg-slate-50 border border-slate-200/80 rounded-lg p-3 space-y-2 text-xs font-mono">
+          <div class="bg-slate-50/80 border border-slate-200/70 rounded-xl p-3 space-y-2 text-xs font-mono">
             <div class="flex justify-between">
               <span class="text-slate-400 font-sans">Provider:</span>
               <span class="font-semibold text-slate-800">{{ attendee.provider || 'Not dispatched' }}</span>
@@ -78,9 +78,9 @@
           </div>
 
           <!-- Error trace if any -->
-          <div v-if="attendee.last_error" class="mt-2.5 bg-rose-50/80 border border-rose-200 rounded-lg p-3 text-xs">
+          <div v-if="attendee.last_error" class="mt-2.5 bg-rose-50/80 border border-rose-200 rounded-xl p-3 text-xs">
             <div class="flex items-center justify-between text-rose-900 font-bold mb-1">
-              <span class="text-[11px] uppercase tracking-wider">Failure Error Trace</span>
+              <span class="text-[11px] uppercase tracking-wider font-mono">Failure Error Trace</span>
               <button
                 type="button"
                 @click="copyError(attendee.last_error)"
@@ -97,36 +97,36 @@
 
         <!-- Academic & Background Details -->
         <div class="pt-3 space-y-3">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono block">
             Attendee Background
           </span>
 
           <div class="grid grid-cols-2 gap-2 text-xs">
-            <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-lg">
-              <div class="text-[10px] text-slate-400 font-semibold uppercase">University</div>
+            <div class="p-2.5 bg-slate-50/80 border border-slate-200/70 rounded-xl">
+              <div class="text-[10px] text-slate-400 font-semibold uppercase font-mono">University</div>
               <div class="font-semibold text-slate-800 mt-0.5 truncate">{{ attendee.university || 'Not specified' }}</div>
             </div>
-            <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-lg">
-              <div class="text-[10px] text-slate-400 font-semibold uppercase">Year of Study</div>
+            <div class="p-2.5 bg-slate-50/80 border border-slate-200/70 rounded-xl">
+              <div class="text-[10px] text-slate-400 font-semibold uppercase font-mono">Year of Study</div>
               <div class="font-semibold text-slate-800 mt-0.5">{{ attendee.year_of_study ? `Year ${attendee.year_of_study}` : '—' }}</div>
             </div>
-            <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-lg">
-              <div class="text-[10px] text-slate-400 font-semibold uppercase">Skill Level</div>
+            <div class="p-2.5 bg-slate-50/80 border border-slate-200/70 rounded-xl">
+              <div class="text-[10px] text-slate-400 font-semibold uppercase font-mono">Skill Level</div>
               <div class="font-semibold text-slate-800 mt-0.5">{{ attendee.skill_level || '—' }}</div>
             </div>
-            <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-lg">
-              <div class="text-[10px] text-slate-400 font-semibold uppercase">Phone Number</div>
+            <div class="p-2.5 bg-slate-50/80 border border-slate-200/70 rounded-xl">
+              <div class="text-[10px] text-slate-400 font-semibold uppercase font-mono">Phone Number</div>
               <div class="font-mono text-slate-800 mt-0.5">{{ attendee.phone || '—' }}</div>
             </div>
           </div>
 
           <div v-if="attendee.interests && attendee.interests.length" class="pt-1">
-            <div class="text-[10px] text-slate-400 font-semibold uppercase mb-1">Focus Interests</div>
+            <div class="text-[10px] text-slate-400 font-semibold uppercase font-mono mb-1">Focus Interests</div>
             <div class="flex flex-wrap gap-1">
               <span
                 v-for="int in attendee.interests"
                 :key="int"
-                class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200/60"
+                class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200/60 font-mono"
               >
                 {{ int }}
               </span>
@@ -154,13 +154,13 @@
           type="button"
           @click="$emit('send-one', attendee)"
           :disabled="sendingId === attendee.id || (attendee.email_status === 'processing' && !attendee.is_stuck)"
-          class="px-4 py-1.5 rounded-lg text-xs font-semibold text-white transition-all shadow-2xs cursor-pointer disabled:opacity-40 active:scale-[0.98]"
+          class="px-4 py-2 rounded-lg text-xs font-semibold text-white transition-all shadow-xs shadow-blue-500/20 cursor-pointer disabled:opacity-40 active:scale-[0.98]"
           :class="
             attendee.email_status === 'delivered'
-              ? 'bg-slate-900 hover:bg-slate-800'
+              ? 'bg-blue-600 hover:bg-blue-700'
               : attendee.is_stuck
                 ? 'bg-amber-600 hover:bg-amber-700'
-                : 'bg-slate-900 hover:bg-slate-800'
+                : 'bg-blue-600 hover:bg-blue-700'
           "
         >
           {{ sendingId === attendee.id ? 'Sending…' : attendee.email_status === 'delivered' ? 'Resend Email' : 'Send Email Now' }}

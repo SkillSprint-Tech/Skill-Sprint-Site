@@ -2,23 +2,23 @@
   <div class="flex flex-col gap-3 mb-4">
     <!-- Compact Executive Metric Strip -->
     <div
-      class="bg-white border border-slate-200/80 rounded-xl p-3.5 shadow-[0_1px_2px_0_rgba(0,0,0,0.03)] flex flex-wrap items-center justify-between gap-4"
+      class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] flex flex-wrap items-center justify-between gap-4"
     >
       <!-- Hero Stat 1: Total Volume & Velocity -->
       <div class="flex items-center gap-6">
         <div class="flex flex-col">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
             Total Registrations
           </span>
           <div class="flex items-baseline gap-2 mt-0.5">
-            <span class="text-2xl font-bold text-slate-900 tracking-tight font-mono tabular-nums">
+            <span class="text-2xl font-extrabold text-slate-900 tracking-tight font-mono tabular-nums">
               {{ (stats?.totals.registrations ?? 0).toLocaleString() }}
             </span>
             <span
               v-if="stats?.totals.registrations_7d"
-              class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-1.5 py-0.2 rounded-md font-mono tabular-nums"
+              class="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-200/60 px-2 py-0.5 rounded-lg font-mono tabular-nums"
             >
-              <svg class="w-3 h-3 text-emerald-600" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+              <svg class="w-3 h-3 text-blue-600" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 11l5-5 5 5" />
               </svg>
               +{{ stats.totals.registrations_7d }} past 7d
@@ -29,11 +29,11 @@
         <!-- Stat 2: Delivery Health -->
         <div class="hidden sm:flex flex-col border-l border-slate-100 pl-6">
           <div class="flex items-center gap-1.5">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
               Delivery Success
             </span>
             <span
-              class="text-[10px] font-bold font-mono px-1.5 py-0.2 rounded"
+              class="text-[10px] font-bold font-mono px-1.5 py-0.2 rounded-md"
               :class="
                 deliveryRate >= 95
                   ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60'
@@ -74,7 +74,7 @@
           <span
             v-for="(q, name) in stats?.quota?.usage || {}"
             :key="name"
-            class="px-1.5 py-0.5 rounded bg-slate-50 border border-slate-200/60 text-[11px]"
+            class="px-2 py-0.5 rounded-lg bg-slate-50 border border-slate-200/60 text-[11px]"
           >
             <span class="uppercase font-semibold text-slate-600">{{ name }}</span>
             <span class="text-slate-800 font-bold ml-1">{{ q.used }}/{{ q.limit }}</span>
@@ -85,11 +85,11 @@
         <button
           type="button"
           @click="$emit('toggle-analytics')"
-          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
           :class="
             showAnalytics
-              ? 'bg-slate-900 text-white border border-slate-900'
-              : 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 hover:border-slate-300'
+              ? 'bg-blue-600 text-white border border-blue-600 shadow-sm shadow-blue-500/25'
+              : 'bg-white hover:bg-blue-50/60 text-slate-700 hover:text-blue-700 border border-slate-200/80 hover:border-blue-200'
           "
         >
           <svg class="w-3.5 h-3.5 text-current" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -103,7 +103,7 @@
     <!-- Actionable Alert Banners (surfaced when attention needed) -->
     <div
       v-if="stuckWarning"
-      class="bg-amber-50/80 border border-amber-200/80 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-amber-900 shadow-2xs"
+      class="bg-amber-50/80 border border-amber-200/80 rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-amber-900 shadow-2xs"
     >
       <div class="flex items-center gap-2">
         <svg class="w-4 h-4 text-amber-600 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
@@ -127,7 +127,7 @@
 
     <div
       v-if="senderWarning"
-      class="bg-rose-50/80 border border-rose-200/80 rounded-xl p-3 flex items-center gap-2 text-rose-900 shadow-2xs"
+      class="bg-rose-50/80 border border-rose-200/80 rounded-2xl p-3.5 flex items-center gap-2 text-rose-900 shadow-2xs"
     >
       <svg class="w-4 h-4 text-rose-600 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="8" cy="8" r="6" />

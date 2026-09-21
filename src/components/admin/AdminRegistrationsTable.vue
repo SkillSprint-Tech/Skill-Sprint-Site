@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white border border-slate-200/80 rounded-xl shadow-[0_1px_2px_0_rgba(0,0,0,0.03)] overflow-hidden flex flex-col">
+  <div class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col">
     <!-- ════════ TABLE TOP TOOLBAR: STATUS TABS & DUAL PAGINATION ════════ -->
     <div
       class="p-2.5 sm:p-3 bg-slate-50/70 border-b border-slate-200/80 flex flex-wrap items-center justify-between gap-3"
@@ -11,11 +11,11 @@
           :key="tab.id"
           type="button"
           @click="$emit('update:status-filter', tab.id)"
-          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
           :class="
             statusFilter === tab.id
-              ? 'bg-slate-900 text-white shadow-2xs font-semibold'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+              ? 'bg-blue-600 text-white shadow-xs shadow-blue-500/25 font-semibold'
+              : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/60'
           "
         >
           <span>{{ tab.label }}</span>
@@ -24,7 +24,7 @@
             class="text-[10px] font-mono px-1.5 py-0.2 rounded font-semibold"
             :class="
               statusFilter === tab.id
-                ? 'bg-slate-800 text-slate-200'
+                ? 'bg-blue-500 text-white'
                 : tab.highlight
                   ? 'bg-amber-100 text-amber-800 border border-amber-200/60'
                   : 'bg-slate-200/80 text-slate-600'
@@ -43,7 +43,7 @@
           <select
             :value="limit"
             @change="$emit('update:limit', Number($event.target.value))"
-            class="bg-white border border-slate-200/80 rounded px-1.5 py-0.5 text-xs font-mono font-semibold text-slate-700 cursor-pointer focus-visible:outline-slate-900"
+            class="bg-white border border-slate-200/80 rounded-lg px-2 py-0.5 text-xs font-mono font-semibold text-slate-700 cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600"
           >
             <option :value="25">25</option>
             <option :value="50">50</option>
@@ -83,17 +83,18 @@
       </div>
     </div>
 
-    <!-- Multi-select Batch Action Bar (Sticky strip when items are checked) -->
+    <!-- Multi-select Batch Action Bar (Sticky floating spatial strip when items are checked) -->
     <div
       v-if="selectedIds.length"
-      class="bg-slate-900 text-white px-4 py-2 flex items-center justify-between text-xs transition-all border-b border-slate-800"
+      class="bg-slate-900/90 backdrop-blur-md text-white px-4 py-2 flex items-center justify-between text-xs transition-all border-y border-slate-800 shadow-xl"
     >
       <div class="flex items-center gap-2.5">
+        <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
         <span class="font-semibold">{{ selectedIds.length }} attendee{{ selectedIds.length === 1 ? '' : 's' }} selected</span>
         <button
           type="button"
           @click="clearSelection"
-          class="text-slate-400 hover:text-white underline text-[11px] cursor-pointer"
+          class="text-slate-400 hover:text-white underline text-[11px] cursor-pointer ml-1"
         >
           Deselect
         </button>
@@ -104,7 +105,7 @@
           type="button"
           @click="$emit('batch-send', selectedIds)"
           :disabled="batchSending"
-          class="bg-white hover:bg-slate-100 text-slate-900 font-semibold px-3 py-1 rounded-md transition-colors cursor-pointer shadow-xs active:scale-[0.98]"
+          class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer shadow-xs shadow-blue-500/30 active:scale-[0.98]"
         >
           {{ batchSending ? 'Sending…' : `Send to ${selectedIds.length} Selected` }}
         </button>
@@ -122,7 +123,7 @@
                 type="checkbox"
                 :checked="isAllSelected"
                 @change="toggleSelectAll"
-                class="w-3.5 h-3.5 rounded border-slate-300 text-slate-900 focus:ring-slate-900/20 cursor-pointer"
+                class="w-3.5 h-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500/20 cursor-pointer"
               />
             </th>
             <th
@@ -171,8 +172,8 @@
             v-else
             v-for="r in registrations"
             :key="r.id"
-            class="hover:bg-slate-50/70 transition-colors group cursor-pointer"
-            :class="{ 'bg-slate-100/40': selectedIds.includes(r.id) }"
+            class="hover:bg-blue-50/30 transition-colors group cursor-pointer"
+            :class="{ 'bg-blue-50/50': selectedIds.includes(r.id) }"
             @click="$emit('inspect', r)"
           >
             <!-- Checkbox -->
@@ -181,7 +182,7 @@
                 type="checkbox"
                 :value="r.id"
                 v-model="selectedIds"
-                class="w-3.5 h-3.5 rounded border-slate-300 text-slate-900 focus:ring-slate-900/20 cursor-pointer"
+                class="w-3.5 h-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500/20 cursor-pointer"
               />
             </td>
 
@@ -189,7 +190,7 @@
             <td class="px-3.5 py-2.5 whitespace-nowrap">
               <div class="flex items-center gap-2">
                 <div
-                  class="w-6 h-6 rounded bg-slate-100 text-slate-700 border border-slate-200 font-mono text-[10px] font-bold flex items-center justify-center shrink-0 select-none"
+                  class="w-6 h-6 rounded bg-blue-50 text-blue-700 border border-blue-200/60 font-mono text-[10px] font-bold flex items-center justify-center shrink-0 select-none"
                 >
                   {{ initials(r.full_name) }}
                 </div>
@@ -255,18 +256,18 @@
 
             <!-- ════ STICKY ACTION COLUMN (Divided by Crisp Border) ════ -->
             <td
-              class="px-4 py-2.5 whitespace-nowrap sticky right-0 bg-white group-hover:bg-slate-50 transition-colors border-l border-slate-200/80 text-right"
+              class="px-4 py-2.5 whitespace-nowrap sticky right-0 bg-white group-hover:bg-blue-50/40 transition-colors border-l border-slate-200/80 text-right"
               @click.stop
             >
               <button
                 v-if="r.email_status !== 'delivered'"
                 @click="$emit('send-one', r)"
                 :disabled="sendingId === r.id || (r.email_status === 'processing' && !r.is_stuck)"
-                class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-semibold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-2xs active:scale-[0.98]"
+                class="inline-flex items-center gap-1 px-3 py-1 rounded-lg text-[11px] font-semibold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-2xs active:scale-[0.98]"
                 :class="
                   r.is_stuck
                     ? 'bg-amber-600 hover:bg-amber-700 text-white'
-                    : 'bg-slate-900 hover:bg-slate-800 text-white'
+                    : 'bg-blue-600 hover:bg-blue-700 text-white shadow-xs shadow-blue-500/20'
                 "
               >
                 <svg
@@ -297,13 +298,13 @@
       <div
         v-for="r in registrations"
         :key="r.id"
-        class="p-3.5 hover:bg-slate-50 transition-colors flex flex-col gap-2"
+        class="p-3.5 hover:bg-blue-50/20 transition-colors flex flex-col gap-2"
         @click="$emit('inspect', r)"
       >
         <div class="flex items-start justify-between gap-2">
           <div class="flex items-center gap-2">
             <div
-              class="w-7 h-7 rounded bg-slate-100 text-slate-700 border border-slate-200 font-mono text-[10px] font-bold flex items-center justify-center shrink-0"
+              class="w-7 h-7 rounded-lg bg-blue-50 text-blue-700 border border-blue-200/60 font-mono text-[10px] font-bold flex items-center justify-center shrink-0"
             >
               {{ initials(r.full_name) }}
             </div>
@@ -332,7 +333,7 @@
             v-if="r.email_status !== 'delivered'"
             @click.stop="$emit('send-one', r)"
             :disabled="sendingId === r.id || (r.email_status === 'processing' && !r.is_stuck)"
-            class="px-3 py-1 rounded text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 cursor-pointer disabled:opacity-40 active:scale-[0.98]"
+            class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 cursor-pointer disabled:opacity-40 active:scale-[0.98] shadow-xs shadow-blue-500/20"
           >
             {{ sendingId === r.id ? 'Sending…' : getSendLabel(r) }}
           </button>
