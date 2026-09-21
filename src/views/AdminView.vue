@@ -3,69 +3,49 @@
     <!-- ═══════════════════ LOGIN SCREEN ═══════════════════ -->
     <div
       v-if="!authed"
-      class="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950 relative overflow-hidden"
+      class="min-h-screen flex items-center justify-center px-4 py-12 bg-slate-900 relative overflow-hidden"
     >
-      <!-- Subtle decorative background gradient circles -->
-      <div
-        class="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none"
-      ></div>
-      <div
-        class="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none"
-      ></div>
-
-      <div class="w-full max-w-md relative z-10">
+      <div class="w-full max-w-sm relative z-10">
         <!-- Logo & Header -->
-        <div class="text-center mb-8">
+        <div class="text-center mb-6">
           <div
-            class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white shadow-lg shadow-blue-500/25 mb-4"
+            class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-slate-800 text-white font-black text-base shadow-sm border border-slate-700 mb-3"
           >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
+            ⚡
           </div>
-          <h1 class="text-2xl font-black text-white tracking-tight">
-            SkillSprint Admin
+          <h1 class="text-xl font-bold text-white tracking-tight">
+            SkillSprint Admin Console
           </h1>
-          <p class="text-slate-400 text-sm mt-1">
-            Sign in to manage registrations, workshops & delivery
+          <p class="text-slate-400 text-xs mt-1">
+            Sign in to manage attendees, workshops & delivery
           </p>
         </div>
 
         <form
           @submit.prevent="login"
-          class="bg-slate-800/80 backdrop-blur-xl border border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-2xl flex flex-col gap-4"
+          class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col gap-4"
         >
           <div class="flex flex-col gap-1.5">
             <label
               for="password"
-              class="text-slate-300 text-xs font-bold uppercase tracking-wider"
+              class="text-slate-300 text-[11px] font-bold uppercase tracking-wider"
             >
-              Admin Password
+              Password
             </label>
             <input
               id="password"
               v-model="password"
               type="password"
               autocomplete="current-password"
-              placeholder="Enter password"
+              placeholder="Enter admin password"
               autofocus
-              class="bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus-visible:outline-2 focus-visible:outline-blue-500 transition-all"
+              class="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus-visible:outline-2 focus-visible:outline-slate-400 transition-all"
             />
           </div>
 
           <div
             v-if="loginError"
-            class="p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-400 text-xs font-semibold"
+            class="p-2.5 bg-rose-950/60 border border-rose-800/80 rounded-xl text-rose-300 text-xs font-semibold"
           >
             {{ loginError }}
           </div>
@@ -73,11 +53,11 @@
           <button
             type="submit"
             :disabled="loggingIn"
-            class="bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold text-sm transition-all shadow-md shadow-blue-600/30 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+            class="bg-white hover:bg-slate-100 text-slate-900 py-2.5 rounded-xl font-bold text-xs transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 shadow-xs"
           >
             <svg
               v-if="loggingIn"
-              class="w-4 h-4 animate-spin text-white"
+              class="w-3.5 h-3.5 animate-spin text-slate-900"
               fill="none"
               viewBox="0 0 24 24"
             >
@@ -95,7 +75,7 @@
                 d="M4 12a8 8 0 018-8v8H4z"
               ></path>
             </svg>
-            <span>{{ loggingIn ? "Verifying…" : "Sign In to Console" }}</span>
+            <span>{{ loggingIn ? "Verifying…" : "Sign In" }}</span>
           </button>
         </form>
       </div>
@@ -108,33 +88,31 @@
         class="bg-white border-b border-slate-200/90 sticky top-0 z-30 shadow-2xs backdrop-blur-md bg-white/95"
       >
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
-          <div class="flex items-center justify-between h-16 gap-4">
+          <div class="flex items-center justify-between h-14 gap-4">
             <!-- Brand & Status Badges -->
             <div class="flex items-center gap-3">
               <div
-                class="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-xs"
+                class="w-7 h-7 rounded-lg bg-slate-900 flex items-center justify-center text-white font-black text-xs shadow-xs"
               >
                 ⚡
               </div>
-              <div>
-                <div class="flex items-center gap-2">
-                  <span class="font-black text-slate-900 tracking-tight text-base">
-                    SkillSprint
-                  </span>
-                  <span
-                    class="text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200/80 px-1.5 py-0.5 rounded"
-                  >
-                    Console
-                  </span>
-                </div>
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-slate-900 tracking-tight text-sm">
+                  SkillSprint
+                </span>
+                <span
+                  class="text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200/80 px-1.5 py-0.2 rounded"
+                >
+                  Admin
+                </span>
               </div>
 
               <!-- Database Active Pill -->
               <span
-                class="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2.5 py-0.5 rounded-full ml-2"
+                class="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.2 rounded-full ml-1"
               >
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                DB Active
+                DB Live
               </span>
             </div>
 
@@ -142,31 +120,18 @@
             <div class="flex items-center gap-2 sm:gap-3">
               <!-- Live Site Time in PKT -->
               <div
-                class="hidden lg:flex items-center gap-1.5 text-xs text-slate-500 font-mono bg-slate-50 border border-slate-200/60 px-3 py-1.5 rounded-lg"
-                title="Current site schedule time (Pakistan Standard Time)"
+                class="hidden lg:flex items-center gap-1.5 text-xs text-slate-500 font-mono bg-slate-50 border border-slate-200/60 px-2.5 py-1 rounded-lg"
+                title="Site time in Pakistan Standard Time (UTC+5)"
               >
-                <svg
-                  class="w-3.5 h-3.5 text-slate-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span>{{ currentSiteTime }}</span>
+                <span>🕒 {{ currentSiteTime }}</span>
               </div>
 
-              <!-- Refresh Button with Spinner Animation -->
+              <!-- Refresh Button -->
               <button
                 @click="refreshAll"
                 :disabled="loading"
-                class="inline-flex items-center gap-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 shadow-2xs"
-                title="Refresh registrations and metrics"
+                class="inline-flex items-center gap-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 shadow-2xs"
+                title="Refresh registrations and stats"
               >
                 <svg
                   class="w-3.5 h-3.5 transition-transform duration-500"
@@ -188,7 +153,7 @@
               <!-- Sign Out -->
               <button
                 @click="logout"
-                class="border border-slate-200 bg-white hover:bg-slate-50 hover:text-rose-600 text-slate-600 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs"
+                class="border border-slate-200 bg-white hover:bg-slate-50 hover:text-rose-600 text-slate-600 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs"
               >
                 Sign out
               </button>
@@ -197,28 +162,27 @@
 
           <!-- Segmented Tab Navigation -->
           <nav
-            class="flex gap-1 overflow-x-auto py-2 -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            class="flex gap-1 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Dashboard Tabs"
           >
             <button
               v-for="t in tabs"
               :key="t.id"
               @click="tab = t.id"
-              class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 whitespace-nowrap"
+              class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 whitespace-nowrap"
               :class="
                 tab === t.id
                   ? 'bg-slate-900 text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               "
             >
-              <span>{{ t.icon }}</span>
               <span>{{ t.label }}</span>
               <span
                 v-if="t.count != null"
-                class="px-1.5 py-0.2 rounded-full text-[10px] font-mono"
+                class="px-1.5 py-0.2 rounded-full text-[10px] font-mono font-semibold"
                 :class="
                   tab === t.id
-                    ? 'bg-slate-800 text-slate-300'
+                    ? 'bg-slate-800 text-slate-200'
                     : 'bg-slate-200/80 text-slate-600'
                 "
               >
@@ -230,10 +194,10 @@
       </header>
 
       <!-- Main Dashboard Container -->
-      <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-1">
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 py-4 w-full flex-1">
         <!-- ═══════════════════ REGISTRATIONS TAB ═══════════════════ -->
         <div v-show="tab === 'people'">
-          <!-- Hero Main Metric & Structured Sub-Stat Clusters -->
+          <!-- Compact Executive Metric Strip (~70px height) -->
           <AdminHeroStats
             :stats="stats"
             :email-view="emailView"
@@ -241,37 +205,48 @@
             :sender-summary="senderSummary"
             :sender-warning="senderWarning"
             :stuck-warning="stuckWarning"
-            @filter-status="applyQuickStatusFilter"
+            :show-analytics="showAnalytics"
+            @toggle-analytics="showAnalytics = !showAnalytics"
             @release-stuck="sendAll"
             @retry-failed="retryFailed"
           />
 
-          <!-- Graphical Visualizations: Area Trend + Pipeline Throughput + Universities -->
-          <AdminMetricsChart
-            :trend="stats?.trend"
-            :top-universities="stats?.topUniversities"
-            :stats="stats"
-          />
-
-          <!-- Responsive Filter & Action Toolbar -->
-          <div
-            class="bg-white border border-slate-200/90 rounded-2xl p-4 mb-4 shadow-xs flex flex-col gap-3"
+          <!-- Collapsible Analytics & Trends Drawer (Tucked away by default) -->
+          <transition
+            enter-active-class="transition duration-200 ease-out"
+            enter-from-class="transform -translate-y-2 opacity-0"
+            enter-to-class="transform translate-y-0 opacity-100"
+            leave-active-class="transition duration-150 ease-in"
+            leave-from-class="transform translate-y-0 opacity-100"
+            leave-to-class="transform -translate-y-2 opacity-0"
           >
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <!-- Email Campaign Scope Dropdown -->
-              <div class="flex items-center gap-2">
-                <span
-                  class="text-xs font-bold uppercase tracking-wider text-slate-400 shrink-0"
-                >
+            <div v-if="showAnalytics" class="mb-4">
+              <AdminMetricsChart
+                :trend="stats?.trend"
+                :top-universities="stats?.topUniversities"
+                :stats="stats"
+              />
+            </div>
+          </transition>
+
+          <!-- Compact Operational Toolbar (Above the Table) -->
+          <div
+            class="bg-white border border-slate-200/90 rounded-2xl p-3 mb-3 shadow-2xs flex flex-wrap items-center justify-between gap-3"
+          >
+            <!-- Left: Scope Selector + Search Input -->
+            <div class="flex flex-wrap items-center gap-2 flex-1 min-w-[280px]">
+              <!-- Campaign Scope -->
+              <div class="flex items-center gap-1.5">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                   Scope:
                 </span>
                 <select
                   v-model="emailView"
                   @change="onEmailViewChange"
-                  class="border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-semibold bg-slate-50 text-slate-800 cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600"
+                  class="border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-semibold bg-slate-50 text-slate-800 cursor-pointer focus-visible:outline-2 focus-visible:outline-slate-900"
                 >
                   <option :value="WELCOME_TEMPLATE">
-                    Welcome Registration Email
+                    Welcome Campaign
                   </option>
                   <option
                     v-for="w in workshops"
@@ -281,92 +256,19 @@
                     Meeting link — {{ w.title }}
                   </option>
                 </select>
-                <span
-                  v-if="stats?.email.notQueued && emailView !== WELCOME_TEMPLATE"
-                  class="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md font-semibold"
-                >
-                  {{ stats.email.notQueued }} never queued
-                </span>
               </div>
 
-              <!-- Action Buttons Group -->
-              <div class="flex flex-wrap items-center gap-2">
-                <button
-                  @click="sendAll"
-                  :disabled="sendingAll || !stats?.email.notReceived"
-                  class="bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5"
-                >
-                  <svg
-                    v-if="sendingAll"
-                    class="w-3.5 h-3.5 animate-spin"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      class="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      stroke-width="4"
-                    ></circle>
-                    <path
-                      class="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v8H4z"
-                    ></path>
-                  </svg>
-                  <span>
-                    {{
-                      sendingAll
-                        ? "Sending…"
-                        : `Send All Pending (${stats?.email.notReceived ?? 0})`
-                    }}
-                  </span>
-                </button>
-
-                <button
-                  v-if="stats?.email.failed"
-                  @click="retryFailed"
-                  :disabled="sendingAll"
-                  class="border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer"
-                  title="Requeue failed emails after fixing sender config"
-                >
-                  Retry Failed ({{ stats.email.failed }})
-                </button>
-
-                <!-- Export CSV Dropdown -->
-                <div class="flex items-center border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
-                  <button
-                    @click="downloadCsv('view')"
-                    class="bg-white hover:bg-slate-50 text-slate-700 px-3 py-1.5 text-xs font-semibold transition-colors border-r border-slate-200 cursor-pointer"
-                    title="Download current filtered list as CSV"
-                  >
-                    Export View CSV
-                  </button>
-                  <button
-                    @click="downloadCsv('all')"
-                    class="bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-700 px-2.5 py-1.5 text-xs font-semibold transition-colors cursor-pointer"
-                    title="Export complete database registrations"
-                  >
-                    All
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Search and Status Filter Row -->
-            <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100">
-              <div class="relative flex-1 min-w-[220px]">
+              <!-- Search input -->
+              <div class="relative flex-1 min-w-[180px] max-w-sm">
                 <input
                   v-model="search"
                   @input="debouncedLoad"
                   type="search"
-                  placeholder="Search name, email, university…"
-                  class="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-slate-900 placeholder-slate-400 focus-visible:outline-2 focus-visible:outline-indigo-600 transition-all"
+                  placeholder="Filter name, email, university…"
+                  class="w-full pl-8 pr-3 py-1 text-xs rounded-lg border border-slate-200 bg-slate-50/70 focus:bg-white text-slate-900 placeholder-slate-400 focus-visible:outline-2 focus-visible:outline-slate-900 transition-all"
                 />
                 <svg
-                  class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none"
+                  class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2 pointer-events-none"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -379,49 +281,103 @@
                   />
                 </svg>
               </div>
+            </div>
 
-              <select
-                v-model="statusFilter"
-                @change="loadRegistrations"
-                class="border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold bg-white text-slate-700 cursor-pointer focus-visible:outline-2 focus-visible:outline-indigo-600"
+            <!-- Right: Action Buttons Group -->
+            <div class="flex items-center gap-2">
+              <button
+                @click="sendAll"
+                :disabled="sendingAll || !stats?.email.notReceived"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg text-xs font-bold transition-all shadow-2xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5"
               >
-                <option value="all">All Email Statuses</option>
-                <option value="not_received">Not received</option>
-                <option value="not_queued">Never queued</option>
-                <option value="stuck">Stuck (abandoned)</option>
-                <option value="pending">Pending</option>
-                <option value="processing">Processing</option>
-                <option value="deferred">Deferred</option>
-                <option value="sent">Sent</option>
-                <option value="delivered">Delivered</option>
-                <option value="failed">Failed</option>
-                <option value="bounced">Bounced</option>
-              </select>
+                <svg
+                  v-if="sendingAll"
+                  class="w-3 h-3 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  ></path>
+                </svg>
+                <span>
+                  {{
+                    sendingAll
+                      ? "Sending…"
+                      : `Send All Pending (${stats?.email.notReceived ?? 0})`
+                  }}
+                </span>
+              </button>
 
               <button
-                v-if="search || statusFilter !== 'all'"
-                @click="clearFilters"
-                class="text-slate-500 hover:text-slate-800 text-xs font-semibold px-2 py-1.5 transition-colors cursor-pointer"
+                v-if="stats?.email.failed"
+                @click="retryFailed"
+                :disabled="sendingAll"
+                class="border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer"
+                title="Requeue failed emails"
               >
-                Clear Filters
+                Retry Failed ({{ stats.email.failed }})
               </button>
+
+              <!-- Export CSV Dropdown -->
+              <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden shadow-2xs">
+                <button
+                  @click="downloadCsv('view')"
+                  class="bg-white hover:bg-slate-50 text-slate-700 px-2.5 py-1 text-xs font-semibold transition-colors border-r border-slate-200 cursor-pointer"
+                  title="Download current filtered list as CSV"
+                >
+                  CSV
+                </button>
+                <button
+                  @click="downloadCsv('all')"
+                  class="bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-700 px-2 py-1 text-xs font-semibold transition-colors cursor-pointer"
+                  title="Export complete database registrations"
+                >
+                  All
+                </button>
+              </div>
             </div>
           </div>
 
-          <!-- Registrations Table / Mobile Cards -->
+          <!-- Registrations Table (Starts Immediately Below the Toolbar!) -->
           <AdminRegistrationsTable
             :registrations="registrations"
+            :stats="stats"
             :loading="loading"
             :page="page"
             :limit="limit"
             :total="total"
+            :status-filter="statusFilter"
             :sending-id="sendingId"
+            :batch-sending="batchSending"
             :email-view="emailView"
-            :has-filters="Boolean(search || statusFilter !== 'all')"
             :short-date="shortDate"
             :lock-age="lockAge"
             @send-one="sendOne"
+            @batch-send="sendBatch"
             @change-page="changePage"
+            @update:limit="updateLimit"
+            @update:status-filter="updateStatusFilter"
+            @inspect="openAttendeeDrawer"
+          />
+
+          <!-- Attendee Detail Slide-Over Inspector Drawer -->
+          <AdminAttendeeDrawer
+            :attendee="inspectedAttendee"
+            :sending-id="sendingId"
+            :short-date="shortDate"
+            @close="inspectedAttendee = null"
+            @send-one="sendOne"
           />
         </div>
 
@@ -430,18 +386,18 @@
           <!-- Top Action Bar -->
           <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
             <div>
-              <h2 class="text-lg font-black text-slate-900 tracking-tight">
+              <h2 class="text-base font-bold text-slate-900 tracking-tight">
                 Workshops & Sessions
               </h2>
               <p class="text-xs text-slate-500 mt-0.5">
-                Schedule, meeting links, and public visibility
+                Manage schedule, meeting links, and public visibility
               </p>
             </div>
 
             <button
               type="button"
               @click="toggleWorkshopDrawer"
-              class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
+              class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
             >
               <span>{{ showWorkshopForm ? "Hide Form" : "+ Add Workshop" }}</span>
             </button>
@@ -450,10 +406,10 @@
           <!-- Collapsible Add/Edit Workshop Drawer -->
           <div
             v-if="showWorkshopForm"
-            class="bg-white border border-slate-200/90 rounded-2xl p-5 mb-6 shadow-sm transition-all"
+            class="bg-white border border-slate-200/90 rounded-2xl p-5 mb-5 shadow-xs transition-all"
           >
             <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-              <h3 class="font-extrabold text-slate-900 text-sm">
+              <h3 class="font-bold text-slate-900 text-sm">
                 {{ editing ? "Edit Workshop" : "Add a New Workshop" }}
               </h3>
               <button
@@ -475,7 +431,7 @@
                   type="text"
                   required
                   :class="adminInput"
-                  placeholder="Mastering Full-Stack Next.js & TypeScript"
+                  placeholder="e.g. Mastering Full-Stack Next.js & TypeScript"
                 />
               </div>
 
@@ -487,7 +443,7 @@
                   v-model="wForm.description"
                   rows="2"
                   :class="adminInput"
-                  placeholder="What people will actually learn and walk away able to build."
+                  placeholder="What attendees will learn."
                 ></textarea>
               </div>
 
@@ -588,15 +544,15 @@
                 </select>
               </div>
 
-              <div class="flex items-center pt-5">
+              <div class="flex items-center pt-4">
                 <label class="flex items-center gap-2 cursor-pointer">
                   <input
                     v-model="wForm.is_published"
                     type="checkbox"
-                    class="w-4 h-4 rounded text-indigo-600 cursor-pointer"
+                    class="w-4 h-4 rounded text-slate-900 cursor-pointer"
                   />
                   <span class="text-xs text-slate-800 font-semibold">
-                    Published (visible on public /workshops page)
+                    Published on /workshops page
                   </span>
                 </label>
               </div>
@@ -605,9 +561,9 @@
                 <button
                   type="submit"
                   :disabled="savingWorkshop"
-                  class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all disabled:opacity-50 cursor-pointer shadow-xs"
+                  class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 cursor-pointer shadow-xs"
                 >
-                  {{ savingWorkshop ? "Saving…" : editing ? "Save Workshop Changes" : "Create Workshop" }}
+                  {{ savingWorkshop ? "Saving…" : editing ? "Save Changes" : "Create Workshop" }}
                 </button>
                 <button
                   type="button"
@@ -620,18 +576,18 @@
             </form>
           </div>
 
-          <!-- Test Send Modal/Box -->
+          <!-- Test Send Box -->
           <div
             v-if="testWorkshop"
-            class="bg-indigo-50/90 border border-indigo-200 rounded-2xl p-5 mb-6 shadow-xs"
+            class="bg-slate-100 border border-slate-200 rounded-2xl p-4 mb-5 shadow-2xs"
           >
             <div class="flex items-start justify-between gap-3 mb-2">
               <div>
-                <h3 class="font-extrabold text-indigo-950 text-sm">
+                <h3 class="font-bold text-slate-900 text-sm">
                   Send Test Email for “{{ testWorkshop.title }}”
                 </h3>
-                <p class="text-slate-600 text-xs mt-0.5">
-                  Sends the real email template directly to a test address without altering recipient statuses.
+                <p class="text-slate-500 text-xs mt-0.5">
+                  Sends real template to a single inbox without affecting registration delivery states.
                 </p>
               </div>
               <button
@@ -649,12 +605,12 @@
                 type="email"
                 required
                 placeholder="your.email@example.com"
-                class="flex-1 min-w-[240px] border border-indigo-200 rounded-xl px-3.5 py-2 text-xs bg-white focus-visible:outline-2 focus-visible:outline-indigo-600"
+                class="flex-1 min-w-[240px] border border-slate-300 rounded-xl px-3 py-1.5 text-xs bg-white focus-visible:outline-2 focus-visible:outline-slate-900"
               />
               <button
                 type="submit"
                 :disabled="sendingTest"
-                class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700 transition-colors disabled:opacity-50 cursor-pointer"
+                class="bg-slate-900 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold hover:bg-slate-800 transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {{ sendingTest ? "Sending…" : "Dispatch Test" }}
               </button>
@@ -679,7 +635,7 @@
                 <tbody class="divide-y divide-slate-100">
                   <tr v-if="!workshops.length">
                     <td colspan="6" class="px-4 py-12 text-center text-slate-400 text-sm">
-                      No workshops created yet. Click "+ Add Workshop" to schedule your first session.
+                      No workshops scheduled yet. Click "+ Add Workshop" to schedule one.
                     </td>
                   </tr>
 
@@ -707,7 +663,7 @@
                         :value="w.status"
                         @change="changeStatus(w, $event.target.value)"
                         :disabled="updatingId === w.id"
-                        class="px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide border-0 cursor-pointer disabled:opacity-50"
+                        class="px-2 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide border-0 cursor-pointer disabled:opacity-50"
                         :class="statusClass(w.status)"
                       >
                         <option v-for="opt in WORKSHOP_STATUSES" :key="opt" :value="opt">
@@ -727,7 +683,7 @@
                           class="w-2 h-2 rounded-full"
                           :class="w.is_published ? 'bg-emerald-500' : 'bg-slate-300'"
                         ></span>
-                        {{ w.is_published ? "Live on site" : "Draft" }}
+                        {{ w.is_published ? "Live" : "Draft" }}
                       </button>
                     </td>
 
@@ -776,14 +732,14 @@
                           @click="sendLink(w, { resendAll: true })"
                           :disabled="sendingLinkId === w.id || !w.meeting_link"
                           class="text-amber-700 font-bold hover:text-amber-900 disabled:text-slate-300 cursor-pointer"
-                          title="Resend meeting link to everyone"
+                          title="Resend to all registered"
                         >
                           Resend all
                         </button>
                         <button
                           @click="openTest(w)"
                           :disabled="!w.meeting_link"
-                          class="text-indigo-600 font-bold hover:text-indigo-800 disabled:text-slate-300 cursor-pointer"
+                          class="text-slate-600 font-bold hover:text-slate-900 disabled:text-slate-300 cursor-pointer"
                         >
                           Test
                         </button>
@@ -813,30 +769,30 @@
           <!-- Top Action Bar -->
           <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
             <div>
-              <h2 class="text-lg font-black text-slate-900 tracking-tight">
+              <h2 class="text-base font-bold text-slate-900 tracking-tight">
                 Core Team Roster
               </h2>
               <p class="text-xs text-slate-500 mt-0.5">
-                Manage team members displayed on the public /team page
+                Manage team profiles shown on the public /team page
               </p>
             </div>
 
             <button
               type="button"
               @click="showTeamForm = !showTeamForm"
-              class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs cursor-pointer"
+              class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all shadow-xs cursor-pointer"
             >
-              {{ showTeamForm ? "Hide Form" : "+ Add Team Member" }}
+              {{ showTeamForm ? "Hide Form" : "+ Add Member" }}
             </button>
           </div>
 
           <!-- Collapsible Add Member Drawer -->
           <div
             v-if="showTeamForm"
-            class="bg-white border border-slate-200/90 rounded-2xl p-5 mb-6 shadow-sm"
+            class="bg-white border border-slate-200/90 rounded-2xl p-5 mb-5 shadow-xs"
           >
             <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-              <h3 class="font-extrabold text-slate-900 text-sm">
+              <h3 class="font-bold text-slate-900 text-sm">
                 Add Team Member
               </h3>
               <button
@@ -867,7 +823,7 @@
                   type="text"
                   required
                   :class="adminInput"
-                  placeholder="Lead Systems Engineer"
+                  placeholder="Core Engineering Lead"
                 />
               </div>
 
@@ -878,7 +834,7 @@
                   rows="3"
                   required
                   :class="adminInput"
-                  placeholder="What they focus on and contribute to SkillSprint."
+                  placeholder="What they contribute to the initiative."
                 ></textarea>
               </div>
 
@@ -886,7 +842,7 @@
                 <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Photo</label>
                 <div class="flex items-center gap-4">
                   <div
-                    class="w-14 h-14 rounded-full bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center shadow-xs"
+                    class="w-12 h-12 rounded-full bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center shadow-xs"
                   >
                     <img
                       v-if="tForm.image"
@@ -894,7 +850,7 @@
                       alt=""
                       class="w-full h-full object-cover"
                     />
-                    <span v-else class="text-slate-300 text-xl" aria-hidden="true">👤</span>
+                    <span v-else class="text-slate-300 text-lg" aria-hidden="true">👤</span>
                   </div>
                   <div class="flex flex-col gap-1">
                     <input
@@ -902,10 +858,10 @@
                       type="file"
                       accept="image/*"
                       @change="pickImage"
-                      class="text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border file:border-slate-200 file:bg-white file:text-xs file:font-semibold file:text-slate-700 cursor-pointer"
+                      class="text-xs text-slate-600 file:mr-3 file:py-1 file:px-2.5 file:rounded-lg file:border file:border-slate-200 file:bg-white file:text-xs file:font-semibold file:text-slate-700 cursor-pointer"
                     />
                     <span class="text-[11px] text-slate-400">
-                      JPG or PNG under 2MB. Auto-optimized before storing.
+                      JPG/PNG under 2MB. Auto-optimized to 400px.
                     </span>
                     <button
                       v-if="tForm.image"
@@ -923,7 +879,7 @@
                 <button
                   type="submit"
                   :disabled="savingMember"
-                  class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all disabled:opacity-50 cursor-pointer shadow-xs"
+                  class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 cursor-pointer shadow-xs"
                 >
                   {{ savingMember ? "Saving…" : "Save Member" }}
                 </button>
@@ -952,7 +908,7 @@
                 <tbody class="divide-y divide-slate-100">
                   <tr v-if="!members.length">
                     <td colspan="5" class="px-4 py-12 text-center text-slate-400 text-sm">
-                      No team members added yet. Click "+ Add Team Member" to add someone.
+                      No team members added yet. Click "+ Add Member" to add someone.
                     </td>
                   </tr>
 
@@ -963,7 +919,7 @@
                   >
                     <td class="px-4 py-3 w-12">
                       <div
-                        class="w-9 h-9 rounded-full bg-slate-100 overflow-hidden flex items-center justify-center border border-slate-200 shadow-2xs"
+                        class="w-8 h-8 rounded-full bg-slate-100 overflow-hidden flex items-center justify-center border border-slate-200 shadow-2xs"
                       >
                         <img
                           v-if="m.image"
@@ -1018,12 +974,12 @@
       <div
         v-for="t in toasts"
         :key="t.id"
-        class="border rounded-2xl px-4 py-3 shadow-xl text-sm transition-all flex items-start gap-3 backdrop-blur-md"
+        class="border rounded-xl px-3.5 py-2.5 shadow-xl text-xs transition-all flex items-start gap-2.5 backdrop-blur-md"
         :class="toastClass(t.kind)"
       >
-        <span class="text-base mt-0.5 leading-none">{{ toastIcon(t.kind) }}</span>
+        <span class="text-sm mt-0.5 leading-none">{{ toastIcon(t.kind) }}</span>
         <div class="flex-1">
-          <p class="font-bold text-xs">{{ t.title }}</p>
+          <p class="font-bold">{{ t.title }}</p>
           <p v-if="t.body" class="text-[11px] leading-relaxed mt-0.5 opacity-90">
             {{ t.body }}
           </p>
@@ -1046,11 +1002,12 @@ import CertificatesTab from "../components/admin/CertificatesTab.vue";
 import AdminHeroStats from "../components/admin/AdminHeroStats.vue";
 import AdminMetricsChart from "../components/admin/AdminMetricsChart.vue";
 import AdminRegistrationsTable from "../components/admin/AdminRegistrationsTable.vue";
+import AdminAttendeeDrawer from "../components/admin/AdminAttendeeDrawer.vue";
 import { apiPost } from "../utils/adminApi.js";
 
 const adminInput =
-  "border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 bg-white " +
-  "focus-visible:outline-2 focus-visible:outline-indigo-600 transition-colors";
+  "border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-900 bg-white " +
+  "focus-visible:outline-2 focus-visible:outline-slate-900 transition-colors";
 
 // ── Auth ────────────────────────────────────────────────────────────────────
 const authed = ref(false);
@@ -1076,7 +1033,7 @@ const login = async () => {
       loginError.value = data.message || "Could not sign in.";
     }
   } catch {
-    loginError.value = "Could not reach the server.";
+    loginError.value = "Could not reach server.";
   } finally {
     loggingIn.value = false;
   }
@@ -1102,7 +1059,7 @@ const checkAuth = async () => {
 const toasts = ref([]);
 let toastSeq = 0;
 
-const toast = (kind, title, body = "", ms = 6000) => {
+const toast = (kind, title, body = "", ms = 5000) => {
   const id = ++toastSeq;
   toasts.value.push({ id, kind, title, body });
   setTimeout(() => {
@@ -1112,10 +1069,10 @@ const toast = (kind, title, body = "", ms = 6000) => {
 
 const toastClass = (kind) =>
   ({
-    success: "bg-emerald-950/90 border-emerald-800 text-emerald-100",
-    info: "bg-indigo-950/90 border-indigo-800 text-indigo-100",
-    warn: "bg-amber-950/90 border-amber-800 text-amber-100",
-    error: "bg-rose-950/90 border-rose-800 text-rose-100",
+    success: "bg-slate-900 border-slate-800 text-white",
+    info: "bg-slate-900 border-slate-800 text-white",
+    warn: "bg-amber-950 border-amber-800 text-amber-100",
+    error: "bg-rose-950 border-rose-800 text-rose-100",
   })[kind] || "bg-slate-900 border-slate-800 text-white";
 
 const toastIcon = (kind) =>
@@ -1132,10 +1089,10 @@ const certificatesTab = ref(null);
 const certificatesOpened = ref(false);
 
 const tabs = computed(() => [
-  { id: "people", label: "Registrations", icon: "👥", count: stats.value?.totals.registrations },
-  { id: "workshops", label: "Workshops", icon: "📅", count: workshops.value.length },
-  { id: "team", label: "Team", icon: "⭐", count: members.value.length },
-  { id: "certificates", label: "Certificates", icon: "🎓" },
+  { id: "people", label: "Registrations", count: stats.value?.totals.registrations },
+  { id: "workshops", label: "Workshops", count: workshops.value.length },
+  { id: "team", label: "Team", count: members.value.length },
+  { id: "certificates", label: "Certificates" },
 ]);
 
 watch(
@@ -1146,16 +1103,18 @@ watch(
   { immediate: true },
 );
 
-// ── Data ────────────────────────────────────────────────────────────────────
+// ── Data & Controls ─────────────────────────────────────────────────────────
 const stats = ref(null);
 const registrations = ref([]);
 const workshops = ref([]);
 const total = ref(0);
 const page = ref(1);
-const limit = 50;
+const limit = ref(50);
 const loading = ref(false);
 const search = ref("");
 const statusFilter = ref("all");
+const showAnalytics = ref(false);
+const inspectedAttendee = ref(null);
 
 const WELCOME_TEMPLATE = "welcome_schedule";
 const emailView = ref(WELCOME_TEMPLATE);
@@ -1166,25 +1125,26 @@ const onEmailViewChange = () => {
   return Promise.all([loadStats(), loadRegistrations()]);
 };
 
-const applyQuickStatusFilter = (status) => {
-  statusFilter.value = status;
+const updateLimit = (newLimit) => {
+  limit.value = newLimit;
   page.value = 1;
   loadRegistrations();
 };
 
-const clearFilters = () => {
-  search.value = "";
-  statusFilter.value = "all";
+const updateStatusFilter = (newStatus) => {
+  statusFilter.value = newStatus;
   page.value = 1;
   loadRegistrations();
+};
+
+const openAttendeeDrawer = (attendee) => {
+  inspectedAttendee.value = attendee;
 };
 
 const now = ref(Date.now());
 let ticker = null;
 
-const currentSiteTime = computed(() => {
-  return dateTime(new Date(now.value));
-});
+const currentSiteTime = computed(() => dateTime(new Date(now.value)));
 
 const lockAge = (lockedAt) => {
   if (!lockedAt) return "";
@@ -1201,9 +1161,7 @@ const stuckWarning = computed(() => {
   const n = email.stuck;
   return {
     title: `${n} email${n === 1 ? "" : "s"} stranded mid-send`,
-    body:
-      `A worker claimed ${n === 1 ? "it" : "them"} and never completed. Press "Release & Send Now" to dispatch now.` +
-      (email.oldest_lock ? ` Oldest held for ${lockAge(email.oldest_lock)}.` : ""),
+    body: `A background job held them without completion. Press Release to unstick.`,
   };
 });
 
@@ -1219,15 +1177,14 @@ const senderWarning = computed(() => {
     const info = sender[name];
     if (info?.placeholder) {
       return {
-        title: `${envVar[name]} is still the example address`,
-        body:
-          `${name} is sending from @${info.domain}. Update ${envVar[name]} to your verified domain and press "Retry failed".`,
+        title: `${envVar[name]} has example domain`,
+        body: `Update ${envVar[name]} to your verified domain and press Retry failed.`,
       };
     }
     if (!info?.set) {
       return {
-        title: `${envVar[name]} is not set`,
-        body: `${name} has an API key but no From address. Set ${envVar[name]} to enable delivery.`,
+        title: `${envVar[name]} missing`,
+        body: `Set ${envVar[name]} to enable dispatch.`,
       };
     }
   }
@@ -1264,8 +1221,8 @@ const statusClass = (status) =>
     deferred: "bg-amber-50 text-amber-700",
     failed: "bg-rose-50 text-rose-700",
     bounced: "bg-rose-50 text-rose-700",
-    upcoming: "bg-indigo-50 text-indigo-700",
-    live: "bg-emerald-50 text-emerald-700 font-black",
+    upcoming: "bg-slate-100 text-slate-700",
+    live: "bg-emerald-50 text-emerald-700 font-bold",
     completed: "bg-slate-100 text-slate-600",
     cancelled: "bg-rose-50 text-rose-700",
   })[status] || "bg-slate-100 text-slate-600";
@@ -1279,7 +1236,7 @@ const loadStats = async () => {
     const data = await res.json().catch(() => ({}));
     if (data.ok) stats.value = data;
   } catch {
-    /* refresh surfaces this */
+    /* silent fallback */
   }
 };
 
@@ -1291,7 +1248,7 @@ const loadRegistrations = async () => {
       status: statusFilter.value,
       template: emailView.value,
       page: String(page.value),
-      limit: String(limit),
+      limit: String(limit.value),
     });
     const res = await fetch(`/api/admin/registrations?${qs}`);
     const data = await res.json().catch(() => ({}));
@@ -1312,7 +1269,7 @@ const loadWorkshops = async () => {
     const data = await res.json().catch(() => ({}));
     if (data.ok) workshops.value = data.workshops;
   } catch {
-    /* empty state */
+    /* empty */
   }
 };
 
@@ -1331,7 +1288,7 @@ const debouncedLoad = () => {
   debounceTimer = setTimeout(() => {
     page.value = 1;
     loadRegistrations();
-  }, 300);
+  }, 250);
 };
 
 const changePage = (delta) => {
@@ -1342,37 +1299,19 @@ const changePage = (delta) => {
 // ── Sending Actions ─────────────────────────────────────────────────────────
 const sendingId = ref(null);
 const sendingAll = ref(false);
+const batchSending = ref(false);
 
 const reportSendResult = (data, successTitle) => {
   if (data.ok && data.code !== "QUOTA_EXHAUSTED") {
-    toast(
-      "success",
-      successTitle,
-      data.provider ? `Sent via ${data.provider}.` : "",
-    );
+    toast("success", successTitle, data.provider ? `Sent via ${data.provider}.` : "");
     return;
   }
   if (data.code === "QUOTA_EXHAUSTED") {
-    const u = data.usage || {};
-    const detail = Object.entries(u)
-      .filter(([, q]) => q.configured)
-      .map(([name, q]) => `${name} ${q.used}/${q.limit}`)
-      .join(", ");
-    toast(
-      "warn",
-      "Daily limit reached",
-      `${detail ? detail + ". " : ""}Still queued — it will send automatically after reset ${resetCountdown.value}.`,
-      9000,
-    );
+    toast("warn", "Daily limit reached", "Queued — sends after reset.");
     return;
   }
   if (data.code === "NO_PROVIDER") {
-    toast(
-      "warn",
-      "No email provider configured",
-      "Add RESEND_API_KEY or BREVO_API_KEY.",
-      9000,
-    );
+    toast("warn", "No email provider configured", "Add RESEND_API_KEY or BREVO_API_KEY.");
     return;
   }
   toast("error", "Could not send", data.message || "Unknown error.");
@@ -1391,11 +1330,37 @@ const sendOne = async (row) => {
       ),
     });
     const data = await res.json().catch(() => ({}));
-    reportSendResult(data, `Email sent to ${row.full_name}`);
+    reportSendResult(data, `Email dispatched to ${row.full_name}`);
+    if (inspectedAttendee.value && inspectedAttendee.value.id === row.id) {
+      inspectedAttendee.value.email_status = data.ok ? "sent" : "failed";
+    }
   } catch {
-    toast("error", "Could not send", "Could not reach the server.");
+    toast("error", "Could not send", "Network error.");
   } finally {
     sendingId.value = null;
+    await Promise.all([loadStats(), loadRegistrations()]);
+  }
+};
+
+const sendBatch = async (ids) => {
+  if (!ids.length) return;
+  batchSending.value = true;
+  let sentCount = 0;
+  try {
+    for (const id of ids) {
+      const res = await fetch("/api/admin/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ registrationId: id, template: emailView.value }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (data.ok) sentCount++;
+    }
+    toast("success", `Batch send complete`, `Dispatched ${sentCount} of ${ids.length} emails.`);
+  } catch {
+    toast("error", "Batch send failed", "Network error occurred.");
+  } finally {
+    batchSending.value = false;
     await Promise.all([loadStats(), loadRegistrations()]);
   }
 };
@@ -1413,21 +1378,12 @@ const sendAll = async () => {
       reportSendResult(data, "");
     } else if (data.ok) {
       const s = data.summary || {};
-      toast(
-        "success",
-        `Sent ${s.sent ?? 0} email${s.sent === 1 ? "" : "s"}`,
-        [
-          s.deferred ? `${s.deferred} deferred` : "",
-          s.failed ? `${s.failed} failed` : "",
-        ]
-          .filter(Boolean)
-          .join(" · "),
-      );
+      toast("success", `Sent ${s.sent ?? 0} email${s.sent === 1 ? "" : "s"}`);
     } else {
       toast("error", "Could not send", data.message || "Unknown error.");
     }
   } catch {
-    toast("error", "Could not send", "Could not reach the server.");
+    toast("error", "Could not send", "Network error.");
   } finally {
     sendingAll.value = false;
     await Promise.all([loadStats(), loadRegistrations()]);
@@ -1435,12 +1391,7 @@ const sendAll = async () => {
 };
 
 const retryFailed = async () => {
-  if (
-    !window.confirm(
-      `Put ${stats.value?.email.failed ?? 0} failed emails back in the queue and try again?`,
-    )
-  )
-    return;
+  if (!window.confirm(`Requeue and retry failed emails?`)) return;
 
   sendingAll.value = true;
   try {
@@ -1450,20 +1401,13 @@ const retryFailed = async () => {
       body: JSON.stringify({ retryFailed: true }),
     });
     const data = await res.json().catch(() => ({}));
-
-    if (data.code === "QUOTA_EXHAUSTED" || data.code === "NO_PROVIDER") {
-      reportSendResult(data, "");
-    } else if (data.ok) {
-      const summary = data.summary || {};
-      toast(
-        summary.sent ? "success" : "warn",
-        `Requeued ${data.requeued ?? 0} · sent ${summary.sent ?? 0}`,
-      );
+    if (data.ok) {
+      toast("success", `Requeued ${data.requeued ?? 0} failed emails.`);
     } else {
-      toast("error", "Could not retry", data.message || "Unknown error.");
+      toast("error", "Could not retry", data.message || "Error.");
     }
   } catch {
-    toast("error", "Could not retry", "Could not reach the server.");
+    toast("error", "Could not retry", "Network error.");
   } finally {
     sendingAll.value = false;
     await Promise.all([loadStats(), loadRegistrations()]);
@@ -1486,9 +1430,7 @@ const showWorkshopForm = ref(false);
 
 const toggleWorkshopDrawer = () => {
   showWorkshopForm.value = !showWorkshopForm.value;
-  if (!showWorkshopForm.value && editing.value) {
-    resetWorkshopForm();
-  }
+  if (!showWorkshopForm.value && editing.value) resetWorkshopForm();
 };
 
 const blankWorkshop = () => ({
@@ -1524,14 +1466,14 @@ const patchWorkshop = async (w, changes, successTitle, successBody = "") => {
     });
     const data = await res.json().catch(() => ({}));
     if (!data.ok) {
-      toast("error", "Could not update", data.message || "The change was not saved.");
+      toast("error", "Could not update", data.message || "Not saved.");
       return null;
     }
     toast("success", successTitle, successBody);
     await loadWorkshops();
     return data.workshop;
   } catch {
-    toast("error", "Could not update", "Could not reach the server.");
+    toast("error", "Could not update", "Network error.");
     return null;
   } finally {
     updatingId.value = null;
@@ -1542,32 +1484,19 @@ const changeStatus = async (w, status) => {
   if (status === w.status) return;
 
   if (status === "live" && !w.meeting_link) {
-    const proceed = window.confirm(
-      `"${w.title}" has no meeting link yet.\n\nMark it live anyway? Nobody will have a link to join until you add one.`,
-    );
+    const proceed = window.confirm(`"${w.title}" has no meeting link yet. Mark live anyway?`);
     if (!proceed) {
       await loadWorkshops();
       return;
     }
   }
 
-  if (
-    status === "cancelled" &&
-    !window.confirm(`Cancel "${w.title}"?`)
-  ) {
+  if (status === "cancelled" && !window.confirm(`Cancel "${w.title}"?`)) {
     await loadWorkshops();
     return;
   }
 
-  const updated = await patchWorkshop(w, { status }, `Status set to ${status}`);
-  if (updated && status === "live" && updated.meeting_link && !updated.link_sent_at) {
-    toast(
-      "warn",
-      "Link not emailed yet",
-      "This session is live but nobody has been sent the join link. Press Send link.",
-      9000,
-    );
-  }
+  await patchWorkshop(w, { status }, `Status: ${status}`);
 };
 
 const togglePublished = (w) =>
@@ -1603,14 +1532,13 @@ const sendTest = async () => {
       }),
     });
     const data = await res.json().catch(() => ({}));
-
     if (data.ok && data.test) {
-      toast("success", `Test sent to ${data.to}`, `Subject: ${data.subject}`);
+      toast("success", `Test sent to ${data.to}`);
     } else {
       reportSendResult(data, "");
     }
   } catch {
-    toast("error", "Could not send test", "Could not reach server.");
+    toast("error", "Could not send test", "Network error.");
   } finally {
     sendingTest.value = false;
     await loadStats();
@@ -1619,11 +1547,11 @@ const sendTest = async () => {
 
 const sendLink = async (w, { resendAll = false } = {}) => {
   const count = stats.value?.totals.registrations ?? 0;
-  const who = `${count} registered ${count === 1 ? "person" : "people"}`;
+  const who = `${count} registered attendee${count === 1 ? "" : "s"}`;
 
   const message = resendAll
-    ? `Resend the meeting link for "${w.title}" to ALL ${who}?`
-    : `Email the meeting link for "${w.title}" to ${who}?`;
+    ? `Resend meeting link for "${w.title}" to ALL ${who}?`
+    : `Email meeting link for "${w.title}" to ${who}?`;
 
   if (!window.confirm(message)) return;
 
@@ -1643,29 +1571,23 @@ const sendLink = async (w, { resendAll = false } = {}) => {
         }),
       });
 
-      if (res.status === 504 || res.status === 502) {
-        toast("warn", "Pass timed out", `${totalSent} sent so far.`);
-        return;
-      }
-
       data = await res.json().catch(() => ({}));
       if (!data.ok) break;
 
       const s = data.summary || {};
       totalSent += s.sent ?? 0;
       if (!data.remaining || !(s.sent ?? 0)) break;
-
       sendProgress.value = { sent: totalSent, remaining: data.remaining };
     }
 
     sendProgress.value = null;
     if (data.ok) {
-      toast("success", `Meeting link dispatched — ${totalSent} emails sent.`);
+      toast("success", `Dispatched meeting link — ${totalSent} emails sent.`);
     } else {
       reportSendResult(data, "");
     }
   } catch {
-    toast("error", "Could not send link", "Could not reach server.");
+    toast("error", "Could not send link", "Network error.");
   } finally {
     sendingLinkId.value = null;
     await Promise.all([loadWorkshops(), loadStats(), loadRegistrations()]);
@@ -1700,7 +1622,6 @@ const editWorkshop = (w) => {
   });
   editing.value = w.id;
   showWorkshopForm.value = true;
-  window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 const saveWorkshop = async () => {
@@ -1710,7 +1631,7 @@ const saveWorkshop = async () => {
   }
   const startsAtIso = fromZonedInput(wForm.starts_at);
   if (!startsAtIso) {
-    toast("error", "A valid start date is required");
+    toast("error", "Valid start date required");
     return;
   }
 
@@ -1727,14 +1648,14 @@ const saveWorkshop = async () => {
     });
     const data = await res.json().catch(() => ({}));
     if (data.ok) {
-      toast("success", editing.value ? "Workshop updated" : "Workshop added");
+      toast("success", editing.value ? "Workshop updated" : "Workshop created");
       resetWorkshopForm();
       await Promise.all([loadWorkshops(), loadStats()]);
     } else {
-      toast("error", "Could not save", data.message || "Check fields.");
+      toast("error", "Could not save", data.message || "Error.");
     }
   } catch {
-    toast("error", "Could not save", "Could not reach server.");
+    toast("error", "Could not save", "Network error.");
   } finally {
     savingWorkshop.value = false;
   }
@@ -1752,7 +1673,7 @@ const deleteWorkshop = async (w) => {
       toast("error", "Could not delete", data.message || "");
     }
   } catch {
-    toast("error", "Could not delete", "Could not reach server.");
+    toast("error", "Could not delete", "Network error.");
   }
 };
 
@@ -1770,7 +1691,7 @@ const loadMembers = async () => {
     const data = await res.json().catch(() => ({}));
     if (data.ok) members.value = data.members || [];
   } catch {
-    /* empty state */
+    /* empty */
   }
 };
 
@@ -1780,7 +1701,7 @@ const resizeImage = (file, max = 400) =>
     reader.onerror = () => reject(new Error("Could not read file."));
     reader.onload = (e) => {
       const img = new Image();
-      img.onerror = () => reject(new Error("Invalid image file."));
+      img.onerror = () => reject(new Error("Invalid image."));
       img.onload = () => {
         const scale = Math.min(1, max / Math.max(img.width, img.height));
         const canvas = document.createElement("canvas");
@@ -1801,11 +1722,11 @@ const pickImage = async (event) => {
   memberError.value = "";
 
   if (!file.type.startsWith("image/")) {
-    memberError.value = "Please choose an image file.";
+    memberError.value = "Choose an image file.";
     return;
   }
   if (file.size > 2 * 1024 * 1024) {
-    memberError.value = "Image is over 2MB.";
+    memberError.value = "Image over 2MB.";
     return;
   }
 
@@ -1838,7 +1759,7 @@ const saveMember = async () => {
     });
     const data = await res.json().catch(() => ({}));
     if (data.ok) {
-      toast("success", "Team member added");
+      toast("success", "Team member saved");
       Object.assign(tForm, { name: "", role: "", bio: "", image: "" });
       if (memberFile.value) memberFile.value.value = "";
       showTeamForm.value = false;
@@ -1847,14 +1768,14 @@ const saveMember = async () => {
       memberError.value = data.message || "Could not save.";
     }
   } catch {
-    memberError.value = "Could not reach server.";
+    memberError.value = "Network error.";
   } finally {
     savingMember.value = false;
   }
 };
 
 const deleteMember = async (m) => {
-  if (!window.confirm(`Remove ${m.name} from team?`)) return;
+  if (!window.confirm(`Remove ${m.name}?`)) return;
   try {
     const res = await fetch(`/api/team-members?id=${m.id}`, { method: "DELETE" });
     const data = await res.json().catch(() => ({}));
@@ -1865,7 +1786,7 @@ const deleteMember = async (m) => {
       toast("error", "Could not remove", data.message || "");
     }
   } catch {
-    toast("error", "Could not remove", "Could not reach server.");
+    toast("error", "Could not remove", "Network error.");
   }
 };
 
@@ -1889,7 +1810,7 @@ const finishCanvaConnect = async () => {
   router.replace("/admin");
 
   if (error) {
-    toast("warn", "Canva connection cancelled", String(error));
+    toast("warn", "Canva connect cancelled", String(error));
     return;
   }
   const data = await apiPost("/api/admin/canva", {
@@ -1898,11 +1819,7 @@ const finishCanvaConnect = async () => {
     state,
   });
   if (data.ok) {
-    toast(
-      "success",
-      "Canva connected",
-      data.displayName ? `Signed in as ${data.displayName}.` : "",
-    );
+    toast("success", "Canva connected", data.displayName ? `As ${data.displayName}` : "");
   } else {
     toast("error", "Could not connect Canva", data.message, 10000);
   }
