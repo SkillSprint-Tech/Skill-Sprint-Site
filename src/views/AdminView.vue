@@ -9,26 +9,28 @@
         <!-- Logo & Header -->
         <div class="text-center mb-6">
           <div
-            class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-slate-800 text-white font-black text-base shadow-sm border border-slate-700 mb-3"
+            class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-800 text-white font-bold text-sm shadow-xs border border-slate-700 mb-3"
           >
-            ⚡
+            <svg class="w-5 h-5 text-slate-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
           </div>
-          <h1 class="text-xl font-bold text-white tracking-tight">
-            SkillSprint Admin Console
+          <h1 class="text-lg font-bold text-white tracking-tight">
+            SkillSprint Console
           </h1>
-          <p class="text-slate-400 text-xs mt-1">
-            Sign in to manage attendees, workshops & delivery
+          <p class="text-slate-400 text-xs mt-0.5 font-sans">
+            Enter administrative credentials to proceed
           </p>
         </div>
 
         <form
           @submit.prevent="login"
-          class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col gap-4"
+          class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl flex flex-col gap-3.5"
         >
           <div class="flex flex-col gap-1.5">
             <label
               for="password"
-              class="text-slate-300 text-[11px] font-bold uppercase tracking-wider"
+              class="text-slate-400 text-[10px] font-bold uppercase tracking-wider font-mono"
             >
               Password
             </label>
@@ -37,15 +39,15 @@
               v-model="password"
               type="password"
               autocomplete="current-password"
-              placeholder="Enter admin password"
+              placeholder="••••••••••••"
               autofocus
-              class="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus-visible:outline-2 focus-visible:outline-slate-400 transition-all"
+              class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus-visible:outline-2 focus-visible:outline-slate-400 transition-all font-mono"
             />
           </div>
 
           <div
             v-if="loginError"
-            class="p-2.5 bg-rose-950/60 border border-rose-800/80 rounded-xl text-rose-300 text-xs font-semibold"
+            class="p-2.5 bg-rose-950/60 border border-rose-800/80 rounded-lg text-rose-300 text-xs font-semibold"
           >
             {{ loginError }}
           </div>
@@ -53,27 +55,16 @@
           <button
             type="submit"
             :disabled="loggingIn"
-            class="bg-white hover:bg-slate-100 text-slate-900 py-2.5 rounded-xl font-bold text-xs transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 shadow-xs"
+            class="bg-white hover:bg-slate-100 text-slate-900 py-2 rounded-lg font-semibold text-xs transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5 shadow-xs active:scale-[0.98] mt-1"
           >
             <svg
               v-if="loggingIn"
               class="w-3.5 h-3.5 animate-spin text-slate-900"
+              viewBox="0 0 16 16"
               fill="none"
-              viewBox="0 0 24 24"
             >
-              <circle
-                class="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="4"
-              ></circle>
-              <path
-                class="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v8H4z"
-              ></path>
+              <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" class="opacity-25" />
+              <path d="M8 2a6 6 0 016 6" stroke="currentColor" stroke-width="2" class="opacity-75" />
             </svg>
             <span>{{ loggingIn ? "Verifying…" : "Sign In" }}</span>
           </button>
@@ -85,67 +76,69 @@
     <div v-else class="min-h-screen flex flex-col">
       <!-- Top Navigation Bar -->
       <header
-        class="bg-white border-b border-slate-200/90 sticky top-0 z-30 shadow-2xs backdrop-blur-md bg-white/95"
+        class="bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-[0_1px_2px_0_rgba(0,0,0,0.02)] backdrop-blur-md bg-white/95"
       >
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
-          <div class="flex items-center justify-between h-14 gap-4">
-            <!-- Brand & Status Badges -->
-            <div class="flex items-center gap-3">
+          <div class="flex items-center justify-between h-13 gap-4">
+            <!-- Brand & Context Trail -->
+            <div class="flex items-center gap-2.5">
               <div
-                class="w-7 h-7 rounded-lg bg-slate-900 flex items-center justify-center text-white font-black text-xs shadow-xs"
+                class="w-6 h-6 rounded-md bg-slate-900 flex items-center justify-center text-white font-bold text-xs shadow-xs"
               >
-                ⚡
+                <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
               </div>
-              <div class="flex items-center gap-2">
-                <span class="font-bold text-slate-900 tracking-tight text-sm">
+
+              <div class="flex items-center gap-1.5 text-xs">
+                <span class="font-bold text-slate-900 tracking-tight">
                   SkillSprint
                 </span>
-                <span
-                  class="text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200/80 px-1.5 py-0.2 rounded"
-                >
-                  Admin
+                <span class="text-slate-300">/</span>
+                <span class="font-mono text-slate-500 font-medium text-[11px]">
+                  Console
                 </span>
               </div>
 
               <!-- Database Active Pill -->
               <span
-                class="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.2 rounded-full ml-1"
+                class="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-mono font-medium text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.2 rounded-full ml-1"
               >
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20"></span>
                 DB Live
               </span>
             </div>
 
             <!-- Right Controls: Live Time, Refresh, Sign Out -->
-            <div class="flex items-center gap-2 sm:gap-3">
+            <div class="flex items-center gap-2">
               <!-- Live Site Time in PKT -->
               <div
-                class="hidden lg:flex items-center gap-1.5 text-xs text-slate-500 font-mono bg-slate-50 border border-slate-200/60 px-2.5 py-1 rounded-lg"
-                title="Site time in Pakistan Standard Time (UTC+5)"
+                class="hidden lg:flex items-center gap-1.5 text-xs text-slate-500 font-mono bg-slate-50 border border-slate-200/60 px-2 py-0.5 rounded-md"
+                title="Current site schedule time (PKT UTC+5)"
               >
-                <span>🕒 {{ currentSiteTime }}</span>
+                <svg class="w-3 h-3 text-slate-400" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="8" cy="8" r="6" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 4.5v4l2.5 1.5" />
+                </svg>
+                <span>{{ currentSiteTime }}</span>
               </div>
 
               <!-- Refresh Button -->
               <button
                 @click="refreshAll"
                 :disabled="loading"
-                class="inline-flex items-center gap-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 shadow-2xs"
-                title="Refresh registrations and stats"
+                class="inline-flex items-center gap-1.5 border border-slate-200/80 bg-white hover:bg-slate-50 text-slate-700 px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer disabled:opacity-50 shadow-2xs active:scale-[0.98]"
+                title="Refresh registrations and metrics"
               >
                 <svg
-                  class="w-3.5 h-3.5 transition-transform duration-500"
+                  class="w-3.5 h-3.5 text-slate-500 transition-transform duration-500"
                   :class="{ 'animate-spin': loading }"
+                  viewBox="0 0 16 16"
                   fill="none"
-                  viewBox="0 0 24 24"
                   stroke="currentColor"
-                  stroke-width="2"
+                  stroke-width="1.5"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                  />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 8A5.5 5.5 0 118 2.5a5.48 5.48 0 013.9 1.6L14 6m0 0v-4m0 4h-4" />
                 </svg>
                 <span class="hidden sm:inline">{{ loading ? "Syncing…" : "Refresh" }}</span>
               </button>
@@ -153,9 +146,12 @@
               <!-- Sign Out -->
               <button
                 @click="logout"
-                class="border border-slate-200 bg-white hover:bg-slate-50 hover:text-rose-600 text-slate-600 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs"
+                class="inline-flex items-center gap-1 border border-slate-200/80 bg-white hover:bg-slate-50 hover:text-rose-600 text-slate-600 px-2 py-1 rounded-md text-xs font-medium transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
               >
-                Sign out
+                <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5H3a1 1 0 01-1-1v-9a1 1 0 011-1h3m4 8.5l3.5-3.5L10 5m3.5 3.5H6" />
+                </svg>
+                <span class="hidden sm:inline">Sign out</span>
               </button>
             </div>
           </div>
@@ -169,17 +165,23 @@
               v-for="t in tabs"
               :key="t.id"
               @click="tab = t.id"
-              class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 whitespace-nowrap"
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer shrink-0 whitespace-nowrap active:scale-[0.98]"
               :class="
                 tab === t.id
-                  ? 'bg-slate-900 text-white shadow-xs'
+                  ? 'bg-slate-900 text-white shadow-2xs font-semibold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               "
             >
+              <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path v-if="t.id === 'people'" stroke-linecap="round" stroke-linejoin="round" d="M10.5 13.5v-1a2.5 2.5 0 00-2.5-2.5H4a2.5 2.5 0 00-2.5 2.5v1m9-7a2 2 0 11-4 0 2 2 0 014 0zm3.5 7v-.5a2.5 2.5 0 00-2-2.45M12 4.5a2 2 0 010 3.9" />
+                <path v-else-if="t.id === 'workshops'" stroke-linecap="round" stroke-linejoin="round" d="M2.5 5.5h11m-11 0v7a1 1 0 001 1h9a1 1 0 001-1v-7m-11 0a1 1 0 011-1h9a1 1 0 011 1M5 2.5v2m6-2v2" />
+                <path v-else-if="t.id === 'team'" stroke-linecap="round" stroke-linejoin="round" d="M8 2.5l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4L2.2 6.7l4-.6L8 2.5z" />
+                <path v-else-if="t.id === 'certificates'" stroke-linecap="round" stroke-linejoin="round" d="M13.5 10V4.5a1 1 0 00-1-1h-9a1 1 0 00-1 1V10m0 0l5.5 3.5L13.5 10zM5.5 7.5h5" />
+              </svg>
               <span>{{ t.label }}</span>
               <span
                 v-if="t.count != null"
-                class="px-1.5 py-0.2 rounded-full text-[10px] font-mono font-semibold"
+                class="px-1.5 py-0.2 rounded font-mono text-[10px] font-semibold"
                 :class="
                   tab === t.id
                     ? 'bg-slate-800 text-slate-200'
@@ -211,7 +213,7 @@
             @retry-failed="retryFailed"
           />
 
-          <!-- Collapsible Analytics & Trends Drawer (Tucked away by default) -->
+          <!-- Collapsible Analytics & Trends Drawer -->
           <transition
             enter-active-class="transition duration-200 ease-out"
             enter-from-class="transform -translate-y-2 opacity-0"
@@ -220,7 +222,7 @@
             leave-from-class="transform translate-y-0 opacity-100"
             leave-to-class="transform -translate-y-2 opacity-0"
           >
-            <div v-if="showAnalytics" class="mb-4">
+            <div v-if="showAnalytics" class="mb-3">
               <AdminMetricsChart
                 :trend="stats?.trend"
                 :top-universities="stats?.topUniversities"
@@ -231,19 +233,18 @@
 
           <!-- Compact Operational Toolbar (Above the Table) -->
           <div
-            class="bg-white border border-slate-200/90 rounded-2xl p-3 mb-3 shadow-2xs flex flex-wrap items-center justify-between gap-3"
+            class="bg-white border border-slate-200/80 rounded-xl p-2.5 mb-3 shadow-[0_1px_2px_0_rgba(0,0,0,0.02)] flex flex-wrap items-center justify-between gap-2.5"
           >
             <!-- Left: Scope Selector + Search Input -->
             <div class="flex flex-wrap items-center gap-2 flex-1 min-w-[280px]">
-              <!-- Campaign Scope -->
               <div class="flex items-center gap-1.5">
-                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                   Scope:
                 </span>
                 <select
                   v-model="emailView"
                   @change="onEmailViewChange"
-                  class="border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-semibold bg-slate-50 text-slate-800 cursor-pointer focus-visible:outline-2 focus-visible:outline-slate-900"
+                  class="border border-slate-200/80 rounded-md px-2.5 py-1 text-xs font-semibold bg-slate-50 text-slate-800 cursor-pointer focus-visible:outline-slate-900"
                 >
                   <option :value="WELCOME_TEMPLATE">
                     Welcome Campaign
@@ -258,27 +259,24 @@
                 </select>
               </div>
 
-              <!-- Search input -->
+              <!-- Search input with clean search SVG -->
               <div class="relative flex-1 min-w-[180px] max-w-sm">
                 <input
                   v-model="search"
                   @input="debouncedLoad"
                   type="search"
                   placeholder="Filter name, email, university…"
-                  class="w-full pl-8 pr-3 py-1 text-xs rounded-lg border border-slate-200 bg-slate-50/70 focus:bg-white text-slate-900 placeholder-slate-400 focus-visible:outline-2 focus-visible:outline-slate-900 transition-all"
+                  class="w-full pl-7 pr-3 py-1 text-xs rounded-md border border-slate-200/80 bg-slate-50/70 focus:bg-white text-slate-900 placeholder-slate-400 focus-visible:outline-slate-900 transition-all"
                 />
                 <svg
-                  class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2 pointer-events-none"
+                  class="w-3.5 h-3.5 text-slate-400 absolute left-2 top-2 pointer-events-none"
+                  viewBox="0 0 16 16"
                   fill="none"
-                  viewBox="0 0 24 24"
                   stroke="currentColor"
-                  stroke-width="2"
+                  stroke-width="1.5"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
+                  <circle cx="7" cy="7" r="4.5" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 10.5L14 14" />
                 </svg>
               </div>
             </div>
@@ -288,27 +286,16 @@
               <button
                 @click="sendAll"
                 :disabled="sendingAll || !stats?.email.notReceived"
-                class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg text-xs font-bold transition-all shadow-2xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5"
+                class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1 rounded-md text-xs font-semibold transition-all shadow-2xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5 active:scale-[0.98]"
               >
                 <svg
                   v-if="sendingAll"
-                  class="w-3 h-3 animate-spin"
+                  class="w-3 h-3 animate-spin text-white"
+                  viewBox="0 0 16 16"
                   fill="none"
-                  viewBox="0 0 24 24"
                 >
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8H4z"
-                  ></path>
+                  <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" class="opacity-25" />
+                  <path d="M8 2a6 6 0 016 6" stroke="currentColor" stroke-width="2" class="opacity-75" />
                 </svg>
                 <span>
                   {{
@@ -323,24 +310,24 @@
                 v-if="stats?.email.failed"
                 @click="retryFailed"
                 :disabled="sendingAll"
-                class="border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer"
+                class="border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
                 title="Requeue failed emails"
               >
                 Retry Failed ({{ stats.email.failed }})
               </button>
 
               <!-- Export CSV Dropdown -->
-              <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden shadow-2xs">
+              <div class="flex items-center border border-slate-200/80 rounded-md overflow-hidden shadow-2xs font-mono text-xs">
                 <button
                   @click="downloadCsv('view')"
-                  class="bg-white hover:bg-slate-50 text-slate-700 px-2.5 py-1 text-xs font-semibold transition-colors border-r border-slate-200 cursor-pointer"
+                  class="bg-white hover:bg-slate-50 text-slate-700 px-2.5 py-1 font-semibold transition-colors border-r border-slate-200/80 cursor-pointer"
                   title="Download current filtered list as CSV"
                 >
                   CSV
                 </button>
                 <button
                   @click="downloadCsv('all')"
-                  class="bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-700 px-2 py-1 text-xs font-semibold transition-colors cursor-pointer"
+                  class="bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-700 px-2 py-1 font-semibold transition-colors cursor-pointer"
                   title="Export complete database registrations"
                 >
                   All
@@ -349,7 +336,7 @@
             </div>
           </div>
 
-          <!-- Registrations Table (Starts Immediately Below the Toolbar!) -->
+          <!-- Registrations Table (Starts Immediately Above The Fold!) -->
           <AdminRegistrationsTable
             :registrations="registrations"
             :stats="stats"
@@ -384,12 +371,12 @@
         <!-- ═══════════════════ WORKSHOPS TAB ═══════════════════ -->
         <div v-show="tab === 'workshops'">
           <!-- Top Action Bar -->
-          <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
             <div>
-              <h2 class="text-base font-bold text-slate-900 tracking-tight">
+              <h2 class="text-sm font-bold text-slate-900 tracking-tight">
                 Workshops & Sessions
               </h2>
-              <p class="text-xs text-slate-500 mt-0.5">
+              <p class="text-[11px] text-slate-400">
                 Manage schedule, meeting links, and public visibility
               </p>
             </div>
@@ -397,7 +384,7 @@
             <button
               type="button"
               @click="toggleWorkshopDrawer"
-              class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
+              class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all shadow-xs cursor-pointer flex items-center gap-1.5 active:scale-[0.98]"
             >
               <span>{{ showWorkshopForm ? "Hide Form" : "+ Add Workshop" }}</span>
             </button>
@@ -406,10 +393,10 @@
           <!-- Collapsible Add/Edit Workshop Drawer -->
           <div
             v-if="showWorkshopForm"
-            class="bg-white border border-slate-200/90 rounded-2xl p-5 mb-5 shadow-xs transition-all"
+            class="bg-white border border-slate-200/80 rounded-xl p-4 mb-4 shadow-[0_1px_2px_0_rgba(0,0,0,0.03)] transition-all"
           >
-            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-              <h3 class="font-bold text-slate-900 text-sm">
+            <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-slate-100">
+              <h3 class="font-bold text-slate-900 text-xs">
                 {{ editing ? "Edit Workshop" : "Add a New Workshop" }}
               </h3>
               <button
@@ -417,13 +404,13 @@
                 @click="resetWorkshopForm"
                 class="text-slate-400 hover:text-slate-600 text-xs font-semibold cursor-pointer"
               >
-                ✕ Cancel
+                Cancel
               </button>
             </div>
 
-            <form @submit.prevent="saveWorkshop" class="grid gap-4 sm:grid-cols-2">
-              <div class="flex flex-col gap-1.5 sm:col-span-2">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+            <form @submit.prevent="saveWorkshop" class="grid gap-3.5 sm:grid-cols-2">
+              <div class="flex flex-col gap-1 sm:col-span-2">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                   Title *
                 </label>
                 <input
@@ -435,8 +422,8 @@
                 />
               </div>
 
-              <div class="flex flex-col gap-1.5 sm:col-span-2">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <div class="flex flex-col gap-1 sm:col-span-2">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                   Description
                 </label>
                 <textarea
@@ -447,10 +434,10 @@
                 ></textarea>
               </div>
 
-              <div class="flex flex-col gap-1.5">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                   Starts at *
-                  <span class="text-indigo-600">({{ SITE_TIME_ZONE_LABEL }})</span>
+                  <span class="text-blue-600 font-normal">({{ SITE_TIME_ZONE_LABEL }})</span>
                 </label>
                 <input
                   v-model="wForm.starts_at"
@@ -460,8 +447,8 @@
                 />
               </div>
 
-              <div class="flex flex-col gap-1.5">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                   Duration (min)
                 </label>
                 <input
@@ -473,15 +460,15 @@
                 />
               </div>
 
-              <div class="flex flex-col gap-1.5">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                   Speaker
                 </label>
                 <input v-model="wForm.speaker" type="text" :class="adminInput" placeholder="Ali Raza" />
               </div>
 
-              <div class="flex flex-col gap-1.5">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                   Focus Area / Role
                 </label>
                 <input
@@ -492,8 +479,8 @@
                 />
               </div>
 
-              <div class="flex flex-col gap-1.5">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                   Location
                 </label>
                 <input
@@ -504,8 +491,8 @@
                 />
               </div>
 
-              <div class="flex flex-col gap-1.5">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                   Seats (blank = unlimited)
                 </label>
                 <input
@@ -517,9 +504,9 @@
                 />
               </div>
 
-              <div class="flex flex-col gap-1.5 sm:col-span-2">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                  Meeting Link <span class="text-emerald-600">· Confidential</span>
+              <div class="flex flex-col gap-1 sm:col-span-2">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                  Meeting Link <span class="text-emerald-700 font-normal">· Confidential</span>
                 </label>
                 <input
                   v-model="wForm.meeting_link"
@@ -527,13 +514,13 @@
                   :class="adminInput"
                   placeholder="https://meet.google.com/abc-defg-hij"
                 />
-                <span class="text-[11px] text-slate-400">
-                  Only emailed to registered attendees when you press <strong>Send link</strong>.
+                <span class="text-[10px] text-slate-400">
+                  Only emailed to registered attendees when you click <strong>Send link</strong>.
                 </span>
               </div>
 
-              <div class="flex flex-col gap-1.5">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                   Status
                 </label>
                 <select v-model="wForm.status" :class="adminInput">
@@ -544,31 +531,31 @@
                 </select>
               </div>
 
-              <div class="flex items-center pt-4">
+              <div class="flex items-center pt-3">
                 <label class="flex items-center gap-2 cursor-pointer">
                   <input
                     v-model="wForm.is_published"
                     type="checkbox"
-                    class="w-4 h-4 rounded text-slate-900 cursor-pointer"
+                    class="w-3.5 h-3.5 rounded text-slate-900 focus:ring-slate-900/20 cursor-pointer"
                   />
-                  <span class="text-xs text-slate-800 font-semibold">
+                  <span class="text-xs text-slate-800 font-medium">
                     Published on /workshops page
                   </span>
                 </label>
               </div>
 
-              <div class="sm:col-span-2 flex items-center gap-2 pt-2">
+              <div class="sm:col-span-2 flex items-center gap-2 pt-1">
                 <button
                   type="submit"
                   :disabled="savingWorkshop"
-                  class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 cursor-pointer shadow-xs"
+                  class="bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all disabled:opacity-50 cursor-pointer shadow-xs active:scale-[0.98]"
                 >
                   {{ savingWorkshop ? "Saving…" : editing ? "Save Changes" : "Create Workshop" }}
                 </button>
                 <button
                   type="button"
                   @click="resetWorkshopForm"
-                  class="text-slate-500 text-xs font-semibold hover:text-slate-800 px-3 py-2 cursor-pointer"
+                  class="text-slate-500 text-xs font-medium hover:text-slate-800 px-3 py-1 cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -579,14 +566,14 @@
           <!-- Test Send Box -->
           <div
             v-if="testWorkshop"
-            class="bg-slate-100 border border-slate-200 rounded-2xl p-4 mb-5 shadow-2xs"
+            class="bg-slate-100 border border-slate-200 rounded-xl p-3.5 mb-4 shadow-2xs"
           >
             <div class="flex items-start justify-between gap-3 mb-2">
               <div>
-                <h3 class="font-bold text-slate-900 text-sm">
+                <h3 class="font-bold text-slate-900 text-xs">
                   Send Test Email for “{{ testWorkshop.title }}”
                 </h3>
-                <p class="text-slate-500 text-xs mt-0.5">
+                <p class="text-slate-500 text-[11px] mt-0.5">
                   Sends real template to a single inbox without affecting registration delivery states.
                 </p>
               </div>
@@ -599,18 +586,18 @@
               </button>
             </div>
 
-            <form @submit.prevent="sendTest" class="flex flex-wrap items-center gap-2 mt-3">
+            <form @submit.prevent="sendTest" class="flex flex-wrap items-center gap-2 mt-2">
               <input
                 v-model="testEmail"
                 type="email"
                 required
                 placeholder="your.email@example.com"
-                class="flex-1 min-w-[240px] border border-slate-300 rounded-xl px-3 py-1.5 text-xs bg-white focus-visible:outline-2 focus-visible:outline-slate-900"
+                class="flex-1 min-w-[240px] border border-slate-300 rounded-md px-2.5 py-1 text-xs bg-white focus-visible:outline-slate-900"
               />
               <button
                 type="submit"
                 :disabled="sendingTest"
-                class="bg-slate-900 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold hover:bg-slate-800 transition-colors disabled:opacity-50 cursor-pointer"
+                class="bg-slate-900 text-white px-3 py-1 rounded-md text-xs font-semibold hover:bg-slate-800 transition-colors disabled:opacity-50 cursor-pointer active:scale-[0.98]"
               >
                 {{ sendingTest ? "Sending…" : "Dispatch Test" }}
               </button>
@@ -618,15 +605,15 @@
           </div>
 
           <!-- Workshops Table -->
-          <div class="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+          <div class="bg-white border border-slate-200/80 rounded-xl overflow-hidden shadow-[0_1px_2px_0_rgba(0,0,0,0.03)]">
             <div class="overflow-x-auto">
-              <table class="w-full text-sm text-left">
+              <table class="w-full text-xs text-left">
                 <thead>
                   <tr class="bg-slate-50/80 border-b border-slate-200/80">
                     <th
                       v-for="h in ['Starts At', 'Workshop', 'Status', 'Site Visibility', 'Meeting Link', 'Actions']"
                       :key="h"
-                      class="px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-500 whitespace-nowrap"
+                      class="px-3.5 py-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap"
                     >
                       {{ h }}
                     </th>
@@ -634,7 +621,7 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                   <tr v-if="!workshops.length">
-                    <td colspan="6" class="px-4 py-12 text-center text-slate-400 text-sm">
+                    <td colspan="6" class="px-4 py-12 text-center text-slate-400 text-xs">
                       No workshops scheduled yet. Click "+ Add Workshop" to schedule one.
                     </td>
                   </tr>
@@ -644,26 +631,26 @@
                     :key="w.id"
                     class="hover:bg-slate-50/70 transition-colors"
                   >
-                    <td class="px-4 py-3 text-slate-500 font-mono text-xs whitespace-nowrap tabular-nums">
+                    <td class="px-3.5 py-2.5 text-slate-500 font-mono text-[11px] whitespace-nowrap tabular-nums">
                       {{ shortDate(w.starts_at) }}
                     </td>
 
-                    <td class="px-4 py-3">
-                      <div class="font-bold text-slate-900 leading-tight">
+                    <td class="px-3.5 py-2.5">
+                      <div class="font-semibold text-slate-900 leading-tight">
                         {{ w.title }}
                       </div>
-                      <div v-if="w.speaker" class="text-xs text-slate-500 mt-0.5">
+                      <div v-if="w.speaker" class="text-[11px] text-slate-400 mt-0.5">
                         {{ w.speaker }}
                         <span v-if="w.speaker_role" class="text-slate-400">· {{ w.speaker_role }}</span>
                       </div>
                     </td>
 
-                    <td class="px-4 py-3 whitespace-nowrap">
+                    <td class="px-3.5 py-2.5 whitespace-nowrap">
                       <select
                         :value="w.status"
                         @change="changeStatus(w, $event.target.value)"
                         :disabled="updatingId === w.id"
-                        class="px-2 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide border-0 cursor-pointer disabled:opacity-50"
+                        class="px-2 py-0.5 rounded text-[10px] font-mono font-medium uppercase tracking-wide border-0 cursor-pointer disabled:opacity-50"
                         :class="statusClass(w.status)"
                       >
                         <option v-for="opt in WORKSHOP_STATUSES" :key="opt" :value="opt">
@@ -672,31 +659,31 @@
                       </select>
                     </td>
 
-                    <td class="px-4 py-3 whitespace-nowrap">
+                    <td class="px-3.5 py-2.5 whitespace-nowrap">
                       <button
                         @click="togglePublished(w)"
                         :disabled="updatingId === w.id"
-                        class="inline-flex items-center gap-1 text-xs font-bold transition-colors cursor-pointer"
+                        class="inline-flex items-center gap-1.5 text-xs font-semibold transition-colors cursor-pointer"
                         :class="w.is_published ? 'text-emerald-700' : 'text-slate-400'"
                       >
                         <span
-                          class="w-2 h-2 rounded-full"
-                          :class="w.is_published ? 'bg-emerald-500' : 'bg-slate-300'"
+                          class="w-1.5 h-1.5 rounded-full"
+                          :class="w.is_published ? 'bg-emerald-500 ring-2 ring-emerald-500/20' : 'bg-slate-300'"
                         ></span>
                         {{ w.is_published ? "Live" : "Draft" }}
                       </button>
                     </td>
 
-                    <td class="px-4 py-3 whitespace-nowrap">
+                    <td class="px-3.5 py-2.5 whitespace-nowrap">
                       <span
                         v-if="!w.meeting_link"
-                        class="text-xs font-bold px-2 py-0.5 rounded"
+                        class="text-[11px] font-mono font-semibold px-1.5 py-0.2 rounded"
                         :class="needsLink(w) ? 'bg-amber-100 text-amber-800' : 'text-slate-400'"
                       >
-                        {{ needsLink(w) ? "⚠ Not set" : "Not set" }}
+                        {{ needsLink(w) ? "Not set" : "Not set" }}
                       </span>
                       <div v-else>
-                        <span class="text-xs text-emerald-700 font-bold">✓ Ready</span>
+                        <span class="text-[11px] text-emerald-700 font-semibold font-mono">Ready</span>
                         <div v-if="w.link_sent_at" class="text-[10px] text-slate-400 font-mono">
                           Sent {{ shortDate(w.link_sent_at) }}
                         </div>
@@ -705,17 +692,17 @@
                           class="text-[10px] font-semibold"
                           :class="needsLink(w) ? 'text-amber-700' : 'text-slate-400'"
                         >
-                          Not emailed yet
+                          Not emailed
                         </div>
                       </div>
                     </td>
 
-                    <td class="px-4 py-3 whitespace-nowrap text-xs">
-                      <div class="flex items-center gap-2">
+                    <td class="px-3.5 py-2.5 whitespace-nowrap text-xs">
+                      <div class="flex items-center gap-2.5">
                         <button
                           @click="sendLink(w)"
                           :disabled="sendingLinkId === w.id || !w.meeting_link"
-                          class="text-emerald-700 font-bold hover:text-emerald-900 disabled:text-slate-300 disabled:cursor-not-allowed cursor-pointer"
+                          class="text-emerald-700 font-semibold hover:text-emerald-900 disabled:text-slate-300 disabled:cursor-not-allowed cursor-pointer"
                         >
                           {{
                             sendingLinkId === w.id
@@ -731,7 +718,7 @@
                           v-if="w.link_sent_at"
                           @click="sendLink(w, { resendAll: true })"
                           :disabled="sendingLinkId === w.id || !w.meeting_link"
-                          class="text-amber-700 font-bold hover:text-amber-900 disabled:text-slate-300 cursor-pointer"
+                          class="text-amber-700 font-semibold hover:text-amber-900 disabled:text-slate-300 cursor-pointer"
                           title="Resend to all registered"
                         >
                           Resend all
@@ -739,19 +726,19 @@
                         <button
                           @click="openTest(w)"
                           :disabled="!w.meeting_link"
-                          class="text-slate-600 font-bold hover:text-slate-900 disabled:text-slate-300 cursor-pointer"
+                          class="text-slate-600 font-semibold hover:text-slate-900 disabled:text-slate-300 cursor-pointer"
                         >
                           Test
                         </button>
                         <button
                           @click="editWorkshop(w)"
-                          class="text-slate-600 font-bold hover:text-slate-900 cursor-pointer"
+                          class="text-slate-600 font-semibold hover:text-slate-900 cursor-pointer"
                         >
                           Edit
                         </button>
                         <button
                           @click="deleteWorkshop(w)"
-                          class="text-rose-600 font-bold hover:text-rose-800 cursor-pointer"
+                          class="text-rose-600 font-semibold hover:text-rose-800 cursor-pointer"
                         >
                           Delete
                         </button>
@@ -767,12 +754,12 @@
         <!-- ═══════════════════ TEAM TAB ═══════════════════ -->
         <div v-show="tab === 'team'">
           <!-- Top Action Bar -->
-          <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
             <div>
-              <h2 class="text-base font-bold text-slate-900 tracking-tight">
+              <h2 class="text-sm font-bold text-slate-900 tracking-tight">
                 Core Team Roster
               </h2>
-              <p class="text-xs text-slate-500 mt-0.5">
+              <p class="text-[11px] text-slate-400">
                 Manage team profiles shown on the public /team page
               </p>
             </div>
@@ -780,7 +767,7 @@
             <button
               type="button"
               @click="showTeamForm = !showTeamForm"
-              class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all shadow-xs cursor-pointer"
+              class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-1.5 rounded-md transition-all shadow-xs cursor-pointer active:scale-[0.98]"
             >
               {{ showTeamForm ? "Hide Form" : "+ Add Member" }}
             </button>
@@ -789,10 +776,10 @@
           <!-- Collapsible Add Member Drawer -->
           <div
             v-if="showTeamForm"
-            class="bg-white border border-slate-200/90 rounded-2xl p-5 mb-5 shadow-xs"
+            class="bg-white border border-slate-200/80 rounded-xl p-4 mb-4 shadow-[0_1px_2px_0_rgba(0,0,0,0.03)]"
           >
-            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-              <h3 class="font-bold text-slate-900 text-sm">
+            <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-slate-100">
+              <h3 class="font-bold text-slate-900 text-xs">
                 Add Team Member
               </h3>
               <button
@@ -800,13 +787,13 @@
                 @click="showTeamForm = false"
                 class="text-slate-400 hover:text-slate-600 text-xs font-semibold cursor-pointer"
               >
-                ✕ Cancel
+                Cancel
               </button>
             </div>
 
-            <form @submit.prevent="saveMember" class="grid gap-4 sm:grid-cols-2">
-              <div class="flex flex-col gap-1.5">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Name *</label>
+            <form @submit.prevent="saveMember" class="grid gap-3.5 sm:grid-cols-2">
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Name *</label>
                 <input
                   v-model="tForm.name"
                   type="text"
@@ -816,8 +803,8 @@
                 />
               </div>
 
-              <div class="flex flex-col gap-1.5">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Role *</label>
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Role *</label>
                 <input
                   v-model="tForm.role"
                   type="text"
@@ -827,8 +814,8 @@
                 />
               </div>
 
-              <div class="flex flex-col gap-1.5 sm:col-span-2">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Bio *</label>
+              <div class="flex flex-col gap-1 sm:col-span-2">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Bio *</label>
                 <textarea
                   v-model="tForm.bio"
                   rows="3"
@@ -838,11 +825,11 @@
                 ></textarea>
               </div>
 
-              <div class="flex flex-col gap-1.5 sm:col-span-2">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Photo</label>
-                <div class="flex items-center gap-4">
+              <div class="flex flex-col gap-1 sm:col-span-2">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">Photo</label>
+                <div class="flex items-center gap-3">
                   <div
-                    class="w-12 h-12 rounded-full bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center shadow-xs"
+                    class="w-10 h-10 rounded bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center shadow-2xs"
                   >
                     <img
                       v-if="tForm.image"
@@ -850,7 +837,10 @@
                       alt=""
                       class="w-full h-full object-cover"
                     />
-                    <span v-else class="text-slate-300 text-lg" aria-hidden="true">👤</span>
+                    <svg v-else class="w-4 h-4 text-slate-300" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <circle cx="8" cy="5" r="3" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.5c0-2.5 2.2-4 5-4s5 1.5 5 4" />
+                    </svg>
                   </div>
                   <div class="flex flex-col gap-1">
                     <input
@@ -858,16 +848,16 @@
                       type="file"
                       accept="image/*"
                       @change="pickImage"
-                      class="text-xs text-slate-600 file:mr-3 file:py-1 file:px-2.5 file:rounded-lg file:border file:border-slate-200 file:bg-white file:text-xs file:font-semibold file:text-slate-700 cursor-pointer"
+                      class="text-xs text-slate-600 file:mr-2.5 file:py-1 file:px-2 file:rounded file:border file:border-slate-200 file:bg-white file:text-xs file:font-medium file:text-slate-700 cursor-pointer"
                     />
-                    <span class="text-[11px] text-slate-400">
-                      JPG/PNG under 2MB. Auto-optimized to 400px.
+                    <span class="text-[10px] text-slate-400">
+                      JPG/PNG under 2MB. Optimized to 400px.
                     </span>
                     <button
                       v-if="tForm.image"
                       type="button"
                       @click="clearImage"
-                      class="text-rose-600 text-[11px] font-bold text-left hover:text-rose-800 cursor-pointer"
+                      class="text-rose-600 text-[10px] font-semibold text-left hover:text-rose-800 cursor-pointer"
                     >
                       Remove photo
                     </button>
@@ -875,11 +865,11 @@
                 </div>
               </div>
 
-              <div class="sm:col-span-2 flex items-center gap-3 pt-2">
+              <div class="sm:col-span-2 flex items-center gap-2 pt-1">
                 <button
                   type="submit"
                   :disabled="savingMember"
-                  class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 cursor-pointer shadow-xs"
+                  class="bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all disabled:opacity-50 cursor-pointer shadow-xs active:scale-[0.98]"
                 >
                   {{ savingMember ? "Saving…" : "Save Member" }}
                 </button>
@@ -891,15 +881,15 @@
           </div>
 
           <!-- Team Table -->
-          <div class="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+          <div class="bg-white border border-slate-200/80 rounded-xl overflow-hidden shadow-[0_1px_2px_0_rgba(0,0,0,0.03)]">
             <div class="overflow-x-auto">
-              <table class="w-full text-sm text-left">
+              <table class="w-full text-xs text-left">
                 <thead>
                   <tr class="bg-slate-50/80 border-b border-slate-200/80">
                     <th
                       v-for="h in ['', 'Member', 'Role', 'Bio', 'Actions']"
                       :key="h"
-                      class="px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-500 whitespace-nowrap"
+                      class="px-3.5 py-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap"
                     >
                       {{ h }}
                     </th>
@@ -907,7 +897,7 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                   <tr v-if="!members.length">
-                    <td colspan="5" class="px-4 py-12 text-center text-slate-400 text-sm">
+                    <td colspan="5" class="px-4 py-12 text-center text-slate-400 text-xs">
                       No team members added yet. Click "+ Add Member" to add someone.
                     </td>
                   </tr>
@@ -917,9 +907,9 @@
                     :key="m.id"
                     class="hover:bg-slate-50/70 transition-colors"
                   >
-                    <td class="px-4 py-3 w-12">
+                    <td class="px-3.5 py-2.5 w-10">
                       <div
-                        class="w-8 h-8 rounded-full bg-slate-100 overflow-hidden flex items-center justify-center border border-slate-200 shadow-2xs"
+                        class="w-7 h-7 rounded bg-slate-100 overflow-hidden flex items-center justify-center border border-slate-200 shadow-2xs"
                       >
                         <img
                           v-if="m.image"
@@ -927,26 +917,29 @@
                           alt=""
                           class="w-full h-full object-cover"
                         />
-                        <span v-else class="text-slate-300 text-xs">👤</span>
+                        <svg v-else class="w-3.5 h-3.5 text-slate-300" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                          <circle cx="8" cy="5" r="3" />
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.5c0-2.5 2.2-4 5-4s5 1.5 5 4" />
+                        </svg>
                       </div>
                     </td>
 
-                    <td class="px-4 py-3 font-bold text-slate-900 whitespace-nowrap">
+                    <td class="px-3.5 py-2.5 font-semibold text-slate-900 whitespace-nowrap">
                       {{ m.name }}
                     </td>
 
-                    <td class="px-4 py-3 text-xs text-slate-600 whitespace-nowrap font-medium">
+                    <td class="px-3.5 py-2.5 text-slate-600 whitespace-nowrap font-medium">
                       {{ m.role }}
                     </td>
 
-                    <td class="px-4 py-3 text-slate-500 text-xs max-w-md truncate" :title="m.bio">
+                    <td class="px-3.5 py-2.5 text-slate-400 text-[11px] max-w-md truncate" :title="m.bio">
                       {{ m.bio }}
                     </td>
 
-                    <td class="px-4 py-3 whitespace-nowrap">
+                    <td class="px-3.5 py-2.5 whitespace-nowrap">
                       <button
                         @click="deleteMember(m)"
-                        class="text-rose-600 hover:text-rose-800 text-xs font-bold cursor-pointer"
+                        class="text-rose-600 hover:text-rose-800 text-xs font-semibold cursor-pointer"
                       >
                         Delete
                       </button>
@@ -967,20 +960,32 @@
 
     <!-- ═══════════════════ TOAST NOTIFICATIONS ═══════════════════ -->
     <div
-      class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm"
+      class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm"
       role="status"
       aria-live="polite"
     >
       <div
         v-for="t in toasts"
         :key="t.id"
-        class="border rounded-xl px-3.5 py-2.5 shadow-xl text-xs transition-all flex items-start gap-2.5 backdrop-blur-md"
+        class="border rounded-lg px-3 py-2 shadow-xl text-xs transition-all flex items-start gap-2 backdrop-blur-md"
         :class="toastClass(t.kind)"
       >
-        <span class="text-sm mt-0.5 leading-none">{{ toastIcon(t.kind) }}</span>
+        <svg v-if="t.kind === 'success'" class="w-3.5 h-3.5 text-emerald-400 mt-0.5 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.5 8.5l3 3 6-6" />
+        </svg>
+        <svg v-else-if="t.kind === 'error'" class="w-3.5 h-3.5 text-rose-400 mt-0.5 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4l8 8m0-8l-8 8" />
+        </svg>
+        <svg v-else-if="t.kind === 'warn'" class="w-3.5 h-3.5 text-amber-400 mt-0.5 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 2l6 12H2L8 2zm0 5v3m0 2h.01" />
+        </svg>
+        <svg v-else class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="8" cy="8" r="6" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 5v3m0 2.5h.01" />
+        </svg>
         <div class="flex-1">
-          <p class="font-bold">{{ t.title }}</p>
-          <p v-if="t.body" class="text-[11px] leading-relaxed mt-0.5 opacity-90">
+          <p class="font-semibold">{{ t.title }}</p>
+          <p v-if="t.body" class="text-[10px] leading-relaxed mt-0.5 opacity-80 font-mono">
             {{ t.body }}
           </p>
         </div>
@@ -1006,7 +1011,7 @@ import AdminAttendeeDrawer from "../components/admin/AdminAttendeeDrawer.vue";
 import { apiPost } from "../utils/adminApi.js";
 
 const adminInput =
-  "border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-900 bg-white " +
+  "border border-slate-200/80 rounded-md px-2.5 py-1.5 text-xs text-slate-900 bg-white " +
   "focus-visible:outline-2 focus-visible:outline-slate-900 transition-colors";
 
 // ── Auth ────────────────────────────────────────────────────────────────────
@@ -1074,14 +1079,6 @@ const toastClass = (kind) =>
     warn: "bg-amber-950 border-amber-800 text-amber-100",
     error: "bg-rose-950 border-rose-800 text-rose-100",
   })[kind] || "bg-slate-900 border-slate-800 text-white";
-
-const toastIcon = (kind) =>
-  ({
-    success: "✓",
-    info: "ℹ",
-    warn: "⚠",
-    error: "✕",
-  })[kind] || "•";
 
 // ── Tabs ────────────────────────────────────────────────────────────────────
 const tab = ref("people");
@@ -1161,7 +1158,7 @@ const stuckWarning = computed(() => {
   const n = email.stuck;
   return {
     title: `${n} email${n === 1 ? "" : "s"} stranded mid-send`,
-    body: `A background job held them without completion. Press Release to unstick.`,
+    body: `A background worker held them without completion.`,
   };
 });
 
@@ -1236,7 +1233,7 @@ const loadStats = async () => {
     const data = await res.json().catch(() => ({}));
     if (data.ok) stats.value = data;
   } catch {
-    /* silent fallback */
+    /* silent */
   }
 };
 
@@ -1358,7 +1355,7 @@ const sendBatch = async (ids) => {
     }
     toast("success", `Batch send complete`, `Dispatched ${sentCount} of ${ids.length} emails.`);
   } catch {
-    toast("error", "Batch send failed", "Network error occurred.");
+    toast("error", "Batch send failed", "Network error.");
   } finally {
     batchSending.value = false;
     await Promise.all([loadStats(), loadRegistrations()]);
