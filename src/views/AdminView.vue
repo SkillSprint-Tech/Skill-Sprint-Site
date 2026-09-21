@@ -51,7 +51,7 @@
       </div>
 
       <!-- Tabs -->
-      <div class="flex gap-1 mb-6 border-b border-gray-200">
+      <div class="flex gap-1 overflow-auto mb-6 border-b border-gray-200">
         <button v-for="t in tabs" :key="t.id" @click="tab = t.id"
                 class="px-4 py-2.5 text-sm font-semibold border-b-2 -mb-px transition-colors duration-200 cursor-pointer"
                 :class="tab === t.id
