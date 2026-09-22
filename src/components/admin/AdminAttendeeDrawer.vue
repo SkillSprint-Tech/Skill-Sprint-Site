@@ -133,6 +133,26 @@
             </div>
           </div>
 
+          <div class="bg-slate-50/80 border border-slate-200/70 rounded-xl p-3 flex items-center justify-between">
+            <div>
+              <div class="text-[10px] text-slate-400 font-bold uppercase font-mono">Live Workshop Attendance</div>
+              <div class="text-xs font-semibold text-slate-800 mt-0.5">
+                {{ attendee.attended ? 'Checked In' : 'Not Attended' }}
+                <span v-if="attendee.checked_in_at" class="text-[10px] text-slate-400 font-mono block">
+                  {{ shortDate(attendee.checked_in_at) }}
+                </span>
+              </div>
+            </div>
+            <button
+              type="button"
+              @click="$emit('toggle-attended', attendee)"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs"
+              :class="attendee.attended ? 'bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100' : 'bg-emerald-600 text-white hover:bg-emerald-700'"
+            >
+              {{ attendee.attended ? 'Cancel Check-in' : 'Check In' }}
+            </button>
+          </div>
+
           <div class="pt-2 text-[10px] text-slate-400 font-mono">
             ID: {{ attendee.id }}<br />
             Registered: {{ shortDate(attendee.created_at) }}

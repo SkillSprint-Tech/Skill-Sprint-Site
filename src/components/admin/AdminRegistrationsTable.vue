@@ -36,7 +36,21 @@
       </div>
 
       <!-- Top Fast Pagination Controls -->
-      <div class="flex items-center gap-2.5 text-xs font-mono">
+      <div class="flex items-center gap-2 text-xs font-mono">
+        <!-- Scan QR Ticket Button -->
+        <button
+          type="button"
+          @click="$emit('open-scanner')"
+          class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 rounded-lg px-2.5 py-1 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-[0.98]"
+          title="Scan QR Tickets"
+        >
+          <svg class="w-3.5 h-3.5 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2m-10 0H5a2 2 0 0 1-2-2v-2" />
+            <rect x="7" y="7" width="10" height="10" rx="1" />
+          </svg>
+          <span class="hidden sm:inline">Scan QR</span>
+        </button>
+
         <!-- Page size selector -->
         <div class="flex items-center gap-1 text-slate-500 font-sans text-xs">
           <span class="hidden sm:inline text-slate-400">Rows:</span>
@@ -83,10 +97,10 @@
       </div>
     </div>
 
-    <!-- Multi-select Batch Action Bar (Sticky floating spatial strip when items are checked) -->
+    <!-- Selection Quick Action Bar -->
     <div
-      v-if="selectedIds.length"
-      class="bg-slate-900/90 backdrop-blur-md text-white px-4 py-2 flex items-center justify-between text-xs transition-all border-y border-slate-800 shadow-xl"
+      v-if="selectedIds.length > 0"
+      class="bg-slate-900 text-white px-4 py-2 flex items-center justify-between text-xs animate-fade-in border-b border-slate-800"
     >
       <div class="flex items-center gap-2.5">
         <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
@@ -127,7 +141,7 @@
               />
             </th>
             <th
-              v-for="h in ['Attendee', 'Email Address', 'University', 'Registered', 'Email Status']"
+              v-for="h in ['Attendee', 'Email Address', 'University', 'Registered', 'Attendance', 'Email Status']"
               :key="h"
               class="px-3.5 py-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap"
             >
@@ -149,13 +163,14 @@
             <td class="px-3.5 py-3"><div class="h-3.5 bg-slate-200 rounded w-36"></div></td>
             <td class="px-3.5 py-3"><div class="h-3.5 bg-slate-200 rounded w-24"></div></td>
             <td class="px-3.5 py-3"><div class="h-3.5 bg-slate-200 rounded w-20"></div></td>
+            <td class="px-3.5 py-3"><div class="h-4 bg-slate-200 rounded-full w-16"></div></td>
             <td class="px-3.5 py-3"><div class="h-4 bg-slate-200 rounded-full w-20"></div></td>
             <td class="px-4 py-3 sticky right-0 bg-white border-l border-slate-200/80"><div class="h-6 bg-slate-200 rounded-md w-16 ml-auto"></div></td>
           </tr>
 
           <!-- Empty State -->
           <tr v-else-if="!registrations.length">
-            <td colspan="7" class="px-4 py-16 text-center text-slate-400">
+            <td colspan="8" class="px-4 py-16 text-center text-slate-400">
               <div class="flex flex-col items-center justify-center gap-2">
                 <svg class="w-7 h-7 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <circle cx="11" cy="11" r="8" />
@@ -221,6 +236,22 @@
             <!-- Registered Date -->
             <td class="px-3.5 py-2.5 text-slate-400 font-mono text-[11px] tabular-nums whitespace-nowrap">
               {{ shortDate(r.created_at) }}
+            </td>
+
+            <!-- Attendance Status Pill Toggle -->
+            <td class="px-3.5 py-2.5 whitespace-nowrap" @click.stop>
+              <button
+                type="button"
+                @click="$emit('toggle-attended', r)"
+                class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-semibold font-mono tracking-wide border transition-all cursor-pointer shadow-2xs"
+                :class="r.attended ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100' : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100'"
+              >
+                <span
+                  class="w-1.5 h-1.5 rounded-full"
+                  :class="r.attended ? 'bg-emerald-500' : 'bg-slate-300'"
+                ></span>
+                {{ r.attended ? "Attended" : "Check-in" }}
+              </button>
             </td>
 
             <!-- Status with Concentric Halo Dot -->
@@ -432,6 +463,8 @@ defineEmits([
   'update:limit',
   'update:status-filter',
   'inspect',
+  'toggle-attended',
+  'open-scanner',
 ]);
 
 const selectedIds = ref([]);

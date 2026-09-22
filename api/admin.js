@@ -8,6 +8,7 @@ import sendEmail from '../lib/admin/sendEmail.js'
 import sendLink from '../lib/admin/sendLink.js'
 import canva from '../lib/admin/canva.js'
 import certificates from '../lib/admin/certificates.js'
+import checkIn from '../lib/admin/checkIn.js'
 
 /**
  * Single entry point for every admin endpoint.
@@ -27,6 +28,7 @@ const ROUTES = {
   'send-link': sendLink,
   canva,
   certificates,
+  'check-in': checkIn,
 }
 
 export default async function handler(req, res) {

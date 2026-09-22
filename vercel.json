@@ -5,6 +5,10 @@
       "destination": "/api/admin?action=:action"
     },
     {
+      "source": "/api/portal/:action",
+      "destination": "/api/portal?action=:action"
+    },
+    {
       "source": "/api/webhooks/:provider",
       "destination": "/api/webhooks?provider=:provider"
     },

@@ -8,6 +8,8 @@ const VALID_STATUS = ['upcoming', 'live', 'completed', 'cancelled']
 const SELECT_COLUMNS = `
   id, title, description, speaker, speaker_role, starts_at, duration_mins,
   location, seats, status, sort_order, is_published, meeting_link, link_sent_at,
+  recording_url, slides_url, repo_url, resources_notes,
+  reminder_24h_sent_at, reminder_1h_sent_at,
   created_at, updated_at
 `
 
@@ -17,7 +19,7 @@ const SELECT_COLUMNS = `
  * email to registrants only, never on a public URL anyone can scrape.
  */
 function publicView(row) {
-  const { meeting_link, link_sent_at, ...rest } = row
+  const { meeting_link, link_sent_at, reminder_24h_sent_at, reminder_1h_sent_at, ...rest } = row
   return { ...rest, has_meeting_link: Boolean(meeting_link) }
 }
 
@@ -63,7 +65,10 @@ function readPayload(body, { partial = false } = {}) {
     out.duration_mins = mins
   }
 
-  for (const field of ['description', 'speaker', 'speaker_role', 'location', 'meeting_link']) {
+  for (const field of [
+    'description', 'speaker', 'speaker_role', 'location', 'meeting_link',
+    'recording_url', 'slides_url', 'repo_url', 'resources_notes'
+  ]) {
     if (body[field] != null) out[field] = String(body[field]).trim()
   }
 

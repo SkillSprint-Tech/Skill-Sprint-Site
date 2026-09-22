@@ -85,6 +85,8 @@ const footerLinks = [
     links: [
       { label: 'Our Community', url: '/community' },
       { label: 'Workshops',     url: '/workshops' },
+      { label: 'Attendee Portal', url: '/portal' },
+      { label: 'Verify Credential', url: '/verify' },
       { label: 'Team',          url: '/team' },
       { label: 'Mission',       url: '/mission' },
     ],

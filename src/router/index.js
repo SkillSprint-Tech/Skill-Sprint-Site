@@ -58,8 +58,20 @@ const routes = [
   // Team management moved into the admin panel (Team tab) so it sits behind the same
   // login as everything else. These paths were public and unauthenticated — redirect
   // rather than 404 so old bookmarks land somewhere useful.
-  { path: '/team-members-form', redirect: '/admin' },
-  { path: '/team-form', redirect: '/admin' },
+  // Public Certificate Verification Portal
+  {
+    path: '/verify/:code?',
+    name: 'verify-certificate',
+    component: () => import('../views/VerifyCertificateView.vue'),
+    meta: { bareLayout: true }
+  },
+  // Attendee Self-Service Portal
+  {
+    path: '/portal',
+    name: 'attendee-portal',
+    component: () => import('../views/AttendeePortalView.vue'),
+    meta: { bareLayout: true }
+  },
   // Target of the unsubscribe link in every email. Kept out of nav; noindex so the
   // parameterised URLs never get crawled.
   {

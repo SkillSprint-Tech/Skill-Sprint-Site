@@ -194,26 +194,69 @@
     </section>
 
     <!-- ═══════════════════════════════════════ -->
-    <!-- PAST SESSIONS -->
+    <!-- PAST SESSIONS & RESOURCE HUB -->
     <!-- ═══════════════════════════════════════ -->
     <section v-if="past.length" ref="pastScope" class="bg-[#F8FAFC] section">
       <div class="max-w-7xl mx-auto">
         <div class="mb-10">
           <h2 class="past-heading text-gray-900 h-section">
-            Already Delivered
+            Already Delivered &bull; Resource Hub
           </h2>
           <p class="text-gray-500 text-base sm:text-lg mt-2 font-medium">
-            Sessions we've already run for the community.
+            Watch recordings, view slides, and explore starter repositories from completed sessions.
           </p>
         </div>
 
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div v-for="w in past" :key="w.id"
-               class="past-card bg-white/60 border border-gray-100 rounded-xl px-5 py-4 flex items-center gap-4">
-            <span class="text-xs font-mono text-gray-400 tabular-nums flex-shrink-0">
-              {{ shortDate(w.starts_at) }}
-            </span>
-            <span class="text-sm font-bold text-gray-700 truncate">{{ w.title }}</span>
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div
+            v-for="w in past"
+            :key="w.id"
+            class="past-card bg-white border border-gray-100 rounded-2xl p-5 flex flex-col justify-between hover:border-blue-200 transition-all shadow-xs"
+          >
+            <div>
+              <div class="flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                <span>{{ shortDate(w.starts_at) }}</span>
+                <span v-if="w.speaker" class="text-gray-500 font-sans font-medium text-[11px]">{{ w.speaker }}</span>
+              </div>
+              <h3 class="text-base font-bold text-gray-900 mb-1.5 leading-snug">{{ w.title }}</h3>
+              <p v-if="w.description" class="text-xs text-gray-500 line-clamp-2 mb-4 leading-relaxed">
+                {{ w.description }}
+              </p>
+            </div>
+
+            <!-- Resource action buttons -->
+            <div class="pt-3 border-t border-gray-100 flex flex-wrap items-center gap-2">
+              <a
+                v-if="w.recording_url"
+                :href="w.recording_url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-50 text-purple-700 hover:bg-purple-100 transition-colors cursor-pointer"
+              >
+                <span>🎥</span> Watch Recording
+              </a>
+              <a
+                v-if="w.slides_url"
+                :href="w.slides_url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors cursor-pointer"
+              >
+                <span>📑</span> Slides
+              </a>
+              <a
+                v-if="w.repo_url"
+                :href="w.repo_url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-800 hover:bg-slate-200 transition-colors cursor-pointer"
+              >
+                <span>💻</span> Code Repo
+              </a>
+              <span v-if="!w.recording_url && !w.slides_url && !w.repo_url" class="text-[11px] text-gray-400 italic">
+                Resources archived
+              </span>
+            </div>
           </div>
         </div>
       </div>

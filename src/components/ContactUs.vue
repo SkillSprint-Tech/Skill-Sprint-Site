@@ -390,7 +390,10 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 
 const form = reactive({
   fullName: '',
@@ -399,6 +402,13 @@ const form = reactive({
   organization: '',
   purpose: '',
   message: ''
+})
+
+onMounted(() => {
+  if (route.query.track) {
+    form.purpose = 'Student'
+    form.message = `I took the 60s Track Matchmaker Quiz and matched with: ${route.query.track}. I would love to participate in this engineering sprint!`
+  }
 })
 
 const agreed = ref(false)

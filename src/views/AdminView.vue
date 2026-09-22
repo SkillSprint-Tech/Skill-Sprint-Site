@@ -379,6 +379,8 @@
             @update:limit="updateLimit"
             @update:status-filter="updateStatusFilter"
             @inspect="openAttendeeDrawer"
+            @toggle-attended="toggleAttendeeCheckIn"
+            @open-scanner="showQrScanner = true"
           />
 
           <!-- Attendee Detail Slide-Over Inspector Drawer -->
@@ -388,6 +390,15 @@
             :short-date="shortDate"
             @close="inspectedAttendee = null"
             @send-one="sendOne"
+            @toggle-attended="toggleAttendeeCheckIn"
+          />
+
+          <!-- Live QR Check-in Scanner Modal -->
+          <AdminQrScannerModal
+            v-if="showQrScanner"
+            :toast="toast"
+            @close="showQrScanner = false"
+            @checked-in="onQrCheckedIn"
           />
         </div>
 
@@ -567,6 +578,48 @@
                 </label>
               </div>
 
+              <!-- ─── Post-Event Resource Hub Inputs ─── -->
+              <div class="sm:col-span-2 pt-3 border-t border-slate-100 space-y-2">
+                <span class="text-[11px] font-bold text-slate-800 block">
+                  Post-Event Resources & Materials (Public on /workshops)
+                </span>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div class="flex flex-col gap-1">
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                      Recording URL (YouTube/Loom)
+                    </label>
+                    <input
+                      v-model="wForm.recording_url"
+                      type="url"
+                      :class="adminInput"
+                      placeholder="https://youtube.com/watch?v=..."
+                    />
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                      Slides URL (Canva/Google Slides)
+                    </label>
+                    <input
+                      v-model="wForm.slides_url"
+                      type="url"
+                      :class="adminInput"
+                      placeholder="https://docs.google.com/..."
+                    />
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                      GitHub Repo URL
+                    </label>
+                    <input
+                      v-model="wForm.repo_url"
+                      type="url"
+                      :class="adminInput"
+                      placeholder="https://github.com/SkillSprint-Tech/..."
+                    />
+                  </div>
+                </div>
+              </div>
+
               <div class="sm:col-span-2 flex items-center gap-2 pt-1">
                 <button
                   type="submit"
@@ -665,6 +718,12 @@
                       <div v-if="w.speaker" class="text-[11px] text-slate-400 mt-0.5">
                         {{ w.speaker }}
                         <span v-if="w.speaker_role" class="text-slate-400">· {{ w.speaker_role }}</span>
+                      </div>
+                      <!-- Post-event resources indicator chips -->
+                      <div v-if="w.recording_url || w.slides_url || w.repo_url" class="flex flex-wrap items-center gap-1 mt-1.5">
+                        <span v-if="w.recording_url" class="text-[9px] bg-purple-50 text-purple-700 px-1.5 py-0.2 rounded border border-purple-200/60 font-mono">🎥 Video</span>
+                        <span v-if="w.slides_url" class="text-[9px] bg-blue-50 text-blue-700 px-1.5 py-0.2 rounded border border-blue-200/60 font-mono">📑 Slides</span>
+                        <span v-if="w.repo_url" class="text-[9px] bg-slate-100 text-slate-700 px-1.5 py-0.2 rounded border border-slate-200 font-mono">💻 Code</span>
                       </div>
                     </td>
 
@@ -789,25 +848,28 @@
 
             <button
               type="button"
-              @click="showTeamForm = !showTeamForm"
+              @click="openAddMember"
               class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition-all shadow-xs shadow-blue-500/25 cursor-pointer active:scale-[0.98]"
             >
-              {{ showTeamForm ? "Hide Form" : "+ Add Member" }}
+              {{ showTeamForm && !editingMemberId ? "Hide Form" : "+ Add Member" }}
             </button>
           </div>
 
-          <!-- Collapsible Add Member Drawer -->
+          <!-- Collapsible Add/Edit Member Drawer -->
           <div
             v-if="showTeamForm"
             class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl p-5 mb-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)]"
           >
             <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-slate-100">
-              <h3 class="font-bold text-slate-900 text-xs">
-                Add Team Member
+              <h3 class="font-bold text-slate-900 text-xs flex items-center gap-2">
+                <span>{{ editingMemberId ? "Edit Team Member" : "Add Team Member" }}</span>
+                <span v-if="editingMemberId" class="text-[10px] font-normal text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+                  Editing
+                </span>
               </h3>
               <button
                 type="button"
-                @click="showTeamForm = false"
+                @click="cancelMemberForm"
                 class="text-slate-400 hover:text-slate-600 text-xs font-semibold cursor-pointer"
               >
                 Cancel
@@ -894,7 +956,15 @@
                   :disabled="savingMember"
                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs font-semibold transition-all disabled:opacity-50 cursor-pointer shadow-xs shadow-blue-500/25 active:scale-[0.98]"
                 >
-                  {{ savingMember ? "Saving…" : "Save Member" }}
+                  {{ savingMember ? "Saving…" : (editingMemberId ? "Save Changes" : "Save Member") }}
+                </button>
+                <button
+                  v-if="editingMemberId"
+                  type="button"
+                  @click="cancelMemberForm"
+                  class="text-xs text-slate-500 hover:text-slate-700 font-semibold px-3 py-2 cursor-pointer"
+                >
+                  Cancel
                 </button>
                 <span v-if="memberError" class="text-rose-600 text-xs font-semibold">
                   {{ memberError }}
@@ -910,7 +980,7 @@
                 <thead>
                   <tr class="bg-slate-50/80 border-b border-slate-200/80">
                     <th
-                      v-for="h in ['', 'Member', 'Role', 'Bio', 'Actions']"
+                      v-for="h in ['Order', '', 'Member', 'Role', 'Bio', 'Actions']"
                       :key="h"
                       class="px-3.5 py-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap"
                     >
@@ -920,16 +990,50 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                   <tr v-if="!members.length">
-                    <td colspan="5" class="px-4 py-12 text-center text-slate-400 text-xs">
+                    <td colspan="6" class="px-4 py-12 text-center text-slate-400 text-xs">
                       No team members added yet. Click "+ Add Member" to add someone.
                     </td>
                   </tr>
 
                   <tr
-                    v-for="m in members"
+                    v-for="(m, idx) in members"
                     :key="m.id"
                     class="hover:bg-slate-50/70 transition-colors"
+                    :class="{ 'bg-blue-50/40': editingMemberId === m.id }"
                   >
+                    <!-- Order Reorder Controls -->
+                    <td class="px-3 py-2.5 w-16 whitespace-nowrap">
+                      <div class="flex items-center gap-1.5">
+                        <span class="text-[11px] font-mono text-slate-400 w-4 text-center">{{ idx + 1 }}</span>
+                        <div class="flex flex-col">
+                          <button
+                            type="button"
+                            :disabled="idx === 0 || reordering"
+                            @click="moveMember(idx, -1)"
+                            title="Move Up"
+                            class="text-slate-400 hover:text-blue-600 disabled:opacity-20 disabled:hover:text-slate-400 cursor-pointer p-0.5"
+                          >
+                            <svg class="w-3 h-3" viewBox="0 0 16 16" fill="currentColor">
+                              <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                              <path fill-rule="evenodd" d="M4.646 6.854a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8 4.207 5.354 6.854a.5.5 0 0 1-.708 0z"/>
+                            </svg>
+                          </button>
+                          <button
+                            type="button"
+                            :disabled="idx === members.length - 1 || reordering"
+                            @click="moveMember(idx, 1)"
+                            title="Move Down"
+                            class="text-slate-400 hover:text-blue-600 disabled:opacity-20 disabled:hover:text-slate-400 cursor-pointer p-0.5"
+                          >
+                            <svg class="w-3 h-3" viewBox="0 0 16 16" fill="currentColor">
+                              <path fill-rule="evenodd" d="M8 12.5a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 1 0v8a.5.5 0 0 1-.5.5z"/>
+                              <path fill-rule="evenodd" d="M11.354 9.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 .708-.708L8 11.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+
                     <td class="px-3.5 py-2.5 w-10">
                       <div
                         class="w-7 h-7 rounded bg-slate-100 overflow-hidden flex items-center justify-center border border-slate-200 shadow-2xs"
@@ -960,12 +1064,21 @@
                     </td>
 
                     <td class="px-3.5 py-2.5 whitespace-nowrap">
-                      <button
-                        @click="deleteMember(m)"
-                        class="text-rose-600 hover:text-rose-800 text-xs font-semibold cursor-pointer"
-                      >
-                        Delete
-                      </button>
+                      <div class="flex items-center gap-2.5">
+                        <button
+                          @click="editMember(m)"
+                          class="text-blue-600 hover:text-blue-800 text-xs font-semibold cursor-pointer"
+                        >
+                          Edit
+                        </button>
+                        <span class="text-slate-200">|</span>
+                        <button
+                          @click="deleteMember(m)"
+                          class="text-rose-600 hover:text-rose-800 text-xs font-semibold cursor-pointer"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -1031,6 +1144,7 @@ import AdminHeroStats from "../components/admin/AdminHeroStats.vue";
 import AdminMetricsChart from "../components/admin/AdminMetricsChart.vue";
 import AdminRegistrationsTable from "../components/admin/AdminRegistrationsTable.vue";
 import AdminAttendeeDrawer from "../components/admin/AdminAttendeeDrawer.vue";
+import AdminQrScannerModal from "../components/admin/AdminQrScannerModal.vue";
 import { apiPost } from "../utils/adminApi.js";
 
 const adminInput =
@@ -1320,6 +1434,33 @@ const changePage = (delta) => {
 const sendingId = ref(null);
 const sendingAll = ref(false);
 const batchSending = ref(false);
+const showQrScanner = ref(false);
+
+const toggleAttendeeCheckIn = async (attendee) => {
+  const newStatus = !attendee.attended;
+  try {
+    const res = await fetch("/api/admin/check-in", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: attendee.id, attended: newStatus }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (data.ok) {
+      toast("success", newStatus ? "Checked in" : "Check-in removed", attendee.full_name);
+      attendee.attended = newStatus;
+      attendee.checked_in_at = newStatus ? new Date().toISOString() : null;
+      await loadRegistrations();
+    } else {
+      toast("error", "Check-in failed", data.message || "");
+    }
+  } catch {
+    toast("error", "Network error during check-in");
+  }
+};
+
+const onQrCheckedIn = async () => {
+  await loadRegistrations();
+};
 
 const reportSendResult = (data, successTitle) => {
   if (data.ok && data.code !== "QUOTA_EXHAUSTED") {
@@ -1465,6 +1606,10 @@ const blankWorkshop = () => ({
   status: "upcoming",
   is_published: true,
   meeting_link: "",
+  recording_url: "",
+  slides_url: "",
+  repo_url: "",
+  resources_notes: "",
 });
 
 const updatingId = ref(null);
@@ -1639,6 +1784,10 @@ const editWorkshop = (w) => {
     status: w.status,
     is_published: w.is_published,
     meeting_link: w.meeting_link || "",
+    recording_url: w.recording_url || "",
+    slides_url: w.slides_url || "",
+    repo_url: w.repo_url || "",
+    resources_notes: w.resources_notes || "",
   });
   editing.value = w.id;
   showWorkshopForm.value = true;
@@ -1703,6 +1852,8 @@ const memberFile = ref(null);
 const savingMember = ref(false);
 const memberError = ref("");
 const showTeamForm = ref(false);
+const editingMemberId = ref(null);
+const reordering = ref(false);
 const tForm = reactive({ name: "", role: "", bio: "", image: "" });
 
 const loadMembers = async () => {
@@ -1712,6 +1863,75 @@ const loadMembers = async () => {
     if (data.ok) members.value = data.members || [];
   } catch {
     /* empty */
+  }
+};
+
+const openAddMember = () => {
+  if (showTeamForm.value && !editingMemberId.value) {
+    showTeamForm.value = false;
+  } else {
+    resetTeamForm();
+    showTeamForm.value = true;
+  }
+};
+
+const editMember = (m) => {
+  editingMemberId.value = m.id;
+  memberError.value = "";
+  Object.assign(tForm, {
+    name: m.name || "",
+    role: m.role || "",
+    bio: m.bio || "",
+    image: m.image || "",
+  });
+  showTeamForm.value = true;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+const resetTeamForm = () => {
+  editingMemberId.value = null;
+  memberError.value = "";
+  Object.assign(tForm, { name: "", role: "", bio: "", image: "" });
+  if (memberFile.value) memberFile.value.value = "";
+};
+
+const cancelMemberForm = () => {
+  resetTeamForm();
+  showTeamForm.value = false;
+};
+
+const moveMember = async (index, direction) => {
+  const targetIndex = index + direction;
+  if (targetIndex < 0 || targetIndex >= members.value.length) return;
+
+  const item = members.value[index];
+  members.value.splice(index, 1);
+  members.value.splice(targetIndex, 0, item);
+
+  const reorderPayload = members.value.map((m, idx) => ({
+    id: m.id,
+    sort_order: idx + 1,
+  }));
+
+  try {
+    reordering.value = true;
+    const res = await fetch("/api/team-members", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ reorder: reorderPayload }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (data.ok) {
+      toast("success", "Order saved");
+    } else {
+      toast("error", "Could not save order", data.message || "");
+      await loadMembers();
+    }
+  } catch {
+    toast("error", "Network error updating order");
+    await loadMembers();
+  } finally {
+    reordering.value = false;
   }
 };
 
@@ -1766,8 +1986,14 @@ const saveMember = async () => {
   memberError.value = "";
   savingMember.value = true;
   try {
-    const res = await fetch("/api/team-members", {
-      method: "POST",
+    const isEdit = Boolean(editingMemberId.value);
+    const url = isEdit
+      ? `/api/team-members?id=${editingMemberId.value}`
+      : "/api/team-members";
+    const method = isEdit ? "PATCH" : "POST";
+
+    const res = await fetch(url, {
+      method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: tForm.name.trim(),
@@ -1779,9 +2005,8 @@ const saveMember = async () => {
     });
     const data = await res.json().catch(() => ({}));
     if (data.ok) {
-      toast("success", "Team member saved");
-      Object.assign(tForm, { name: "", role: "", bio: "", image: "" });
-      if (memberFile.value) memberFile.value.value = "";
+      toast("success", isEdit ? "Team member updated" : "Team member added");
+      resetTeamForm();
       showTeamForm.value = false;
       await loadMembers();
     } else {

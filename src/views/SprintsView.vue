@@ -37,10 +37,17 @@
         <p class="hero-sub max-w-xs sm:max-w-sm md:max-w-2xl mx-auto text-gray-500 text-sm sm:text-base md:text-lg mb-8 leading-relaxed px-2">
           Each sprint is a focused, time-boxed engineering challenge. Teams build, ship, and demo production code in structured cycles.
         </p>
-        <div class="flex justify-center">
-          <span class="inline-block bg-blue-50 text-blue-600 text-xs font-extrabold px-4 py-1.5 rounded-full border border-blue-100 uppercase tracking-widest">
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <span class="inline-block bg-blue-50 text-blue-600 text-xs font-extrabold px-4 py-2 rounded-full border border-blue-100 uppercase tracking-widest">
             Active Programs
           </span>
+          <button
+            type="button"
+            @click="showQuiz = true"
+            class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white text-xs font-extrabold px-5 py-2 rounded-full shadow-sm hover:shadow transition-all cursor-pointer"
+          >
+            <span>✨ Take the 60s Track Quiz</span>
+          </button>
         </div>
       </div>
     </section>
@@ -66,6 +73,23 @@
             v-bind="sprint"
             class="sprint-card"
           />
+        </div>
+
+        <!-- Track Matchmaker Banner -->
+        <div class="mt-8 bg-gradient-to-r from-blue-50 via-indigo-50/60 to-slate-50 border border-blue-100 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-xs">
+          <div class="space-y-1">
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 font-mono">Personalized Guidance</span>
+            <h3 class="text-lg sm:text-xl font-bold text-slate-900">Unsure which engineering sprint fits your goals?</h3>
+            <p class="text-xs sm:text-sm text-slate-500">Answer 4 quick questions about your stack and goals to find your ideal track.</p>
+          </div>
+          <button
+            type="button"
+            @click="showQuiz = true"
+            class="shrink-0 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold px-6 py-3 rounded-xl shadow-xs transition-all cursor-pointer flex items-center gap-2 self-start sm:self-auto"
+          >
+            <span>Take 60s Matchmaker Quiz</span>
+            <span>&rarr;</span>
+          </button>
         </div>
       </div>
     </section>
@@ -178,6 +202,9 @@
       </div>
     </section>
 
+    <!-- Track Matchmaker Modal -->
+    <TrackQuizModal :is-open="showQuiz" @close="showQuiz = false" />
+
   </div>
 </template>
 
@@ -185,6 +212,9 @@
 import { ref } from 'vue'
 import { useGSAP } from '../composables/useGSAP'
 import SprintCard from '../components/SprintCard.vue'
+import TrackQuizModal from '../components/TrackQuizModal.vue'
+
+const showQuiz = ref(false)
 
 const pageScope = ref(null)
 const heroScope = ref(null)

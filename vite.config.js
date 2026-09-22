@@ -22,6 +22,7 @@ const vercelApiPlugin = () => ({
           // or every /api/admin/* call 404s in dev but works in production.
           const REWRITES = [
             [/^\/api\/admin\/([^/]+)$/, (m) => ['/api/admin', `action=${m[1]}`]],
+            [/^\/api\/portal\/([^/]+)$/, (m) => ['/api/portal', `action=${m[1]}`]],
             [/^\/api\/webhooks\/([^/]+)$/, (m) => ['/api/webhooks', `provider=${m[1]}`]],
             [/^\/api\/cron\/process-emails$/, () => ['/api/cron', '']],
           ]
