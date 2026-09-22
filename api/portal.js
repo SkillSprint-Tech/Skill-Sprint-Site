@@ -113,12 +113,11 @@ export default async function handler(req, res) {
       )
 
       if (regCheck.length === 0 && certCheck.length === 0) {
-        // Automatically create a community registration so any user or tester can access the portal!
-        await query(
-          `INSERT INTO registrations (full_name, email, university, skill_level, consent, source)
-           VALUES ($1, $2, 'SkillSprint Community', 'Intermediate', true, 'attendee_portal')
-           ON CONFLICT (email) DO NOTHING`,
-          [email.split('@')[0], email]
+        return fail(
+          res,
+          'NOT_FOUND',
+          'No workshop registration or certificate found for this email address. Please enter the email you registered with.',
+          404
         )
       }
 
@@ -148,18 +147,22 @@ export default async function handler(req, res) {
         })
 
         if (sendResult.outcome !== 'sent') {
-          console.warn('send-otp non-sent outcome:', sendResult)
+          console.error('send-otp failed to send email:', sendResult)
+          return fail(
+            res,
+            'SEND_FAILED',
+            `Could not deliver email to ${email}: ${sendResult.error || 'provider error'}. Please try again.`,
+            502
+          )
         }
       } catch (err) {
         console.error('send-otp provider error:', err)
+        return fail(res, 'SEND_FAILED', 'Failed to send login email. Please try again.', 500)
       }
-
-      console.log(`[PORTAL OTP] Generated OTP for ${email}: ${otpCode}`)
 
       return ok(res, {
         message: 'A 6-digit passcode has been sent to your email.',
         email,
-        devOtp: otpCode,
       })
     }
 
