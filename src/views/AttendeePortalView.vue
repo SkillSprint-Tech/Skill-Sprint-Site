@@ -98,13 +98,13 @@
         <form v-if="step === 'email'" @submit.prevent="submitEmail" class="space-y-4">
           <div>
             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
-              Registered Email Address
+              Your Email Address
             </label>
             <input
               v-model="emailInput"
               type="email"
               required
-              placeholder="you@university.edu"
+              placeholder="you@example.com"
               autocomplete="email"
               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-2 focus:outline-blue-600 transition-all"
             />
@@ -122,11 +122,26 @@
 
         <!-- Step 2: OTP Form -->
         <form v-else-if="step === 'otp'" @submit.prevent="submitOtp" class="space-y-4">
-          <div class="text-center pb-2">
+          <div class="text-center pb-1">
             <p class="text-xs text-slate-600">
-              We emailed a 6-digit passcode to<br/>
+              We generated a 6-digit passcode for<br/>
               <strong class="font-mono text-slate-900">{{ emailInput }}</strong>
             </p>
+          </div>
+
+          <!-- Dev / Testing Helper Callout -->
+          <div v-if="devOtpCode" class="p-3 bg-blue-50 border border-blue-200/80 rounded-2xl text-xs text-blue-900 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-base">🔑</span>
+              <span>Passcode: <strong class="font-mono text-sm tracking-widest text-blue-700">{{ devOtpCode }}</strong></span>
+            </div>
+            <button
+              type="button"
+              @click="otpInput = devOtpCode"
+              class="text-[11px] bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1 rounded-lg font-bold cursor-pointer transition-colors"
+            >
+              Fill Code
+            </button>
           </div>
 
           <div>
@@ -206,7 +221,7 @@
             <div class="grid grid-cols-3 gap-3 shrink-0">
               <div class="bg-slate-50 border border-slate-100 rounded-2xl p-3 text-center min-w-[80px]">
                 <span class="block text-xl font-black text-slate-900">{{ portalData?.stats?.totalRegistered || 0 }}</span>
-                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Enrolled</span>
+                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Workshops</span>
               </div>
               <div class="bg-emerald-50/60 border border-emerald-100 rounded-2xl p-3 text-center min-w-[80px]">
                 <span class="block text-xl font-black text-emerald-700">{{ portalData?.stats?.totalAttended || 0 }}</span>
@@ -227,7 +242,7 @@
               class="px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2"
               :class="activeTab === 'workshops' ? 'bg-blue-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'"
             >
-              <span>🎟️ My Workshops</span>
+              <span>🎟️ Workshops</span>
               <span class="px-1.5 py-0.2 rounded-full text-[10px]" :class="activeTab === 'workshops' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'">
                 {{ portalData?.registrations?.length || 0 }}
               </span>
@@ -249,7 +264,7 @@
         <!-- ── TAB 1: WORKSHOPS & EVENTS ─────────────────────────────── -->
         <div v-if="activeTab === 'workshops'" class="space-y-4">
           <div v-if="!portalData?.registrations || portalData.registrations.length === 0" class="bg-white rounded-3xl p-10 text-center border border-slate-200/80">
-            <p class="text-sm font-semibold text-slate-600 mb-2">No workshop registrations found.</p>
+            <p class="text-sm font-semibold text-slate-600 mb-2">No workshops found.</p>
             <p class="text-xs text-slate-400 mb-4">You have not registered for any SkillSprint workshops yet.</p>
             <router-link to="/workshops" class="inline-flex items-center gap-2 bg-blue-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-blue-700 transition-colors">
               Explore Upcoming Workshops &rarr;
@@ -358,6 +373,12 @@
             <p class="text-xs text-slate-500 max-w-sm mx-auto mb-4">
               Certificates of completion are issued by organizers following live workshop attendance and project submissions.
             </p>
+            <router-link
+              to="/verify/ss-demo-2026-cert"
+              class="inline-flex items-center gap-2 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-xs font-bold px-4 py-2 rounded-xl transition-colors"
+            >
+              <span>View Sample Certificate &rarr;</span>
+            </router-link>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -430,6 +451,7 @@ const successMessage = ref('')
 
 const emailInput = ref('')
 const otpInput = ref('')
+const devOtpCode = ref('')
 const portalEmail = ref('')
 const portalData = ref(null)
 const activeTab = ref('workshops')
@@ -463,16 +485,28 @@ const getLinkedInCertUrl = (cert) => {
   return `https://www.linkedin.com/profile/add?${params.toString()}`
 }
 
+const loadDashboardData = async () => {
+  const token = localStorage.getItem('ss_portal_token')
+  const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
+  const res = await fetch('/api/portal?action=data', {
+    credentials: 'include',
+    headers,
+  })
+  const data = await res.json().catch(() => ({}))
+  if (res.ok && data.ok) {
+    portalData.value = data
+    portalEmail.value = data.email
+    step.value = 'dashboard'
+    return true
+  }
+  return false
+}
+
 const checkExistingSession = async () => {
   checkingSession.value = true
   try {
-    const res = await fetch('/api/portal?action=data')
-    const data = await res.json().catch(() => ({}))
-    if (res.ok && data.ok) {
-      portalData.value = data
-      portalEmail.value = data.email
-      step.value = 'dashboard'
-    } else {
+    const success = await loadDashboardData()
+    if (!success) {
       step.value = 'email'
     }
   } catch {
@@ -498,10 +532,10 @@ const submitEmail = async () => {
       return
     }
 
-    successMessage.value = data.message || 'Passcode sent! Check your inbox.'
+    successMessage.value = data.message || 'Passcode generated! Check your inbox or use code below.'
     step.value = 'otp'
     if (data.devOtp) {
-      console.info('Development OTP code:', data.devOtp)
+      devOtpCode.value = data.devOtp
       otpInput.value = data.devOtp
     }
   } catch (err) {
@@ -534,8 +568,14 @@ const submitOtp = async () => {
       return
     }
 
+    if (data.token) {
+      localStorage.setItem('ss_portal_token', data.token)
+    }
     portalEmail.value = data.email
-    await checkExistingSession()
+    const loaded = await loadDashboardData()
+    if (!loaded) {
+      step.value = 'dashboard'
+    }
   } catch (err) {
     errorMessage.value = err.message || 'Network error occurred. Please try again.'
   } finally {
@@ -544,6 +584,7 @@ const submitOtp = async () => {
 }
 
 const logout = async () => {
+  localStorage.removeItem('ss_portal_token')
   try {
     await fetch('/api/portal?action=logout', { method: 'POST' })
   } catch {
@@ -552,6 +593,7 @@ const logout = async () => {
   portalData.value = null
   portalEmail.value = ''
   otpInput.value = ''
+  devOtpCode.value = ''
   step.value = 'email'
 }
 

@@ -8,16 +8,18 @@
             SS
           </div>
           <span class="font-extrabold tracking-tight text-slate-900 text-sm sm:text-base">
-            SkillSprint <span class="text-blue-600">Credentials</span>
+            SkillSprint <span class="text-blue-600">Verification</span>
           </span>
         </router-link>
 
-        <router-link
-          to="/workshops"
-          class="text-xs font-semibold text-slate-500 hover:text-blue-600 transition-colors"
-        >
-          Explore Workshops &rarr;
-        </router-link>
+        <div class="flex items-center gap-4">
+          <router-link
+            to="/portal"
+            class="text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors"
+          >
+            Attendee Portal &rarr;
+          </router-link>
+        </div>
       </div>
     </header>
 
@@ -34,7 +36,7 @@
         </p>
       </div>
 
-      <!-- Verified Certificate Card -->
+      <!-- ── STATE 1: VERIFIED CERTIFICATE CARD ──────────────────────── -->
       <div
         v-else-if="cert && certValid"
         class="w-full max-w-2xl bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-6 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative z-10 transition-all"
@@ -83,7 +85,7 @@
               {{ cert.recipient_name }}
             </p>
             <p v-if="cert.recipient_email_masked" class="text-xs text-slate-400 font-mono mt-0.5">
-              Registered email: {{ cert.recipient_email_masked }}
+              Verified email: {{ cert.recipient_email_masked }}
             </p>
           </div>
 
@@ -133,12 +135,75 @@
             Access All My Certificates &rarr;
           </router-link>
         </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-100 text-center">
+          <button
+            type="button"
+            @click="clearSearch"
+            class="text-xs font-medium text-slate-400 hover:text-blue-600 cursor-pointer"
+          >
+            &larr; Verify another credential
+          </button>
+        </div>
       </div>
 
-      <!-- Invalid / Not Found State -->
+      <!-- ── STATE 2: SEARCH / PORTAL HOMEPAGE (No Code Provided) ─────── -->
+      <div
+        v-else-if="!currentCode"
+        class="w-full max-w-lg bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative z-10 text-center"
+      >
+        <div class="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 mx-auto mb-4 shadow-xs">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+        </div>
+
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+          Verify SkillSprint Credential
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-500 mt-2 max-w-sm mx-auto leading-relaxed">
+          Cryptographically verify the validity, recipient identity, and workshop completion details of official SkillSprint certificates.
+        </p>
+
+        <!-- Search Form -->
+        <form @submit.prevent="lookupCode" class="mt-6 space-y-3">
+          <div class="relative">
+            <input
+              v-model="searchInput"
+              type="text"
+              required
+              placeholder="Enter verification code (e.g. ss-demo-2026-cert)"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-sm font-mono text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-2 focus:outline-blue-600 transition-all"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-bold text-xs py-3.5 px-4 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span>Verify Credential Status &rarr;</span>
+          </button>
+        </form>
+
+        <!-- Demo Quick Test Helper -->
+        <div class="mt-6 pt-5 border-t border-slate-100">
+          <p class="text-[11px] text-slate-400 mb-2">Want to test verification? Try our live sample credential:</p>
+          <button
+            type="button"
+            @click="testDemoCode"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100/80 border border-blue-200/60 text-xs font-mono font-bold text-blue-700 transition-all cursor-pointer"
+          >
+            <span>📜</span>
+            <span>ss-demo-2026-cert</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── STATE 3: NOT FOUND / INVALID CODE ───────────────────────── -->
       <div
         v-else
-        class="w-full max-w-md bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-8 shadow-xl text-center relative z-10"
+        class="w-full max-w-md bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-xl text-center relative z-10"
       >
         <div class="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200/80 flex items-center justify-center text-rose-500 mx-auto mb-4">
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -148,17 +213,18 @@
           </svg>
         </div>
         <h2 class="text-base font-bold text-slate-900 mb-1">
-          Invalid or Expired Credential
+          Credential Not Found
         </h2>
         <p class="text-xs text-slate-500 leading-relaxed mb-6">
-          We could not locate an issued certificate with code <code class="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-slate-700">{{ code }}</code>.
+          No issued certificate was located for verification code: <code class="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-slate-800 font-bold">{{ currentCode }}</code>
         </p>
 
-        <form @submit.prevent="lookupNewCode" class="flex gap-2">
+        <form @submit.prevent="lookupCode" class="flex gap-2">
           <input
-            v-model="newCodeInput"
+            v-model="searchInput"
             type="text"
-            placeholder="Enter verification code…"
+            required
+            placeholder="Try another code…"
             class="flex-1 border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono text-slate-800 focus:outline-2 focus:outline-blue-600"
           />
           <button
@@ -169,9 +235,16 @@
           </button>
         </form>
 
-        <div class="mt-6 pt-4 border-t border-slate-100">
-          <router-link to="/" class="text-xs font-semibold text-blue-600 hover:underline">
-            &larr; Return to SkillSprint Home
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+          <button
+            type="button"
+            @click="testDemoCode"
+            class="text-blue-600 hover:underline font-medium cursor-pointer"
+          >
+            Try sample code
+          </button>
+          <router-link to="/" class="text-slate-400 hover:text-slate-700">
+            Return Home &rarr;
           </router-link>
         </div>
       </div>
@@ -185,18 +258,18 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
 
-const code = computed(() => String(route.params.code || route.query.code || '').trim())
-const loading = ref(true)
+const currentCode = computed(() => String(route.params.code || route.query.code || '').trim())
+const searchInput = ref('')
+const loading = ref(false)
 const certValid = ref(false)
 const cert = ref(null)
 const copied = ref(false)
-const newCodeInput = ref('')
 
 const formatDate = (iso) => {
   if (!iso) return 'Recent'
@@ -240,13 +313,15 @@ const verifyCode = async (targetCode) => {
   if (!targetCode) {
     loading.value = false
     certValid.value = false
+    cert.value = null
     return
   }
+
   loading.value = true
   try {
     const res = await fetch(`/api/verify-certificate?code=${encodeURIComponent(targetCode)}`)
     const data = await res.json().catch(() => ({}))
-    if (data.ok && data.valid && data.certificate) {
+    if (res.ok && data.ok && data.valid && data.certificate) {
       certValid.value = true
       cert.value = data.certificate
       document.title = `Verified Certificate: ${data.certificate.recipient_name} — SkillSprint`
@@ -256,18 +331,39 @@ const verifyCode = async (targetCode) => {
     }
   } catch {
     certValid.value = false
+    cert.value = null
   } finally {
     loading.value = false
   }
 }
 
-const lookupNewCode = () => {
-  if (!newCodeInput.value.trim()) return
-  router.push(`/verify/${newCodeInput.value.trim()}`)
-  verifyCode(newCodeInput.value.trim())
+const lookupCode = () => {
+  const clean = searchInput.value.trim()
+  if (!clean) return
+  router.push(`/verify/${clean}`)
 }
 
+const testDemoCode = () => {
+  searchInput.value = 'ss-demo-2026-cert'
+  router.push('/verify/ss-demo-2026-cert')
+}
+
+const clearSearch = () => {
+  searchInput.value = ''
+  cert.value = null
+  certValid.value = false
+  router.push('/verify')
+}
+
+watch(currentCode, (newCode) => {
+  verifyCode(newCode)
+})
+
 onMounted(() => {
-  verifyCode(code.value)
+  if (currentCode.value) {
+    verifyCode(currentCode.value)
+  } else {
+    loading.value = false
+  }
 })
 </script>
