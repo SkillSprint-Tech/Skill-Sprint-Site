@@ -21,18 +21,21 @@
           <span class="text-blue-600">Real Skills.</span>
         </h1>
         <p class="hero-sub max-w-xs sm:max-w-sm md:max-w-2xl mx-auto text-gray-500 text-sm sm:text-base md:text-lg mb-8 leading-relaxed px-2">
-          Hands-on sessions run by student engineers, open to everyone, costing nothing.
-          Register once and we'll email you the full schedule.
+          Hands-on sessions covering software engineering, UI/UX design, data & AI, cybersecurity, and modern tech skills. Open to everyone, costing nothing. Register once and we'll email you the full schedule.
         </p>
-        <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
+        <div class="flex flex-wrap gap-3 justify-center items-center">
           <a href="#register"
-             class="w-full sm:w-auto bg-blue-600 text-white px-8 py-4 rounded-full font-semibold
+             class="w-full sm:w-auto bg-blue-600 text-white px-8 py-3.5 rounded-full font-semibold
                     hover:bg-blue-700 transition-colors duration-200 shadow-sm shadow-blue-100">
             Register for the series
           </a>
-          <span class="inline-block bg-blue-50 text-blue-600 text-xs font-extrabold px-4 py-1.5 rounded-full border border-blue-100 uppercase tracking-widest">
-            Workshops
-          </span>
+          <button
+            type="button"
+            @click="showQuiz = true"
+            class="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white text-sm font-bold px-6 py-3.5 rounded-full shadow-sm hover:shadow transition-all cursor-pointer flex items-center justify-center gap-2"
+          >
+            <span>✨ Take the 2-Min Quiz</span>
+          </button>
         </div>
       </div>
     </section>
@@ -379,9 +382,18 @@
             </div>
 
             <fieldset class="flex flex-col gap-2.5">
-              <legend class="text-gray-300 text-sm font-semibold mb-2">
-                What are you interested in? <span class="text-blue-400">*</span>
-              </legend>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
+                <legend class="text-gray-300 text-sm font-semibold">
+                  What are you interested in? <span class="text-blue-400">*</span>
+                </legend>
+                <button
+                  type="button"
+                  @click="showQuiz = true"
+                  class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 hover:underline cursor-pointer self-start sm:self-auto"
+                >
+                  <span>✨ Not sure? Take the 2-min Matchmaker Quiz</span>
+                </button>
+              </div>
               <div class="flex flex-wrap gap-2">
                 <button v-for="topic in topics" :key="topic" type="button"
                         @click="toggleInterest(topic)"
@@ -426,6 +438,13 @@
       </div>
     </section>
 
+    <!-- 2-Min Matchmaker Quiz Modal -->
+    <TrackQuizModal
+      :is-open="showQuiz"
+      @close="showQuiz = false"
+      @select-topics="handleQuizTopics"
+    />
+
   </div>
 </template>
 
@@ -433,6 +452,7 @@
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { useGSAP } from '../composables/useGSAP'
 import StatusBadge from '../components/StatusBadge.vue'
+import TrackQuizModal from '../components/TrackQuizModal.vue'
 import { whatsappGroup } from '../data/site'
 import { monthOf, dayOf, timeOf, shortDate, SITE_TIME_ZONE_LABEL } from '../utils/datetime'
 
@@ -441,6 +461,7 @@ const heroScope = ref(null)
 const upcomingScope = ref(null)
 const pastScope = ref(null)
 const formScope = ref(null)
+const showQuiz = ref(false)
 
 const floatingTags = [
   { label: '🎓 always free', position: 'left-4 md:left-[10%] lg:left-[16%] top-[16%] -rotate-6' },
@@ -451,7 +472,33 @@ const floatingTags = [
 
 const years = ['1st year', '2nd year', '3rd year', '4th year', 'Graduate', 'Not a student']
 const skillLevels = ['Complete beginner', 'Some experience', 'Comfortable', 'Advanced']
-const topics = ['Web Development', 'APIs & Backend', 'Git & Collaboration', 'UI/UX Design', 'DevOps', 'Career & Interviews']
+const topics = [
+  'UI/UX & Product Design',
+  'Web & Frontend Development',
+  'APIs, Databases & Backend',
+  'Artificial Intelligence & Machine Learning',
+  'Data Science & Analytics',
+  'Cybersecurity & Ethical Hacking',
+  'Cloud Computing & DevOps',
+  'Mobile App Development',
+  'Product Management & Agile',
+  'Git, Open Source & Collaboration',
+  'Career Growth & Tech Interviews',
+  'Computer Science Fundamentals & Systems',
+]
+
+const handleQuizTopics = (recommendedTopics = []) => {
+  recommendedTopics.forEach((t) => {
+    if (topics.includes(t) && !form.interests.includes(t)) {
+      form.interests.push(t)
+    }
+  })
+  if (form.interests.length) fieldErrors.interests = ''
+  const el = document.getElementById('full_name')
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+}
 
 // ── Schedule ────────────────────────────────────────────────────────────────
 const upcoming = ref([])

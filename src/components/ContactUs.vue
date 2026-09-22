@@ -407,7 +407,7 @@ const form = reactive({
 onMounted(() => {
   if (route.query.track) {
     form.purpose = 'Student'
-    form.message = `I took the 60s Track Matchmaker Quiz and matched with: ${route.query.track}. I would love to participate in this engineering sprint!`
+    form.message = `I took the 2-Min Track Matchmaker Quiz and matched with: ${route.query.track}. I would love to participate in this track!`
   }
 })
 

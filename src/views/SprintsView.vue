@@ -46,7 +46,7 @@
             @click="showQuiz = true"
             class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white text-xs font-extrabold px-5 py-2 rounded-full shadow-sm hover:shadow transition-all cursor-pointer"
           >
-            <span>✨ Take the 60s Track Quiz</span>
+            <span>✨ Take the 2-Min Track Quiz</span>
           </button>
         </div>
       </div>
@@ -62,7 +62,7 @@
             Active Tracks
           </h2>
           <p class="active-sub text-gray-500 text-base mt-2 font-medium">
-            Current engineering sprints accepting participants.
+            Current sprints and programs accepting participants across design, engineering, and data.
           </p>
         </div>
 
@@ -79,15 +79,15 @@
         <div class="mt-8 bg-gradient-to-r from-blue-50 via-indigo-50/60 to-slate-50 border border-blue-100 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-xs">
           <div class="space-y-1">
             <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 font-mono">Personalized Guidance</span>
-            <h3 class="text-lg sm:text-xl font-bold text-slate-900">Unsure which engineering sprint fits your goals?</h3>
-            <p class="text-xs sm:text-sm text-slate-500">Answer 4 quick questions about your stack and goals to find your ideal track.</p>
+            <h3 class="text-lg sm:text-xl font-bold text-slate-900">Unsure which track fits your background and goals?</h3>
+            <p class="text-xs sm:text-sm text-slate-500">Answer 4 quick questions about your passions and goals to find your ideal path.</p>
           </div>
           <button
             type="button"
             @click="showQuiz = true"
             class="shrink-0 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold px-6 py-3 rounded-xl shadow-xs transition-all cursor-pointer flex items-center gap-2 self-start sm:self-auto"
           >
-            <span>Take 60s Matchmaker Quiz</span>
+            <span>Take 2-Min Matchmaker Quiz</span>
             <span>&rarr;</span>
           </button>
         </div>
