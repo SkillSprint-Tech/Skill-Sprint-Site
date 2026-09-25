@@ -117,8 +117,8 @@
                 <span class="font-extrabold text-slate-900 dark:text-white tracking-tight">
                   SkillSprint
                 </span>
-                <span class="text-slate-300 dark:text-slate-600">/</span>
-                <span class="font-mono text-blue-600 dark:text-blue-400 font-semibold text-[11px] bg-blue-50 dark:bg-blue-950/60 px-1.5 py-0.5 rounded border border-blue-100 dark:border-blue-900/50">
+                <span class="hidden sm:inline text-slate-300 dark:text-slate-600">/</span>
+                <span class="hidden sm:inline-block font-mono text-blue-600 dark:text-blue-400 font-semibold text-[11px] bg-blue-50 dark:bg-blue-950/60 px-1.5 py-0.5 rounded border border-blue-100 dark:border-blue-900/50">
                   Console
                 </span>
               </div>
@@ -133,7 +133,7 @@
             </div>
 
             <!-- Right Controls: Theme Toggle, Live Time, Search, Sync, Refresh, Sign Out -->
-            <div class="flex items-center gap-1.5 sm:gap-2">
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
               <!-- Dark / Light Theme Toggle Button -->
               <button
                 type="button"
@@ -186,10 +186,10 @@
                 <kbd class="font-mono text-[9px] bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 px-1 py-0.2 rounded text-slate-400 font-semibold shadow-2xs group-hover:border-blue-200 group-hover:text-blue-600">⌘K</kbd>
               </button>
 
-              <!-- Live Sync Auto-Refresh Toggle -->
-              <div class="flex items-center bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 rounded-lg px-1.5 sm:px-2 py-0.5 text-xs font-mono shrink-0">
+              <!-- Live Sync Auto-Refresh Toggle (Hidden on mobile to guarantee Sign Out is never crowded) -->
+              <div class="hidden sm:flex items-center bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 rounded-lg px-2 py-0.5 text-xs font-mono shrink-0">
                 <span
-                  class="w-1.5 h-1.5 rounded-full mr-1 sm:mr-1.5 shrink-0 transition-colors"
+                  class="w-1.5 h-1.5 rounded-full mr-1.5 shrink-0 transition-colors"
                   :class="liveSyncSeconds > 0 ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300 dark:bg-slate-600'"
                   :title="liveSyncSeconds > 0 ? `Live sync active (${liveSyncSeconds}s)` : 'Live sync paused'"
                 ></span>
@@ -210,7 +210,7 @@
               <button
                 @click="refreshAll"
                 :disabled="loading"
-                class="inline-flex items-center justify-center gap-1.5 border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-blue-50/50 dark:hover:bg-slate-700 hover:text-blue-700 dark:hover:text-blue-400 hover:border-blue-200 dark:hover:border-slate-600 text-slate-700 dark:text-slate-200 px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer disabled:opacity-50 shadow-2xs active:scale-[0.98] shrink-0"
+                class="inline-flex items-center justify-center gap-1.5 border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-blue-50/50 dark:hover:bg-slate-700 hover:text-blue-700 dark:hover:text-blue-400 hover:border-blue-200 dark:hover:border-slate-600 text-slate-700 dark:text-slate-200 w-8 h-8 sm:w-auto px-2 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all cursor-pointer disabled:opacity-50 shadow-2xs active:scale-[0.98] shrink-0"
                 title="Refresh registrations and metrics"
               >
                 <svg
@@ -226,13 +226,13 @@
                 <span class="hidden md:inline">{{ loading ? "Syncing…" : "Refresh" }}</span>
               </button>
 
-              <!-- Sign Out -->
+              <!-- Sign Out (Red accent, always visible and unclipped on mobile) -->
               <button
                 @click="logout"
-                class="inline-flex items-center justify-center gap-1 border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:text-rose-600 dark:hover:text-rose-400 hover:border-rose-200 dark:hover:border-rose-900/50 text-slate-600 dark:text-slate-300 px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer shadow-2xs active:scale-[0.98] shrink-0"
+                class="inline-flex items-center justify-center gap-1.5 border border-rose-200/80 dark:border-rose-900/60 bg-rose-50/70 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-400 hover:border-rose-300 dark:hover:border-rose-800 w-8 h-8 sm:w-auto px-2 sm:px-2.5 sm:py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs active:scale-[0.98] shrink-0"
                 title="Sign out of console"
               >
-                <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <svg class="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5H3a1 1 0 01-1-1v-9a1 1 0 011-1h3m4 8.5l3.5-3.5L10 5m3.5 3.5H6" />
                 </svg>
                 <span class="hidden md:inline">Sign out</span>
@@ -509,8 +509,10 @@
           <!-- Live Email Template Visual Previewer & Test Dispatch Modal -->
           <AdminEmailPreviewModal
             v-if="showEmailPreview"
+            :template="emailView"
             :workshops="workshops"
             :toast="toast"
+            @template-change="(t) => (emailView = t)"
             @close="showEmailPreview = false"
           />
         </div>

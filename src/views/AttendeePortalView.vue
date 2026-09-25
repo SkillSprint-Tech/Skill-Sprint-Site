@@ -235,28 +235,48 @@
           </div>
 
           <!-- Section Switcher Tabs -->
-          <div class="flex items-center gap-2 mt-6 pt-6 border-t border-slate-100">
+          <div class="flex flex-wrap items-center justify-between gap-2 mt-6 pt-6 border-t border-slate-100">
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                @click="activeTab = 'workshops'"
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2"
+                :class="activeTab === 'workshops' ? 'bg-blue-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'"
+              >
+                <span>🎟️ Workshops</span>
+                <span class="px-1.5 py-0.2 rounded-full text-[10px]" :class="activeTab === 'workshops' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'">
+                  {{ portalData?.registrations?.length || 0 }}
+                </span>
+              </button>
+              <button
+                type="button"
+                @click="activeTab = 'certificates'"
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2"
+                :class="activeTab === 'certificates' ? 'bg-blue-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'"
+              >
+                <span>📜 Certificate Vault</span>
+                <span class="px-1.5 py-0.2 rounded-full text-[10px]" :class="activeTab === 'certificates' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'">
+                  {{ portalData?.certificates?.length || 0 }}
+                </span>
+              </button>
+            </div>
+
+            <!-- Digital Check-in QR Pass Trigger -->
             <button
+              v-if="portalData?.registrations?.length"
               type="button"
-              @click="activeTab = 'workshops'"
-              class="px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2"
-              :class="activeTab === 'workshops' ? 'bg-blue-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'"
+              @click="openQrModal(portalData.registrations[0])"
+              class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-xs active:scale-[0.98]"
+              title="Show Digital QR Ticket Pass for Live Workshop Check-in"
             >
-              <span>🎟️ Workshops</span>
-              <span class="px-1.5 py-0.2 rounded-full text-[10px]" :class="activeTab === 'workshops' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'">
-                {{ portalData?.registrations?.length || 0 }}
-              </span>
-            </button>
-            <button
-              type="button"
-              @click="activeTab = 'certificates'"
-              class="px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2"
-              :class="activeTab === 'certificates' ? 'bg-blue-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'"
-            >
-              <span>📜 Certificate Vault</span>
-              <span class="px-1.5 py-0.2 rounded-full text-[10px]" :class="activeTab === 'certificates' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'">
-                {{ portalData?.certificates?.length || 0 }}
-              </span>
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                <path d="M14 14h3v3h-3z"></path>
+                <path d="M17 17h4v4h-4z"></path>
+              </svg>
+              <span>Show QR Ticket Pass</span>
             </button>
           </div>
         </div>
@@ -308,6 +328,23 @@
 
               <!-- Action Buttons / Links -->
               <div class="flex flex-wrap items-center gap-2 pt-2 md:pt-0">
+                <!-- Check-in QR Pass Button -->
+                <button
+                  type="button"
+                  @click="openQrModal(reg)"
+                  class="border border-blue-200 hover:border-blue-400 bg-blue-50/80 hover:bg-blue-100/80 text-blue-700 text-xs font-bold px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-[0.98]"
+                  title="Show digital QR ticket for in-person / live check-in"
+                >
+                  <svg class="w-3.5 h-3.5 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                    <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                    <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                    <path d="M14 14h3v3h-3z"></path>
+                    <path d="M17 17h4v4h-4z"></path>
+                  </svg>
+                  <span>QR Pass</span>
+                </button>
+
                 <!-- Join Meeting Link (if workshop is upcoming/live and link exists) -->
                 <a
                   v-if="reg.meeting_link && reg.status !== 'completed'"
@@ -431,6 +468,88 @@
           </div>
         </div>
       </div>
+
+      <!-- ── DIGITAL QR TICKET PASS MODAL ───────────────────────────── -->
+      <div
+        v-if="selectedTicketPass"
+        class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-md animate-fade-in"
+        @click.self="selectedTicketPass = null"
+      >
+        <div class="bg-white rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl border border-slate-200 flex flex-col animate-scale-in text-center">
+          <!-- Header Ribbon -->
+          <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 text-white relative">
+            <button
+              type="button"
+              @click="selectedTicketPass = null"
+              class="absolute top-3 right-3 text-white/80 hover:text-white p-1 rounded-lg transition-colors cursor-pointer"
+              title="Close Pass"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+            <span class="text-[10px] font-mono uppercase font-bold tracking-widest bg-white/20 px-2.5 py-0.5 rounded-full inline-block mb-1">
+              Official Event Pass
+            </span>
+            <h3 class="text-base font-extrabold tracking-tight">SkillSprint Workshop Pass</h3>
+            <p class="text-xs text-blue-100 mt-0.5 truncate">{{ selectedTicketPass.workshop_title || 'Live Workshop' }}</p>
+          </div>
+
+          <!-- QR Code Canvas Display -->
+          <div class="p-6 bg-slate-50 flex flex-col items-center">
+            <div class="bg-white p-3 rounded-2xl border border-slate-200/90 shadow-md">
+              <img
+                :src="`https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=${encodeURIComponent(selectedTicketPass.id)}`"
+                alt="Workshop Check-in QR Code"
+                class="w-48 h-48 sm:w-52 sm:h-52 object-contain"
+                loading="eager"
+              />
+            </div>
+
+            <!-- Status Indicator -->
+            <div class="mt-4">
+              <span
+                v-if="selectedTicketPass.attended"
+                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200"
+              >
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                ✓ Checked In & Verified
+              </span>
+              <span
+                v-else
+                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200"
+              >
+                <span class="w-2 h-2 rounded-full bg-blue-600 animate-ping"></span>
+                Ready for Entrance Scan
+              </span>
+            </div>
+
+            <!-- Ticket Verification Metadata -->
+            <div class="w-full mt-4 pt-4 border-t border-slate-200 text-left space-y-1 font-mono text-xs">
+              <div class="flex justify-between text-slate-500">
+                <span>Attendee:</span>
+                <strong class="text-slate-800 truncate max-w-[170px]">{{ portalData?.profile?.name }}</strong>
+              </div>
+              <div class="flex justify-between text-slate-500">
+                <span>Token:</span>
+                <span class="text-blue-600 font-bold">#{{ selectedTicketPass.id.slice(0, 8).toUpperCase() }}</span>
+              </div>
+              <div v-if="selectedTicketPass.starts_at" class="flex justify-between text-slate-500">
+                <span>Session:</span>
+                <span class="text-slate-700">{{ formatDate(selectedTicketPass.starts_at) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="p-3 bg-white border-t border-slate-100 text-center">
+            <p class="text-[11px] text-slate-400">
+              Show this pass on your phone screen to the organizer at the entrance.
+            </p>
+          </div>
+        </div>
+      </div>
     </main>
 
     <!-- Footer -->
@@ -455,6 +574,15 @@ const devOtpCode = ref('')
 const portalEmail = ref('')
 const portalData = ref(null)
 const activeTab = ref('workshops')
+const selectedTicketPass = ref(null)
+
+const openQrModal = (ticket) => {
+  if (ticket) {
+    selectedTicketPass.value = ticket
+  } else if (portalData.value?.registrations?.length) {
+    selectedTicketPass.value = portalData.value.registrations[0]
+  }
+}
 
 const formatDate = (iso) => {
   if (!iso) return 'Recent'
@@ -497,6 +625,16 @@ const loadDashboardData = async () => {
     portalData.value = data
     portalEmail.value = data.email
     step.value = 'dashboard'
+    try {
+      const urlParams = new URLSearchParams(window.location.search)
+      const ticketId = urlParams.get('ticket') || urlParams.get('pass')
+      if (ticketId && data.registrations?.length) {
+        const found = data.registrations.find((r) => r.id === ticketId || r.workshop_id === ticketId)
+        selectedTicketPass.value = found || data.registrations[0]
+      }
+    } catch {
+      /* ignore search param errors */
+    }
     return true
   }
   return false
