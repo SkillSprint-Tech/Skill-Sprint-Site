@@ -1257,7 +1257,7 @@ const login = async () => {
       password.value = "";
       refreshAll();
     } else {
-      loginError.value = data.message || "Could not sign in.";
+      loginError.value = data.message || data.error || (res.status === 500 ? "Server error (500) during sign in." : "Could not sign in.");
     }
   } catch {
     loginError.value = "Could not reach server.";

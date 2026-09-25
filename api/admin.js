@@ -32,21 +32,26 @@ const ROUTES = {
 }
 
 export default async function handler(req, res) {
-  // The rewrite supplies ?action=…; fall back to parsing the path so a direct hit on
-  // /api/admin/stats still resolves if the rewrite is ever missing.
-  let action = getQueryParam(req, 'action') || ''
-  if (!action) {
-    const path = String(req.url || '').split('?')[0]
-    const match = path.match(/\/api\/admin\/([^/]+)/)
-    action = match ? match[1] : ''
-  }
+  try {
+    // The rewrite supplies ?action=…; fall back to parsing the path so a direct hit on
+    // /api/admin/stats still resolves if the rewrite is ever missing.
+    let action = getQueryParam(req, 'action') || ''
+    if (!action) {
+      const path = String(req.url || '').split('?')[0]
+      const match = path.match(/\/api\/admin\/([^/]+)/)
+      action = match ? match[1] : ''
+    }
 
-  const route = ROUTES[action]
-  if (!route) {
-    return fail(res, 'NOT_FOUND', `Unknown admin action: ${action || '(none)'}`, 404)
-  }
+    const route = ROUTES[action]
+    if (!route) {
+      return fail(res, 'NOT_FOUND', `Unknown admin action: ${action || '(none)'}`, 404)
+    }
 
-  return route(req, res)
+    return await route(req, res)
+  } catch (err) {
+    console.error('api/admin dispatcher error:', err)
+    return fail(res, 'SERVER_ERROR', err.message || 'Internal server error', 500)
+  }
 }
 
 export const config = { maxDuration: 60 }
