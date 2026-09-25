@@ -1,15 +1,15 @@
 <template>
-  <div class="min-h-screen bg-slate-50 text-slate-800 antialiased font-sans relative overflow-x-hidden selection:bg-blue-500/20 selection:text-blue-900">
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 antialiased font-sans relative overflow-x-hidden selection:bg-blue-500/20 selection:text-blue-900 transition-colors duration-150">
     <!-- Spatial Ambient Backlight (Subtle soft blue light originating from the top) -->
     <div
       class="pointer-events-none fixed inset-0 z-0 overflow-hidden"
       aria-hidden="true"
     >
       <div
-        class="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[1000px] h-[500px] rounded-full bg-gradient-to-b from-blue-500/10 via-blue-500/5 to-transparent blur-3xl"
+        class="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[1000px] h-[500px] rounded-full bg-gradient-to-b from-blue-500/10 via-blue-500/5 to-transparent blur-3xl dark:opacity-40"
       ></div>
       <div
-        class="absolute top-[30%] right-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-500/5 blur-3xl"
+        class="absolute top-[30%] right-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-500/5 blur-3xl dark:opacity-30"
       ></div>
     </div>
 
@@ -99,14 +99,14 @@
     <div v-else class="min-h-screen flex flex-col relative z-10">
       <!-- Top Navigation Bar -->
       <header
-        class="bg-white/80 border-b border-slate-200/70 sticky top-0 z-30 shadow-[0_2px_10px_0_rgba(0,0,0,0.03)] backdrop-blur-xl"
+        class="bg-white/85 dark:bg-slate-900/85 border-b border-slate-200/70 dark:border-slate-800 sticky top-0 z-30 shadow-[0_2px_10px_0_rgba(0,0,0,0.03)] backdrop-blur-xl transition-colors duration-150"
       >
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-          <div class="flex items-center justify-between h-14 gap-4">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6">
+          <div class="flex items-center justify-between h-14 gap-2 sm:gap-4">
             <!-- Brand & Context Trail -->
-            <div class="flex items-center gap-2.5">
+            <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
               <div
-                class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-white font-bold text-xs shadow-sm shadow-blue-500/30 border border-blue-500/30"
+                class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-white font-bold text-xs shadow-sm shadow-blue-500/30 border border-blue-500/30 shrink-0"
               >
                 <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -114,29 +114,55 @@
               </div>
 
               <div class="flex items-center gap-1.5 text-xs">
-                <span class="font-extrabold text-slate-900 tracking-tight">
+                <span class="font-extrabold text-slate-900 dark:text-white tracking-tight">
                   SkillSprint
                 </span>
-                <span class="text-slate-300">/</span>
-                <span class="font-mono text-blue-600 font-semibold text-[11px] bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100">
+                <span class="text-slate-300 dark:text-slate-600">/</span>
+                <span class="font-mono text-blue-600 dark:text-blue-400 font-semibold text-[11px] bg-blue-50 dark:bg-blue-950/60 px-1.5 py-0.5 rounded border border-blue-100 dark:border-blue-900/50">
                   Console
                 </span>
               </div>
 
               <!-- Database Active Pill -->
               <span
-                class="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-mono font-medium text-emerald-700 bg-emerald-50/80 border border-emerald-200/70 px-2 py-0.5 rounded-full ml-1"
+                class="hidden md:inline-flex items-center gap-1.5 text-[10px] font-mono font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/70 dark:border-emerald-800/60 px-2 py-0.5 rounded-full ml-1"
               >
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20"></span>
                 DB Live
               </span>
             </div>
 
-            <!-- Right Controls: Live Time, Refresh, Sign Out -->
-            <div class="flex items-center gap-2">
+            <!-- Right Controls: Theme Toggle, Live Time, Search, Sync, Refresh, Sign Out -->
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <!-- Dark / Light Theme Toggle Button -->
+              <button
+                type="button"
+                @click="toggleTheme"
+                class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-amber-400 hover:text-blue-600 dark:hover:text-amber-300 hover:border-slate-300 dark:hover:border-slate-600 transition-all cursor-pointer shadow-2xs active:scale-[0.96] shrink-0"
+                :title="isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+                aria-label="Toggle theme"
+              >
+                <!-- Sun Icon (Active when dark mode is ON) -->
+                <svg v-if="isDark" class="w-4 h-4 text-amber-400 transition-transform hover:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="5" />
+                  <line x1="12" y1="1" x2="12" y2="3" />
+                  <line x1="12" y1="21" x2="12" y2="23" />
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                  <line x1="1" y1="12" x2="3" y2="12" />
+                  <line x1="21" y1="12" x2="23" y2="12" />
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                </svg>
+                <!-- Moon Icon (Active when light mode is ON) -->
+                <svg v-else class="w-4 h-4 text-slate-600 transition-transform hover:-rotate-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              </button>
+
               <!-- Live Site Time in PKT -->
               <div
-                class="hidden lg:flex items-center gap-1.5 text-xs text-slate-500 font-mono bg-slate-50/80 border border-slate-200/70 px-2.5 py-1 rounded-lg"
+                class="hidden xl:flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-mono bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700 px-2.5 py-1 rounded-lg"
                 title="Current site schedule time (PKT UTC+5)"
               >
                 <svg class="w-3 h-3 text-slate-400" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -150,33 +176,33 @@
               <button
                 type="button"
                 @click="showCommandPalette = true"
-                class="hidden md:inline-flex items-center gap-1.5 border border-slate-200/80 bg-slate-50/80 hover:bg-white hover:border-slate-300 text-slate-600 hover:text-slate-900 px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer shadow-2xs group"
+                class="hidden md:inline-flex items-center gap-1.5 border border-slate-200/80 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-750 hover:border-slate-300 dark:hover:border-slate-600 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer shadow-2xs group shrink-0"
                 title="Open Command Palette (Ctrl+K or ⌘K)"
               >
                 <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
                 <span>Search</span>
-                <kbd class="font-mono text-[9px] bg-white border border-slate-200/80 px-1 py-0.2 rounded text-slate-400 font-semibold shadow-2xs group-hover:border-blue-200 group-hover:text-blue-600">⌘K</kbd>
+                <kbd class="font-mono text-[9px] bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 px-1 py-0.2 rounded text-slate-400 font-semibold shadow-2xs group-hover:border-blue-200 group-hover:text-blue-600">⌘K</kbd>
               </button>
 
               <!-- Live Sync Auto-Refresh Toggle -->
-              <div class="flex items-center bg-slate-50/80 border border-slate-200/80 rounded-lg px-2 py-0.5 text-xs font-mono">
+              <div class="flex items-center bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 rounded-lg px-1.5 sm:px-2 py-0.5 text-xs font-mono shrink-0">
                 <span
-                  class="w-1.5 h-1.5 rounded-full mr-1.5 shrink-0 transition-colors"
-                  :class="liveSyncSeconds > 0 ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'"
+                  class="w-1.5 h-1.5 rounded-full mr-1 sm:mr-1.5 shrink-0 transition-colors"
+                  :class="liveSyncSeconds > 0 ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300 dark:bg-slate-600'"
                   :title="liveSyncSeconds > 0 ? `Live sync active (${liveSyncSeconds}s)` : 'Live sync paused'"
                 ></span>
                 <select
                   v-model="liveSyncSeconds"
                   @change="handleLiveSyncChange"
-                  class="bg-transparent text-[11px] font-semibold text-slate-600 border-none focus:outline-none cursor-pointer pr-1"
+                  class="bg-transparent text-[11px] font-semibold text-slate-600 dark:text-slate-300 border-none focus:outline-none cursor-pointer pr-1"
                   title="Auto-refresh polling interval"
                 >
-                  <option :value="0">Sync: Off</option>
-                  <option :value="5">Sync: 5s</option>
-                  <option :value="10">Sync: 10s</option>
-                  <option :value="30">Sync: 30s</option>
+                  <option :value="0" class="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">Sync: Off</option>
+                  <option :value="5" class="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">Sync: 5s</option>
+                  <option :value="10" class="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">Sync: 10s</option>
+                  <option :value="30" class="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">Sync: 30s</option>
                 </select>
               </div>
 
@@ -184,11 +210,11 @@
               <button
                 @click="refreshAll"
                 :disabled="loading"
-                class="inline-flex items-center gap-1.5 border border-slate-200/80 bg-white hover:bg-blue-50/50 hover:text-blue-700 hover:border-blue-200 text-slate-700 px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer disabled:opacity-50 shadow-2xs active:scale-[0.98]"
+                class="inline-flex items-center justify-center gap-1.5 border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-blue-50/50 dark:hover:bg-slate-700 hover:text-blue-700 dark:hover:text-blue-400 hover:border-blue-200 dark:hover:border-slate-600 text-slate-700 dark:text-slate-200 px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer disabled:opacity-50 shadow-2xs active:scale-[0.98] shrink-0"
                 title="Refresh registrations and metrics"
               >
                 <svg
-                  class="w-3.5 h-3.5 text-slate-500 transition-transform duration-500"
+                  class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 transition-transform duration-500"
                   :class="{ 'animate-spin': loading }"
                   viewBox="0 0 16 16"
                   fill="none"
@@ -197,25 +223,26 @@
                 >
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 8A5.5 5.5 0 118 2.5a5.48 5.48 0 013.9 1.6L14 6m0 0v-4m0 4h-4" />
                 </svg>
-                <span class="hidden sm:inline">{{ loading ? "Syncing…" : "Refresh" }}</span>
+                <span class="hidden md:inline">{{ loading ? "Syncing…" : "Refresh" }}</span>
               </button>
 
               <!-- Sign Out -->
               <button
                 @click="logout"
-                class="inline-flex items-center gap-1 border border-slate-200/80 bg-white hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 text-slate-600 px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
+                class="inline-flex items-center justify-center gap-1 border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:text-rose-600 dark:hover:text-rose-400 hover:border-rose-200 dark:hover:border-rose-900/50 text-slate-600 dark:text-slate-300 px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer shadow-2xs active:scale-[0.98] shrink-0"
+                title="Sign out of console"
               >
                 <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5H3a1 1 0 01-1-1v-9a1 1 0 011-1h3m4 8.5l3.5-3.5L10 5m3.5 3.5H6" />
                 </svg>
-                <span class="hidden sm:inline">Sign out</span>
+                <span class="hidden md:inline">Sign out</span>
               </button>
             </div>
           </div>
 
           <!-- Segmented Tab Navigation -->
           <nav
-            class="flex gap-1 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            class="flex gap-1 overflow-x-auto pb-2 -mx-3 px-3 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             aria-label="Dashboard Tabs"
           >
             <button
@@ -226,7 +253,7 @@
               :class="
                 tab === t.id
                   ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25 font-semibold'
-                  : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/60'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/60 dark:hover:bg-slate-800/60'
               "
             >
               <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -290,26 +317,27 @@
 
           <!-- Compact Operational Toolbar (Above the Table) -->
           <div
-            class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl p-3 mb-3.5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] flex flex-wrap items-center justify-between gap-3"
+            class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200/70 dark:border-slate-800 rounded-2xl p-3 mb-3.5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] flex flex-col md:flex-row md:items-center justify-between gap-3 transition-colors duration-150"
           >
             <!-- Left: Scope Selector + Search Input -->
-            <div class="flex flex-wrap items-center gap-2 flex-1 min-w-[280px]">
-              <div class="flex items-center gap-1.5">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 flex-1 min-w-0">
+              <div class="flex items-center gap-1.5 shrink-0">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 font-mono">
                   Scope:
                 </span>
                 <select
                   v-model="emailView"
                   @change="onEmailViewChange"
-                  class="border border-slate-200/80 rounded-lg px-2.5 py-1.5 text-xs font-semibold bg-slate-50/80 text-slate-800 cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600"
+                  class="border border-slate-200/80 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-semibold bg-slate-50/80 dark:bg-slate-800 text-slate-800 dark:text-slate-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600 max-w-[210px] sm:max-w-xs truncate"
                 >
-                  <option :value="WELCOME_TEMPLATE">
+                  <option :value="WELCOME_TEMPLATE" class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
                     Welcome Campaign
                   </option>
                   <option
                     v-for="w in workshops"
                     :key="w.id"
                     :value="`reminder:${w.id}`"
+                    class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
                   >
                     Meeting link — {{ w.title }}
                   </option>
@@ -317,13 +345,13 @@
               </div>
 
               <!-- Search input with clean search SVG -->
-              <div class="relative flex-1 min-w-[180px] max-w-sm">
+              <div class="relative flex-1 min-w-0 max-w-full sm:max-w-sm">
                 <input
                   v-model="search"
                   @input="debouncedLoad"
                   type="search"
                   placeholder="Filter name, email, university…"
-                  class="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200/80 bg-slate-50/70 focus:bg-white text-slate-900 placeholder-slate-400 focus-visible:outline-2 focus-visible:outline-blue-600 focus:border-blue-400 transition-all"
+                  class="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200/80 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/70 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus-visible:outline-2 focus-visible:outline-blue-600 focus:border-blue-400 transition-all"
                 />
                 <svg
                   class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none"
@@ -338,12 +366,12 @@
               </div>
             </div>
 
-            <!-- Right: Action Buttons Group -->
-            <div class="flex items-center gap-2">
+            <!-- Right: Action Buttons Group (Wraps gracefully on small screens) -->
+            <div class="flex flex-wrap items-center gap-2">
               <button
                 @click="sendAll"
                 :disabled="sendingAll || !stats?.email.notReceived"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-xs shadow-blue-500/25 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5 active:scale-[0.98]"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-xs shadow-blue-500/25 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5 active:scale-[0.98] shrink-0"
               >
                 <svg
                   v-if="sendingAll"
@@ -358,7 +386,7 @@
                   {{
                     sendingAll
                       ? "Sending…"
-                      : `Send All Pending (${stats?.email.notReceived ?? 0})`
+                      : `Send Pending (${stats?.email.notReceived ?? 0})`
                   }}
                 </span>
               </button>
@@ -367,38 +395,39 @@
                 v-if="stats?.email.failed"
                 @click="retryFailed"
                 :disabled="sendingAll"
-                class="border border-amber-300/80 bg-amber-50 hover:bg-amber-100 text-amber-900 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
+                class="border border-amber-300/80 dark:border-amber-700/80 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/40 text-amber-900 dark:text-amber-200 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs active:scale-[0.98] shrink-0"
                 title="Requeue failed emails"
               >
-                Retry Failed ({{ stats.email.failed }})
+                Retry ({{ stats.email.failed }})
               </button>
 
               <!-- Live Email Template Visual Previewer & Test Dispatch -->
               <button
                 type="button"
                 @click="showEmailPreview = true"
-                class="border border-slate-200/80 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs active:scale-[0.98] flex items-center gap-1.5"
+                class="border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs active:scale-[0.98] flex items-center gap-1.5 shrink-0"
                 title="Preview email templates & send real test dispatches"
               >
-                <svg class="w-3.5 h-3.5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
-                <span>Email Previewer</span>
+                <span class="hidden sm:inline">Email Previewer</span>
+                <span class="sm:hidden">Preview</span>
               </button>
 
               <!-- Export CSV Dropdown -->
-              <div class="flex items-center border border-slate-200/80 rounded-lg overflow-hidden shadow-2xs font-mono text-xs bg-white">
+              <div class="flex items-center border border-slate-200/80 dark:border-slate-700 rounded-lg overflow-hidden shadow-2xs font-mono text-xs bg-white dark:bg-slate-800 shrink-0">
                 <button
                   @click="downloadCsv('view')"
-                  class="bg-white hover:bg-blue-50/60 hover:text-blue-700 text-slate-700 px-2.5 py-1.5 font-semibold transition-colors border-r border-slate-200/80 cursor-pointer"
+                  class="bg-white dark:bg-slate-800 hover:bg-blue-50/60 dark:hover:bg-slate-700 hover:text-blue-700 dark:hover:text-blue-300 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 font-semibold transition-colors border-r border-slate-200/80 dark:border-slate-700 cursor-pointer"
                   title="Download current filtered list as CSV"
                 >
                   CSV
                 </button>
                 <button
                   @click="downloadCsv('all')"
-                  class="bg-white hover:bg-blue-50/60 hover:text-blue-700 text-slate-500 hover:text-slate-700 px-2 py-1.5 font-semibold transition-colors cursor-pointer"
+                  class="bg-white dark:bg-slate-800 hover:bg-blue-50/60 dark:hover:bg-slate-700 hover:text-blue-700 dark:hover:text-blue-300 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 px-2 py-1.5 font-semibold transition-colors cursor-pointer"
                   title="Export complete database registrations"
                 >
                   All
@@ -473,6 +502,7 @@
             @send-all="sendAll"
             @export-csv="downloadCsv"
             @toggle-live-sync="toggleLiveSyncQuick"
+            @toggle-dark-mode="toggleTheme"
             @refresh="refreshAll"
           />
 
@@ -1522,6 +1552,31 @@ const changePage = (delta) => {
   loadRegistrations();
 };
 
+// ── Theme (Dark / Light Mode) ───────────────────────────────────────────────
+const isDark = ref(false);
+
+const toggleTheme = () => {
+  isDark.value = !isDark.value;
+  if (isDark.value) {
+    document.documentElement.classList.add("dark");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+    localStorage.setItem("theme", "light");
+  }
+};
+
+const initTheme = () => {
+  const saved = localStorage.getItem("theme");
+  if (saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    isDark.value = true;
+    document.documentElement.classList.add("dark");
+  } else {
+    isDark.value = false;
+    document.documentElement.classList.remove("dark");
+  }
+};
+
 // ── Sending Actions ─────────────────────────────────────────────────────────
 const sendingId = ref(null);
 const sendingAll = ref(false);
@@ -1559,6 +1614,9 @@ const handleGlobalKeydown = (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
     e.preventDefault();
     showCommandPalette.value = !showCommandPalette.value;
+  } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "j") {
+    e.preventDefault();
+    toggleTheme();
   }
 };
 
@@ -2329,6 +2387,7 @@ watch(authed, (value) => {
 // ── Lifecycle ───────────────────────────────────────────────────────────────
 onMounted(() => {
   document.title = "Admin Console — SkillSprint";
+  initTheme();
   checkAuth();
   ticker = setInterval(() => {
     now.value = Date.now();

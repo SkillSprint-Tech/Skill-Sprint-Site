@@ -3,6 +3,8 @@
 
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Design System Font Stacks */
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;

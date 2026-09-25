@@ -1,11 +1,11 @@
 <template>
-  <div class="bg-white/90 backdrop-blur-sm border border-slate-200/70 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col">
+  <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200/70 dark:border-slate-800 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col transition-colors duration-150">
     <!-- ════════ TABLE TOP TOOLBAR: STATUS TABS & DUAL PAGINATION ════════ -->
     <div
-      class="p-2.5 sm:p-3 bg-slate-50/70 border-b border-slate-200/80 flex flex-wrap items-center justify-between gap-3"
+      class="p-2.5 sm:p-3 bg-slate-50/70 dark:bg-slate-800/60 border-b border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2.5 sm:gap-3"
     >
       <!-- 1-Click Segmented Status Tabs -->
-      <div class="flex items-center gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div class="flex items-center gap-1 overflow-x-auto max-w-full pb-1 sm:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <button
           v-for="tab in filterTabs"
           :key="tab.id"
@@ -15,7 +15,7 @@
           :class="
             statusFilter === tab.id
               ? 'bg-blue-600 text-white shadow-xs shadow-blue-500/25 font-semibold'
-              : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/60'
+              : 'text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/60 dark:hover:bg-slate-700/60'
           "
         >
           <span>{{ tab.label }}</span>
@@ -26,8 +26,8 @@
               statusFilter === tab.id
                 ? 'bg-blue-500 text-white'
                 : tab.highlight
-                  ? 'bg-amber-100 text-amber-800 border border-amber-200/60'
-                  : 'bg-slate-200/80 text-slate-600'
+                  ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200/60 dark:border-amber-800/60'
+                  : 'bg-slate-200/80 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
             "
           >
             {{ tab.count }}
@@ -36,15 +36,15 @@
       </div>
 
       <!-- Top Fast Pagination Controls -->
-      <div class="flex items-center gap-2 text-xs font-mono">
+      <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
         <!-- Scan QR Ticket Button -->
         <button
           type="button"
           @click="$emit('open-scanner')"
-          class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 rounded-lg px-2.5 py-1 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-[0.98]"
+          class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer active:scale-[0.98]"
           title="Scan QR Tickets"
         >
-          <svg class="w-3.5 h-3.5 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2m-10 0H5a2 2 0 0 1-2-2v-2" />
             <rect x="7" y="7" width="10" height="10" rx="1" />
           </svg>
@@ -52,12 +52,12 @@
         </button>
 
         <!-- Page size selector -->
-        <div class="flex items-center gap-1 text-slate-500 font-sans text-xs">
-          <span class="hidden sm:inline text-slate-400">Rows:</span>
+        <div class="flex items-center gap-1 text-slate-500 dark:text-slate-400 font-sans text-xs">
+          <span class="hidden sm:inline text-slate-400 dark:text-slate-500">Rows:</span>
           <select
             :value="limit"
             @change="$emit('update:limit', Number($event.target.value))"
-            class="bg-white border border-slate-200/80 rounded-lg px-2 py-0.5 text-xs font-mono font-semibold text-slate-700 cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600"
+            class="bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 rounded-lg px-2 py-0.5 text-xs font-mono font-semibold text-slate-700 dark:text-slate-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600"
           >
             <option :value="25">25</option>
             <option :value="50">50</option>
@@ -67,29 +67,29 @@
 
         <!-- Page jump buttons -->
         <div class="flex items-center gap-1">
-          <span class="text-slate-500 text-[11px] font-medium mr-1 tabular-nums">
+          <span class="text-slate-500 dark:text-slate-400 text-[11px] font-medium mr-1 tabular-nums">
             {{ total ? (page - 1) * limit + 1 : 0 }}–{{ Math.min(page * limit, total) }} of {{ total }}
           </span>
           <button
             type="button"
             @click="$emit('change-page', -1)"
             :disabled="page === 1 || loading"
-            class="w-6 h-6 flex items-center justify-center rounded border border-slate-200/80 bg-white hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors shadow-2xs active:scale-[0.95]"
+            class="w-6 h-6 flex items-center justify-center rounded border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors shadow-2xs active:scale-[0.95]"
             title="Previous page"
           >
-            <svg class="w-3 h-3 text-slate-700" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <svg class="w-3 h-3 text-slate-700 dark:text-slate-300" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M10 12l-4-4 4-4" />
             </svg>
           </button>
-          <span class="px-1 text-xs font-bold text-slate-800">{{ page }} / {{ maxPages || 1 }}</span>
+          <span class="px-1 text-xs font-bold text-slate-800 dark:text-slate-200">{{ page }} / {{ maxPages || 1 }}</span>
           <button
             type="button"
             @click="$emit('change-page', 1)"
             :disabled="page * limit >= total || loading"
-            class="w-6 h-6 flex items-center justify-center rounded border border-slate-200/80 bg-white hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors shadow-2xs active:scale-[0.95]"
+            class="w-6 h-6 flex items-center justify-center rounded border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors shadow-2xs active:scale-[0.95]"
             title="Next page"
           >
-            <svg class="w-3 h-3 text-slate-700" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <svg class="w-3 h-3 text-slate-700 dark:text-slate-300" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 12l4-4-4-4" />
             </svg>
           </button>
@@ -100,9 +100,9 @@
     <!-- Selection Quick Action Bar -->
     <div
       v-if="selectedIds.length > 0"
-      class="bg-slate-900 text-white px-4 py-2 flex flex-wrap items-center justify-between gap-3 text-xs animate-fade-in border-b border-slate-800"
+      class="bg-slate-900 dark:bg-slate-950 text-white px-3 sm:px-4 py-2 flex flex-wrap items-center justify-between gap-2.5 text-xs animate-fade-in border-b border-slate-800"
     >
-      <div class="flex items-center gap-2.5">
+      <div class="flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
         <span class="font-semibold">{{ selectedIds.length }} attendee{{ selectedIds.length === 1 ? '' : 's' }} selected</span>
         <button
@@ -116,11 +116,11 @@
 
       <div class="flex items-center gap-2 flex-wrap">
         <!-- Target Workshop for Batch Check-in -->
-        <div v-if="workshops.length" class="flex items-center gap-1.5 bg-slate-800/90 border border-slate-700/80 rounded-lg px-2.5 py-1">
-          <span class="text-[10px] text-slate-400 font-mono">Session:</span>
+        <div v-if="workshops.length" class="flex items-center gap-1.5 bg-slate-800/90 dark:bg-slate-900 border border-slate-700/80 rounded-lg px-2 py-1 max-w-[170px] sm:max-w-xs">
+          <span class="text-[10px] text-slate-400 font-mono shrink-0">Session:</span>
           <select
             v-model="batchWorkshopId"
-            class="bg-transparent text-white text-xs border-none focus:outline-none cursor-pointer pr-3 font-medium"
+            class="bg-transparent text-white text-xs border-none focus:outline-none cursor-pointer pr-2 font-medium truncate w-full"
           >
             <option
               v-for="(w, idx) in workshops"
@@ -138,7 +138,7 @@
           type="button"
           @click="emitBatchCheckIn"
           :disabled="batchCheckingIn"
-          class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer shadow-xs shadow-emerald-500/30 active:scale-[0.98] flex items-center gap-1.5"
+          class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-xs shadow-emerald-500/30 active:scale-[0.98] flex items-center gap-1.5 shrink-0"
         >
           <span v-if="batchCheckingIn" class="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
           <span>{{ batchCheckingIn ? 'Checking in…' : `Check In (${selectedIds.length})` }}</span>
@@ -148,7 +148,7 @@
           type="button"
           @click="$emit('batch-send', selectedIds)"
           :disabled="batchSending"
-          class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer shadow-xs shadow-blue-500/30 active:scale-[0.98]"
+          class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-xs shadow-blue-500/30 active:scale-[0.98] shrink-0"
         >
           {{ batchSending ? 'Sending…' : `Send Email (${selectedIds.length})` }}
         </button>
@@ -158,7 +158,7 @@
     <!-- ════════ DESKTOP TABLE VIEW ════════ -->
     <div class="hidden md:block overflow-x-auto relative">
       <table class="w-full text-xs text-left border-collapse">
-        <thead class="sticky top-0 bg-slate-50/95 z-20 backdrop-blur-xs border-b border-slate-200/80">
+        <thead class="sticky top-0 bg-slate-50/95 dark:bg-slate-800/95 z-20 backdrop-blur-xs border-b border-slate-200/80 dark:border-slate-800">
           <tr>
             <!-- Select All Checkbox -->
             <th class="px-3 py-2.5 w-8">
@@ -166,13 +166,13 @@
                 type="checkbox"
                 :checked="isAllSelected"
                 @change="toggleSelectAll"
-                class="w-3.5 h-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500/20 cursor-pointer"
+                class="w-3.5 h-3.5 rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-blue-500/20 cursor-pointer"
               />
             </th>
             <th
               v-for="h in ['Attendee', 'Email Address', 'University', 'Registered', 'Attendance', 'Email Status']"
               :key="h"
-              class="px-3.5 py-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap"
+              class="px-3.5 py-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 whitespace-nowrap"
             >
               <span v-if="h === 'Attendance' && activeWorkshopId">
                 Attendance (Session)
@@ -186,35 +186,35 @@
             </th>
             <!-- Sticky Action Column Header with Border Divider -->
             <th
-              class="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap sticky right-0 bg-slate-50/95 border-l border-slate-200/80 text-right"
+              class="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 whitespace-nowrap sticky right-0 bg-slate-50/95 dark:bg-slate-800/95 border-l border-slate-200/80 dark:border-slate-800 text-right"
             >
               Action
             </th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-slate-100 font-sans">
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-sans">
           <!-- Loading Skeletons -->
           <tr v-if="loading" v-for="n in 6" :key="n" class="animate-pulse">
-            <td class="px-3 py-3"><div class="w-3.5 h-3.5 bg-slate-200 rounded"></div></td>
-            <td class="px-3.5 py-3"><div class="h-3.5 bg-slate-200 rounded w-28"></div></td>
-            <td class="px-3.5 py-3"><div class="h-3.5 bg-slate-200 rounded w-36"></div></td>
-            <td class="px-3.5 py-3"><div class="h-3.5 bg-slate-200 rounded w-24"></div></td>
-            <td class="px-3.5 py-3"><div class="h-3.5 bg-slate-200 rounded w-20"></div></td>
-            <td class="px-3.5 py-3"><div class="h-4 bg-slate-200 rounded-full w-16"></div></td>
-            <td class="px-3.5 py-3"><div class="h-4 bg-slate-200 rounded-full w-20"></div></td>
-            <td class="px-4 py-3 sticky right-0 bg-white border-l border-slate-200/80"><div class="h-6 bg-slate-200 rounded-md w-16 ml-auto"></div></td>
+            <td class="px-3 py-3"><div class="w-3.5 h-3.5 bg-slate-200 dark:bg-slate-700 rounded"></div></td>
+            <td class="px-3.5 py-3"><div class="h-3.5 bg-slate-200 dark:bg-slate-700 rounded w-28"></div></td>
+            <td class="px-3.5 py-3"><div class="h-3.5 bg-slate-200 dark:bg-slate-700 rounded w-36"></div></td>
+            <td class="px-3.5 py-3"><div class="h-3.5 bg-slate-200 dark:bg-slate-700 rounded w-24"></div></td>
+            <td class="px-3.5 py-3"><div class="h-3.5 bg-slate-200 dark:bg-slate-700 rounded w-20"></div></td>
+            <td class="px-3.5 py-3"><div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-full w-16"></div></td>
+            <td class="px-3.5 py-3"><div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-full w-20"></div></td>
+            <td class="px-4 py-3 sticky right-0 bg-white dark:bg-slate-900 border-l border-slate-200/80 dark:border-slate-800"><div class="h-6 bg-slate-200 dark:bg-slate-700 rounded-md w-16 ml-auto"></div></td>
           </tr>
 
           <!-- Empty State -->
           <tr v-else-if="!registrations.length">
-            <td colspan="8" class="px-4 py-16 text-center text-slate-400">
+            <td colspan="8" class="px-4 py-16 text-center text-slate-400 dark:text-slate-500">
               <div class="flex flex-col items-center justify-center gap-2">
-                <svg class="w-7 h-7 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <svg class="w-7 h-7 text-slate-300 dark:text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <circle cx="11" cy="11" r="8" />
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35" />
                 </svg>
-                <p class="text-xs font-semibold text-slate-700">No attendees match this filter</p>
-                <p class="text-[11px] text-slate-400">Try switching status tabs or adjusting search criteria</p>
+                <p class="text-xs font-semibold text-slate-700 dark:text-slate-200">No attendees match this filter</p>
+                <p class="text-[11px] text-slate-400 dark:text-slate-500">Try switching status tabs or adjusting search criteria</p>
               </div>
             </td>
           </tr>
@@ -224,8 +224,8 @@
             v-else
             v-for="r in registrations"
             :key="r.id"
-            class="hover:bg-blue-50/30 transition-colors group cursor-pointer"
-            :class="{ 'bg-blue-50/50': selectedIds.includes(r.id) }"
+            class="hover:bg-blue-50/30 dark:hover:bg-slate-800/40 transition-colors group cursor-pointer"
+            :class="{ 'bg-blue-50/50 dark:bg-blue-950/40': selectedIds.includes(r.id) }"
             @click="$emit('inspect', r)"
           >
             <!-- Checkbox -->
@@ -234,7 +234,7 @@
                 type="checkbox"
                 :value="r.id"
                 v-model="selectedIds"
-                class="w-3.5 h-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500/20 cursor-pointer"
+                class="w-3.5 h-3.5 rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-blue-500/20 cursor-pointer"
               />
             </td>
 
@@ -242,15 +242,15 @@
             <td class="px-3.5 py-2.5 whitespace-nowrap">
               <div class="flex items-center gap-2">
                 <div
-                  class="w-6 h-6 rounded bg-blue-50 text-blue-700 border border-blue-200/60 font-mono text-[10px] font-bold flex items-center justify-center shrink-0 select-none"
+                  class="w-6 h-6 rounded bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60 font-mono text-[10px] font-bold flex items-center justify-center shrink-0 select-none"
                 >
                   {{ initials(r.full_name) }}
                 </div>
                 <div>
-                  <span class="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
+                  <span class="font-semibold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     {{ r.full_name }}
                   </span>
-                  <span v-if="r.phone" class="text-[10px] text-slate-400 font-mono ml-1.5">
+                  <span v-if="r.phone" class="text-[10px] text-slate-400 dark:text-slate-500 font-mono ml-1.5">
                     {{ r.phone }}
                   </span>
                 </div>
@@ -258,20 +258,20 @@
             </td>
 
             <!-- Email Address -->
-            <td class="px-3.5 py-2.5 font-mono text-[11px] text-slate-600 whitespace-nowrap">
+            <td class="px-3.5 py-2.5 font-mono text-[11px] text-slate-600 dark:text-slate-400 whitespace-nowrap">
               {{ r.email }}
             </td>
 
             <!-- University -->
-            <td class="px-3.5 py-2.5 whitespace-nowrap text-slate-700">
+            <td class="px-3.5 py-2.5 whitespace-nowrap text-slate-700 dark:text-slate-300">
               <span>{{ r.university || "—" }}</span>
-              <span v-if="r.year_of_study" class="text-[10px] text-slate-400 ml-1 font-mono">
+              <span v-if="r.year_of_study" class="text-[10px] text-slate-400 dark:text-slate-500 ml-1 font-mono">
                 (Y{{ r.year_of_study }})
               </span>
             </td>
 
             <!-- Registered Date -->
-            <td class="px-3.5 py-2.5 text-slate-400 font-mono text-[11px] tabular-nums whitespace-nowrap">
+            <td class="px-3.5 py-2.5 text-slate-400 dark:text-slate-500 font-mono text-[11px] tabular-nums whitespace-nowrap">
               {{ shortDate(r.created_at) }}
             </td>
 
@@ -285,15 +285,15 @@
                   class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-semibold font-mono tracking-wide border transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
                   :class="isAttended(r, activeWorkshopId)
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
-                    : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100'"
+                    : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'"
                 >
                   <span
                     class="w-1.5 h-1.5 rounded-full"
-                    :class="isAttended(r, activeWorkshopId) ? 'bg-emerald-500' : 'bg-slate-300'"
+                    :class="isAttended(r, activeWorkshopId) ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'"
                   ></span>
                   {{ isAttended(r, activeWorkshopId) ? 'Attended' : 'Check-in' }}
                 </button>
-                <span v-if="workshops.length > 1" class="text-[10px] font-mono text-slate-400" :title="`${getAttendedCount(r)} of ${workshops.length} workshops attended`">
+                <span v-if="workshops.length > 1" class="text-[10px] font-mono text-slate-400 dark:text-slate-500" :title="`${getAttendedCount(r)} of ${workshops.length} workshops attended`">
                   ({{ getAttendedCount(r) }}/{{ workshops.length }})
                 </span>
               </div>
@@ -309,26 +309,26 @@
                     class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold font-mono tracking-wide border transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
                     :class="isAttended(r, w.id)
                       ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
-                      : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200'"
+                      : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-700 dark:hover:text-blue-300 hover:border-blue-200 dark:hover:border-slate-600'"
                     :title="`${w.title}: ${isAttended(r, w.id) ? 'Checked In (click to cancel)' : 'Click to Check In'}`"
                   >
                     <span
                       class="w-1.5 h-1.5 rounded-full"
-                      :class="isAttended(r, w.id) ? 'bg-emerald-500' : 'bg-slate-300'"
+                      :class="isAttended(r, w.id) ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'"
                     ></span>
                     <span>#{{ idx + 1 }}{{ isAttended(r, w.id) ? '✓' : '' }}</span>
                   </button>
                 </div>
                 <span
                   class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full"
-                  :class="getAttendedCount(r) > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-400'"
+                  :class="getAttendedCount(r) > 0 ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300' : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500'"
                 >
                   {{ getAttendedCount(r) }}/{{ workshops.length }}
                 </span>
               </div>
 
               <!-- Fallback if no workshops configured yet -->
-              <span v-else class="text-[10px] font-mono text-slate-400">
+              <span v-else class="text-[10px] font-mono text-slate-400 dark:text-slate-500">
                 No sessions
               </span>
             </td>
@@ -349,7 +349,7 @@
 
                 <span
                   v-if="r.email_status === 'processing'"
-                  class="text-[10px] font-mono text-slate-400"
+                  class="text-[10px] font-mono text-slate-400 dark:text-slate-500"
                 >
                   {{ lockAge(r.locked_at) }}
                 </span>
@@ -366,7 +366,7 @@
 
             <!-- ════ STICKY ACTION COLUMN (Divided by Crisp Border) ════ -->
             <td
-              class="px-4 py-2.5 whitespace-nowrap sticky right-0 bg-white group-hover:bg-blue-50/40 transition-colors border-l border-slate-200/80 text-right"
+              class="px-4 py-2.5 whitespace-nowrap sticky right-0 bg-white dark:bg-slate-900 group-hover:bg-blue-50/40 dark:group-hover:bg-slate-800/60 transition-colors border-l border-slate-200/80 dark:border-slate-800 text-right"
               @click.stop
             >
               <button
@@ -391,8 +391,8 @@
                 </svg>
                 <span>{{ sendingId === r.id ? "Sending…" : getSendLabel(r) }}</span>
               </button>
-              <span v-else class="text-emerald-700 font-semibold text-[11px] inline-flex items-center gap-1 font-mono">
-                <svg class="w-3.5 h-3.5 text-emerald-600" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5">
+              <span v-else class="text-emerald-700 dark:text-emerald-400 font-semibold text-[11px] inline-flex items-center gap-1 font-mono">
+                <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3.5 8.5l3 3 6-6" />
                 </svg>
                 Delivered
@@ -404,23 +404,23 @@
     </div>
 
     <!-- ════════ MOBILE CARDS VIEW (< 768px) ════════ -->
-    <div class="md:hidden divide-y divide-slate-100">
+    <div class="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
       <div
         v-for="r in registrations"
         :key="r.id"
-        class="p-3.5 hover:bg-blue-50/20 transition-colors flex flex-col gap-2"
+        class="p-3.5 hover:bg-blue-50/20 dark:hover:bg-slate-800/40 transition-colors flex flex-col gap-2"
         @click="$emit('inspect', r)"
       >
         <div class="flex items-start justify-between gap-2">
           <div class="flex items-center gap-2">
             <div
-              class="w-7 h-7 rounded-lg bg-blue-50 text-blue-700 border border-blue-200/60 font-mono text-[10px] font-bold flex items-center justify-center shrink-0"
+              class="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60 font-mono text-[10px] font-bold flex items-center justify-center shrink-0"
             >
               {{ initials(r.full_name) }}
             </div>
             <div>
-              <div class="font-semibold text-slate-900 text-xs leading-tight">{{ r.full_name }}</div>
-              <div class="text-[11px] font-mono text-slate-500">{{ r.email }}</div>
+              <div class="font-semibold text-slate-900 dark:text-slate-100 text-xs leading-tight">{{ r.full_name }}</div>
+              <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400">{{ r.email }}</div>
             </div>
           </div>
 
@@ -432,15 +432,15 @@
           </span>
         </div>
 
-        <div class="flex items-center justify-between text-xs text-slate-500 pt-1">
+        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-1">
           <span>{{ r.university || 'No institution' }}</span>
-          <span class="font-mono text-[10px] text-slate-400">{{ shortDate(r.created_at) }}</span>
+          <span class="font-mono text-[10px] text-slate-400 dark:text-slate-500">{{ shortDate(r.created_at) }}</span>
         </div>
 
         <!-- Mobile Workshop Attendance Badges -->
-        <div v-if="workshops.length" class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100" @click.stop>
+        <div v-if="workshops.length" class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800" @click.stop>
           <div class="flex items-center gap-1.5 flex-wrap">
-            <span class="text-[10px] font-mono text-slate-400 font-semibold uppercase">Check-in:</span>
+            <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500 font-semibold uppercase">Check-in:</span>
             <button
               v-for="(w, idx) in workshops"
               :key="w.id"
@@ -449,20 +449,20 @@
               class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold border transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
               :class="isAttended(r, w.id)
                 ? 'bg-emerald-50 text-emerald-700 border-emerald-200 active:bg-emerald-100'
-                : 'bg-slate-50 text-slate-500 border-slate-200 active:bg-slate-100'"
+                : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 active:bg-slate-100 dark:active:bg-slate-700'"
               :title="`${w.title}: ${isAttended(r, w.id) ? 'Checked In' : 'Click to Check In'}`"
             >
-              <span class="w-1.5 h-1.5 rounded-full" :class="isAttended(r, w.id) ? 'bg-emerald-500' : 'bg-slate-300'"></span>
+              <span class="w-1.5 h-1.5 rounded-full" :class="isAttended(r, w.id) ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'"></span>
               #{{ idx + 1 }} {{ isAttended(r, w.id) ? '✓' : '+' }}
             </button>
           </div>
-          <span class="text-[10px] font-mono text-slate-400 font-bold shrink-0">
+          <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500 font-bold shrink-0">
             {{ getAttendedCount(r) }}/{{ workshops.length }}
           </span>
         </div>
 
-        <div class="flex items-center justify-between pt-2 border-t border-slate-100 mt-1">
-          <span class="text-[10px] text-slate-400">Tap to inspect profile</span>
+        <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800 mt-1">
+          <span class="text-[10px] text-slate-400 dark:text-slate-500">Tap to inspect profile</span>
           <button
             v-if="r.email_status !== 'delivered'"
             @click.stop="$emit('send-one', r)"
@@ -471,16 +471,16 @@
           >
             {{ sendingId === r.id ? 'Sending…' : getSendLabel(r) }}
           </button>
-          <span v-else class="text-emerald-700 text-xs font-semibold font-mono">✓ Delivered</span>
+          <span v-else class="text-emerald-700 dark:text-emerald-400 text-xs font-semibold font-mono">✓ Delivered</span>
         </div>
       </div>
     </div>
 
     <!-- ════════ BOTTOM PAGINATION BAR ════════ -->
     <div
-      class="flex flex-wrap items-center justify-between gap-3 px-3.5 py-2.5 bg-slate-50/70 border-t border-slate-200/80 text-xs font-mono"
+      class="flex flex-wrap items-center justify-between gap-3 px-3.5 py-2.5 bg-slate-50/70 dark:bg-slate-800/60 border-t border-slate-200/80 dark:border-slate-800 text-xs font-mono"
     >
-      <span class="text-slate-500 tabular-nums text-[11px]">
+      <span class="text-slate-500 dark:text-slate-400 tabular-nums text-[11px]">
         Showing {{ total ? (page - 1) * limit + 1 : 0 }}–{{ Math.min(page * limit, total) }} of {{ total.toLocaleString() }}
       </span>
 
@@ -488,15 +488,15 @@
         <button
           @click="$emit('change-page', -1)"
           :disabled="page === 1 || loading"
-          class="px-2.5 py-1 rounded border border-slate-200/80 bg-white text-slate-700 font-semibold hover:border-slate-300 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-2xs text-[11px] active:scale-[0.98]"
+          class="px-2.5 py-1 rounded border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold hover:border-slate-300 dark:hover:border-slate-600 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-2xs text-[11px] active:scale-[0.98]"
         >
           Previous
         </button>
-        <span class="px-1 text-slate-700 font-bold text-xs">{{ page }} / {{ maxPages || 1 }}</span>
+        <span class="px-1 text-slate-700 dark:text-slate-200 font-bold text-xs">{{ page }} / {{ maxPages || 1 }}</span>
         <button
           @click="$emit('change-page', 1)"
           :disabled="page * limit >= total || loading"
-          class="px-2.5 py-1 rounded border border-slate-200/80 bg-white text-slate-700 font-semibold hover:border-slate-300 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-2xs text-[11px] active:scale-[0.98]"
+          class="px-2.5 py-1 rounded border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold hover:border-slate-300 dark:hover:border-slate-600 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-2xs text-[11px] active:scale-[0.98]"
         >
           Next
         </button>
