@@ -100,7 +100,7 @@
     <!-- Selection Quick Action Bar -->
     <div
       v-if="selectedIds.length > 0"
-      class="bg-slate-900 text-white px-4 py-2 flex items-center justify-between text-xs animate-fade-in border-b border-slate-800"
+      class="bg-slate-900 text-white px-4 py-2 flex flex-wrap items-center justify-between gap-3 text-xs animate-fade-in border-b border-slate-800"
     >
       <div class="flex items-center gap-2.5">
         <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
@@ -114,14 +114,43 @@
         </button>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 flex-wrap">
+        <!-- Target Workshop for Batch Check-in -->
+        <div v-if="workshops.length" class="flex items-center gap-1.5 bg-slate-800/90 border border-slate-700/80 rounded-lg px-2.5 py-1">
+          <span class="text-[10px] text-slate-400 font-mono">Session:</span>
+          <select
+            v-model="batchWorkshopId"
+            class="bg-transparent text-white text-xs border-none focus:outline-none cursor-pointer pr-3 font-medium"
+          >
+            <option
+              v-for="(w, idx) in workshops"
+              :key="w.id"
+              :value="w.id"
+              class="bg-slate-900 text-white"
+            >
+              #{{ idx + 1 }} {{ w.title }}
+            </option>
+          </select>
+        </div>
+
+        <button
+          v-if="workshops.length"
+          type="button"
+          @click="emitBatchCheckIn"
+          :disabled="batchCheckingIn"
+          class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer shadow-xs shadow-emerald-500/30 active:scale-[0.98] flex items-center gap-1.5"
+        >
+          <span v-if="batchCheckingIn" class="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+          <span>{{ batchCheckingIn ? 'Checking in…' : `Check In (${selectedIds.length})` }}</span>
+        </button>
+
         <button
           type="button"
           @click="$emit('batch-send', selectedIds)"
           :disabled="batchSending"
           class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer shadow-xs shadow-blue-500/30 active:scale-[0.98]"
         >
-          {{ batchSending ? 'Sending…' : `Send to ${selectedIds.length} Selected` }}
+          {{ batchSending ? 'Sending…' : `Send Email (${selectedIds.length})` }}
         </button>
       </div>
     </div>
@@ -477,7 +506,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 const props = defineProps({
   registrations: {
@@ -516,6 +545,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  batchCheckingIn: {
+    type: Boolean,
+    default: false,
+  },
   emailView: {
     type: String,
     default: 'welcome_schedule',
@@ -538,9 +571,10 @@ const props = defineProps({
   },
 });
 
-defineEmits([
+const emit = defineEmits([
   'send-one',
   'batch-send',
+  'batch-check-in',
   'change-page',
   'update:limit',
   'update:status-filter',
@@ -550,6 +584,27 @@ defineEmits([
 ]);
 
 const selectedIds = ref([]);
+const batchWorkshopId = ref('');
+
+watch(
+  () => [props.activeWorkshopId, props.workshops],
+  () => {
+    if (props.activeWorkshopId) {
+      batchWorkshopId.value = props.activeWorkshopId;
+    } else if (!batchWorkshopId.value && props.workshops?.length) {
+      batchWorkshopId.value = props.workshops[0].id;
+    }
+  },
+  { immediate: true }
+);
+
+const emitBatchCheckIn = () => {
+  if (!selectedIds.value.length || !batchWorkshopId.value) return;
+  emit('batch-check-in', {
+    ids: [...selectedIds.value],
+    workshopId: batchWorkshopId.value,
+  });
+};
 
 const clearSelection = () => {
   selectedIds.value = [];

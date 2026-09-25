@@ -14,6 +14,20 @@
         {{ busy === 'file' ? 'Reading…' : 'Upload CSV / Excel' }}
       </button>
       <input ref="fileInput" type="file" accept=".csv,.xlsx" class="hidden" @change="previewFromFile" />
+
+      <!-- 1-Click Auto-Populate from Workshop Check-ins -->
+      <button
+        type="button"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-xs shadow-emerald-600/20 cursor-pointer disabled:opacity-50 active:scale-[0.98]"
+        :disabled="!!busy"
+        @click="populateFromAttendance"
+        title="Automatically import all attendees who checked in to this workshop"
+      >
+        <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+        </svg>
+        <span>{{ busy === 'attendance' ? 'Populating…' : 'Sync Checked-in Attendees' }}</span>
+      </button>
     </div>
 
     <div v-if="rows.length" class="border border-gray-200 rounded-lg">
@@ -157,6 +171,27 @@ async function previewFromFile(event) {
     }
   } catch (error) {
     props.toast('error', 'Could not read the file', error.message || '')
+  } finally {
+    busy.value = ''
+  }
+}
+
+async function populateFromAttendance() {
+  busy.value = 'attendance'
+  try {
+    const data = await apiPost(API, { op: 'populate-from-checkins', workshopId: props.workshopId })
+    if (!data.ok) return props.toast('error', 'Could not populate attendees', data.message)
+    if (data.inserted === 0 && data.totalCheckedIn === 0) {
+      return props.toast('warn', 'No checked-in attendees', 'Nobody has checked into this workshop yet.')
+    }
+    props.toast(
+      'success',
+      'Certificate Recipients Updated',
+      data.message || `Added ${data.inserted} checked-in attendees.`
+    )
+    emit('imported')
+  } catch (err) {
+    props.toast('error', 'Populate failed', err.message)
   } finally {
     busy.value = ''
   }

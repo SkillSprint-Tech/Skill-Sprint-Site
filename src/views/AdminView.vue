@@ -146,6 +146,40 @@
                 <span>{{ currentSiteTime }}</span>
               </div>
 
+              <!-- Command Palette Trigger (Ctrl+K / Cmd+K) -->
+              <button
+                type="button"
+                @click="showCommandPalette = true"
+                class="hidden md:inline-flex items-center gap-1.5 border border-slate-200/80 bg-slate-50/80 hover:bg-white hover:border-slate-300 text-slate-600 hover:text-slate-900 px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer shadow-2xs group"
+                title="Open Command Palette (Ctrl+K or ⌘K)"
+              >
+                <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <span>Search</span>
+                <kbd class="font-mono text-[9px] bg-white border border-slate-200/80 px-1 py-0.2 rounded text-slate-400 font-semibold shadow-2xs group-hover:border-blue-200 group-hover:text-blue-600">⌘K</kbd>
+              </button>
+
+              <!-- Live Sync Auto-Refresh Toggle -->
+              <div class="flex items-center bg-slate-50/80 border border-slate-200/80 rounded-lg px-2 py-0.5 text-xs font-mono">
+                <span
+                  class="w-1.5 h-1.5 rounded-full mr-1.5 shrink-0 transition-colors"
+                  :class="liveSyncSeconds > 0 ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'"
+                  :title="liveSyncSeconds > 0 ? `Live sync active (${liveSyncSeconds}s)` : 'Live sync paused'"
+                ></span>
+                <select
+                  v-model="liveSyncSeconds"
+                  @change="handleLiveSyncChange"
+                  class="bg-transparent text-[11px] font-semibold text-slate-600 border-none focus:outline-none cursor-pointer pr-1"
+                  title="Auto-refresh polling interval"
+                >
+                  <option :value="0">Sync: Off</option>
+                  <option :value="5">Sync: 5s</option>
+                  <option :value="10">Sync: 10s</option>
+                  <option :value="30">Sync: 30s</option>
+                </select>
+              </div>
+
               <!-- Refresh Button -->
               <button
                 @click="refreshAll"
@@ -339,6 +373,20 @@
                 Retry Failed ({{ stats.email.failed }})
               </button>
 
+              <!-- Live Email Template Visual Previewer & Test Dispatch -->
+              <button
+                type="button"
+                @click="showEmailPreview = true"
+                class="border border-slate-200/80 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs active:scale-[0.98] flex items-center gap-1.5"
+                title="Preview email templates & send real test dispatches"
+              >
+                <svg class="w-3.5 h-3.5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span>Email Previewer</span>
+              </button>
+
               <!-- Export CSV Dropdown -->
               <div class="flex items-center border border-slate-200/80 rounded-lg overflow-hidden shadow-2xs font-mono text-xs bg-white">
                 <button
@@ -372,11 +420,13 @@
             :status-filter="statusFilter"
             :sending-id="sendingId"
             :batch-sending="batchSending"
+            :batch-checking-in="batchCheckingIn"
             :email-view="emailView"
             :short-date="shortDate"
             :lock-age="lockAge"
             @send-one="sendOne"
             @batch-send="sendBatch"
+            @batch-check-in="handleBatchCheckIn"
             @change-page="changePage"
             @update:limit="updateLimit"
             @update:status-filter="updateStatusFilter"
@@ -394,6 +444,7 @@
             @close="inspectedAttendee = null"
             @send-one="sendOne"
             @toggle-attended="toggleAttendeeCheckIn"
+            @update-notes="handleUpdateNotes"
           />
 
           <!-- Live QR Check-in Scanner Modal -->
@@ -404,6 +455,33 @@
             :toast="toast"
             @close="showQrScanner = false"
             @checked-in="onQrCheckedIn"
+          />
+
+          <!-- Global Command Palette Modal (Ctrl+K / Cmd+K) -->
+          <AdminCommandPalette
+            v-if="showCommandPalette"
+            :registrations="registrations"
+            :workshops="workshops"
+            @close="showCommandPalette = false"
+            @inspect-attendee="onCommandSelectAttendee"
+            @select-attendee="onCommandSelectAttendee"
+            @switch-tab="onCommandChangeTab"
+            @change-tab="onCommandChangeTab"
+            @open-scanner="showQrScanner = true"
+            @preview-email="showEmailPreview = true"
+            @open-preview="showEmailPreview = true"
+            @send-all="sendAll"
+            @export-csv="downloadCsv"
+            @toggle-live-sync="toggleLiveSyncQuick"
+            @refresh="refreshAll"
+          />
+
+          <!-- Live Email Template Visual Previewer & Test Dispatch Modal -->
+          <AdminEmailPreviewModal
+            v-if="showEmailPreview"
+            :workshops="workshops"
+            :toast="toast"
+            @close="showEmailPreview = false"
           />
         </div>
 
@@ -1150,6 +1228,8 @@ import AdminMetricsChart from "../components/admin/AdminMetricsChart.vue";
 import AdminRegistrationsTable from "../components/admin/AdminRegistrationsTable.vue";
 import AdminAttendeeDrawer from "../components/admin/AdminAttendeeDrawer.vue";
 import AdminQrScannerModal from "../components/admin/AdminQrScannerModal.vue";
+import AdminCommandPalette from "../components/admin/AdminCommandPalette.vue";
+import AdminEmailPreviewModal from "../components/admin/AdminEmailPreviewModal.vue";
 import { apiPost } from "../utils/adminApi.js";
 
 const adminInput =
@@ -1446,7 +1526,113 @@ const changePage = (delta) => {
 const sendingId = ref(null);
 const sendingAll = ref(false);
 const batchSending = ref(false);
+const batchCheckingIn = ref(false);
 const showQrScanner = ref(false);
+const showCommandPalette = ref(false);
+const showEmailPreview = ref(false);
+const liveSyncSeconds = ref(0);
+let liveSyncTimer = null;
+
+const handleLiveSyncChange = () => {
+  if (liveSyncTimer) {
+    clearInterval(liveSyncTimer);
+    liveSyncTimer = null;
+  }
+  if (liveSyncSeconds.value > 0) {
+    liveSyncTimer = setInterval(() => {
+      if (authed.value && !loading.value) {
+        refreshAll();
+      }
+    }, liveSyncSeconds.value * 1000);
+    toast("info", `Live Sync (${liveSyncSeconds.value}s)`, "Dashboard will auto-refresh in real time.");
+  } else {
+    toast("info", "Live Sync Disabled", "Auto-refresh paused.");
+  }
+};
+
+const toggleLiveSyncQuick = () => {
+  liveSyncSeconds.value = liveSyncSeconds.value === 0 ? 5 : 0;
+  handleLiveSyncChange();
+};
+
+const handleGlobalKeydown = (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+    e.preventDefault();
+    showCommandPalette.value = !showCommandPalette.value;
+  }
+};
+
+const onCommandSelectAttendee = (att) => {
+  showCommandPalette.value = false;
+  openAttendeeDrawer(att);
+};
+
+const onCommandChangeTab = (tabId) => {
+  showCommandPalette.value = false;
+  tab.value = tabId;
+};
+
+const handleBatchCheckIn = async ({ ids, workshopId }) => {
+  if (!ids?.length || !workshopId) return;
+  batchCheckingIn.value = true;
+  try {
+    let successCount = 0;
+    for (const id of ids) {
+      const res = await fetch("/api/admin/check-in", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id,
+          workshop_id: workshopId,
+          attended: true,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (data.ok) successCount++;
+    }
+    const workshop = workshops.value.find((w) => w.id === workshopId);
+    toast(
+      "success",
+      `Batch Check-in Complete`,
+      `Checked in ${successCount} attendee${successCount === 1 ? "" : "s"} to "${workshop?.title || "Session"}"`
+    );
+    await refreshAll();
+  } catch (err) {
+    toast("error", "Batch check-in failed", err.message || "Network error.");
+  } finally {
+    batchCheckingIn.value = false;
+  }
+};
+
+const handleUpdateNotes = async ({ id, admin_notes, tags }) => {
+  try {
+    const res = await fetch("/api/admin/registrations", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, admin_notes, tags }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (data.ok) {
+      toast("success", "Notes saved", "Organizer notes and tags updated.");
+      const match = registrations.value.find((r) => r.id === id);
+      if (match) {
+        match.admin_notes = admin_notes;
+        match.tags = tags;
+      }
+      if (inspectedAttendee.value && inspectedAttendee.value.id === id) {
+        inspectedAttendee.value = {
+          ...inspectedAttendee.value,
+          admin_notes,
+          tags,
+        };
+      }
+    } else {
+      toast("error", "Update failed", data.message || "Could not save notes.");
+    }
+  } catch {
+    toast("error", "Network error", "Could not save notes.");
+  }
+};
 
 const toggleAttendeeCheckIn = async (payload) => {
   const attendee = payload?.attendee || payload;
@@ -2147,7 +2333,12 @@ onMounted(() => {
   ticker = setInterval(() => {
     now.value = Date.now();
   }, 10_000);
+  window.addEventListener("keydown", handleGlobalKeydown);
 });
 
-onUnmounted(() => clearInterval(ticker));
+onUnmounted(() => {
+  clearInterval(ticker);
+  if (liveSyncTimer) clearInterval(liveSyncTimer);
+  window.removeEventListener("keydown", handleGlobalKeydown);
+});
 </script>
