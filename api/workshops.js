@@ -102,6 +102,7 @@ export default async function handler(req, res) {
 
       const { rows } = await query(
         `SELECT ${SELECT_COLUMNS}
+           ${admin ? ', (SELECT count(*)::int FROM workshop_checkins wc WHERE wc.workshop_id = workshops.id) AS checked_in_count' : ''}
            FROM workshops
           ${includeUnpublished ? '' : 'WHERE is_published = true'}
           ORDER BY sort_order ASC, starts_at ASC`

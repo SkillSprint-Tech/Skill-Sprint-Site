@@ -145,7 +145,15 @@
               :key="h"
               class="px-3.5 py-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap"
             >
-              {{ h }}
+              <span v-if="h === 'Attendance' && activeWorkshopId">
+                Attendance (Session)
+              </span>
+              <span v-else-if="h === 'Attendance' && workshops.length">
+                Attendance ({{ workshops.length }} Sessions)
+              </span>
+              <span v-else>
+                {{ h }}
+              </span>
             </th>
             <!-- Sticky Action Column Header with Border Divider -->
             <th
@@ -238,20 +246,62 @@
               {{ shortDate(r.created_at) }}
             </td>
 
-            <!-- Attendance Status Pill Toggle -->
+            <!-- Attendance Status Pill Toggle (Per-Workshop Dynamic) -->
             <td class="px-3.5 py-2.5 whitespace-nowrap" @click.stop>
-              <button
-                type="button"
-                @click="$emit('toggle-attended', r)"
-                class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-semibold font-mono tracking-wide border transition-all cursor-pointer shadow-2xs"
-                :class="r.attended ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100' : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100'"
-              >
+              <!-- Case A: A specific workshop is selected in Scope -->
+              <div v-if="activeWorkshopId" class="flex items-center gap-2">
+                <button
+                  type="button"
+                  @click="$emit('toggle-attended', { attendee: r, workshopId: activeWorkshopId })"
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-semibold font-mono tracking-wide border transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
+                  :class="isAttended(r, activeWorkshopId)
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                    : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100'"
+                >
+                  <span
+                    class="w-1.5 h-1.5 rounded-full"
+                    :class="isAttended(r, activeWorkshopId) ? 'bg-emerald-500' : 'bg-slate-300'"
+                  ></span>
+                  {{ isAttended(r, activeWorkshopId) ? 'Attended' : 'Check-in' }}
+                </button>
+                <span v-if="workshops.length > 1" class="text-[10px] font-mono text-slate-400" :title="`${getAttendedCount(r)} of ${workshops.length} workshops attended`">
+                  ({{ getAttendedCount(r) }}/{{ workshops.length }})
+                </span>
+              </div>
+
+              <!-- Case B: Multi-workshop overview (depends on actual number of workshops) -->
+              <div v-else-if="workshops.length" class="flex items-center gap-1.5">
+                <div class="flex items-center gap-1">
+                  <button
+                    v-for="(w, idx) in workshops"
+                    :key="w.id"
+                    type="button"
+                    @click="$emit('toggle-attended', { attendee: r, workshopId: w.id })"
+                    class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold font-mono tracking-wide border transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
+                    :class="isAttended(r, w.id)
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                      : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200'"
+                    :title="`${w.title}: ${isAttended(r, w.id) ? 'Checked In (click to cancel)' : 'Click to Check In'}`"
+                  >
+                    <span
+                      class="w-1.5 h-1.5 rounded-full"
+                      :class="isAttended(r, w.id) ? 'bg-emerald-500' : 'bg-slate-300'"
+                    ></span>
+                    <span>#{{ idx + 1 }}{{ isAttended(r, w.id) ? '✓' : '' }}</span>
+                  </button>
+                </div>
                 <span
-                  class="w-1.5 h-1.5 rounded-full"
-                  :class="r.attended ? 'bg-emerald-500' : 'bg-slate-300'"
-                ></span>
-                {{ r.attended ? "Attended" : "Check-in" }}
-              </button>
+                  class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full"
+                  :class="getAttendedCount(r) > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-400'"
+                >
+                  {{ getAttendedCount(r) }}/{{ workshops.length }}
+                </span>
+              </div>
+
+              <!-- Fallback if no workshops configured yet -->
+              <span v-else class="text-[10px] font-mono text-slate-400">
+                No sessions
+              </span>
             </td>
 
             <!-- Status with Concentric Halo Dot -->
@@ -358,6 +408,30 @@
           <span class="font-mono text-[10px] text-slate-400">{{ shortDate(r.created_at) }}</span>
         </div>
 
+        <!-- Mobile Workshop Attendance Badges -->
+        <div v-if="workshops.length" class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100" @click.stop>
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="text-[10px] font-mono text-slate-400 font-semibold uppercase">Check-in:</span>
+            <button
+              v-for="(w, idx) in workshops"
+              :key="w.id"
+              type="button"
+              @click.stop="$emit('toggle-attended', { attendee: r, workshopId: w.id })"
+              class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold border transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
+              :class="isAttended(r, w.id)
+                ? 'bg-emerald-50 text-emerald-700 border-emerald-200 active:bg-emerald-100'
+                : 'bg-slate-50 text-slate-500 border-slate-200 active:bg-slate-100'"
+              :title="`${w.title}: ${isAttended(r, w.id) ? 'Checked In' : 'Click to Check In'}`"
+            >
+              <span class="w-1.5 h-1.5 rounded-full" :class="isAttended(r, w.id) ? 'bg-emerald-500' : 'bg-slate-300'"></span>
+              #{{ idx + 1 }} {{ isAttended(r, w.id) ? '✓' : '+' }}
+            </button>
+          </div>
+          <span class="text-[10px] font-mono text-slate-400 font-bold shrink-0">
+            {{ getAttendedCount(r) }}/{{ workshops.length }}
+          </span>
+        </div>
+
         <div class="flex items-center justify-between pt-2 border-t border-slate-100 mt-1">
           <span class="text-[10px] text-slate-400">Tap to inspect profile</span>
           <button
@@ -446,6 +520,14 @@ const props = defineProps({
     type: String,
     default: 'welcome_schedule',
   },
+  workshops: {
+    type: Array,
+    default: () => [],
+  },
+  activeWorkshopId: {
+    type: String,
+    default: null,
+  },
   shortDate: {
     type: Function,
     required: true,
@@ -471,6 +553,20 @@ const selectedIds = ref([]);
 
 const clearSelection = () => {
   selectedIds.value = [];
+};
+
+const isAttended = (attendee, workshopId) => {
+  if (!attendee?.checkins) {
+    return Boolean(attendee?.attended);
+  }
+  return attendee.checkins.some((c) => c.workshop_id === workshopId);
+};
+
+const getAttendedCount = (attendee) => {
+  if (!attendee?.checkins) {
+    return attendee?.attended ? 1 : 0;
+  }
+  return attendee.checkins.length;
 };
 
 const isAllSelected = computed(() => {

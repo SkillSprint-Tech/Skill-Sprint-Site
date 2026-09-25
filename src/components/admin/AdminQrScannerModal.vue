@@ -28,6 +28,29 @@
         </button>
       </div>
 
+      <!-- Target Workshop Selector Banner -->
+      <div class="px-6 py-2.5 bg-blue-50/80 border-b border-blue-100 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2 flex-1 min-w-[200px]">
+          <label class="text-[11px] font-bold uppercase tracking-wider text-blue-900 font-mono shrink-0">
+            Target Workshop:
+          </label>
+          <select
+            v-model="selectedWorkshopId"
+            class="border border-blue-200/80 rounded-lg px-2.5 py-1 text-xs font-semibold bg-white text-slate-800 focus:outline-2 focus:outline-blue-600 cursor-pointer flex-1 max-w-sm truncate"
+          >
+            <option v-for="(w, idx) in workshops" :key="w.id" :value="w.id">
+              #{{ idx + 1 }}: {{ w.title }} ({{ w.status }})
+            </option>
+          </select>
+        </div>
+        <span
+          v-if="selectedWorkshop"
+          class="text-[10px] font-mono px-2 py-0.5 rounded-full font-bold bg-blue-100 text-blue-800 border border-blue-200/70 shrink-0"
+        >
+          {{ selectedWorkshop.checked_in_count ?? 0 }} checked in
+        </span>
+      </div>
+
       <!-- Mode Tabs -->
       <div class="flex border-b border-slate-100 bg-slate-50/30 px-6 pt-2">
         <button
@@ -128,7 +151,8 @@
               <span class="text-[10px] text-slate-400 font-mono">Just now</span>
             </div>
             <p class="text-sm font-bold text-slate-900 truncate mt-0.5">{{ lastCheckedIn.full_name }}</p>
-            <p class="text-[11px] text-slate-500 truncate">{{ lastCheckedIn.email }} &bull; {{ lastCheckedIn.university || 'General Attendee' }}</p>
+            <p class="text-[11px] text-blue-700 font-semibold truncate">Workshop: {{ lastCheckedIn.workshopTitle }}</p>
+            <p class="text-[10px] text-slate-500 truncate">{{ lastCheckedIn.email }} &bull; {{ lastCheckedIn.university || 'General Attendee' }}</p>
           </div>
         </div>
 
@@ -154,9 +178,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
 const props = defineProps({
+  workshops: { type: Array, default: () => [] },
+  initialWorkshopId: { type: String, default: '' },
   toast: { type: Function, default: () => {} }
 })
 
@@ -169,6 +195,25 @@ const searchTerm = ref('')
 const checkingIn = ref(false)
 const lastCheckedIn = ref(null)
 const errorMsg = ref('')
+
+const selectedWorkshopId = ref(
+  props.initialWorkshopId ||
+  props.workshops.find((w) => w.status === 'live')?.id ||
+  props.workshops.find((w) => w.status === 'upcoming')?.id ||
+  props.workshops[0]?.id ||
+  ''
+)
+
+const selectedWorkshop = computed(() =>
+  props.workshops.find((w) => w.id === selectedWorkshopId.value)
+)
+
+watch(
+  () => props.initialWorkshopId,
+  (newId) => {
+    if (newId) selectedWorkshopId.value = newId
+  }
+)
 
 let stream = null
 let scanInterval = null
@@ -251,20 +296,31 @@ const stopCamera = () => {
 
 const performCheckIn = async (payload) => {
   if (checkingIn.value) return
+  if (!selectedWorkshopId.value && props.workshops.length > 0) {
+    selectedWorkshopId.value = props.workshops[0].id
+  }
   checkingIn.value = true
   errorMsg.value = ''
   try {
     const res = await fetch('/api/admin/check-in', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...payload, attended: true }),
+      body: JSON.stringify({
+        ...payload,
+        workshop_id: selectedWorkshopId.value,
+        attended: true,
+      }),
     })
     const data = await res.json().catch(() => ({}))
     if (data.ok && data.registration) {
-      lastCheckedIn.value = data.registration
+      const workshopTitle = data.workshop?.title || selectedWorkshop.value?.title || 'Workshop'
+      lastCheckedIn.value = {
+        ...data.registration,
+        workshopTitle,
+      }
       playSuccessChime()
-      props.toast('success', 'Checked in', data.registration.full_name)
-      emit('checked-in', data.registration)
+      props.toast('success', 'Checked in', `${data.registration.full_name} · ${workshopTitle}`)
+      emit('checked-in', { registration: data.registration, workshop: data.workshop })
       searchTerm.value = ''
     } else {
       errorMsg.value = data.message || 'Attendee not found.'

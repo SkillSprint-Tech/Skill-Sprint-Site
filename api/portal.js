@@ -258,6 +258,20 @@ export default async function handler(req, res) {
       const reg = regRows[0]
       const primaryName = reg?.full_name || certificates[0]?.recipient_name || email.split('@')[0]
 
+      // Fetch check-ins per workshop for this attendee
+      const { rows: attendeeCheckins } = reg?.id
+        ? await query(
+            `SELECT workshop_id, checked_in_at
+               FROM workshop_checkins
+              WHERE registration_id = $1`,
+            [reg.id]
+          )
+        : { rows: [] }
+
+      const checkinMap = new Map(
+        attendeeCheckins.map((c) => [c.workshop_id, c.checked_in_at])
+      )
+
       // Map workshops into attendee format
       const attendeeWorkshops = workshops.map(w => ({
         id: w.id,
@@ -274,8 +288,8 @@ export default async function handler(req, res) {
         slides_url: w.slides_url,
         repo_url: w.repo_url,
         resources_notes: w.resources_notes,
-        attended: Boolean(reg?.attended),
-        checked_in_at: reg?.checked_in_at,
+        attended: checkinMap.has(w.id),
+        checked_in_at: checkinMap.get(w.id) || null,
         has_certificate: certificates.some(c => c.workshop_id === w.id),
       }))
 
@@ -289,7 +303,7 @@ export default async function handler(req, res) {
         },
         stats: {
           totalRegistered: attendeeWorkshops.length,
-          totalAttended: reg?.attended ? 1 : 0,
+          totalAttended: attendeeCheckins.length,
           totalCertificates: certificates.length,
         },
         registrations: attendeeWorkshops,

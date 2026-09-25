@@ -362,6 +362,8 @@
           <!-- Registrations Table (Starts Immediately Above The Fold!) -->
           <AdminRegistrationsTable
             :registrations="registrations"
+            :workshops="workshops"
+            :active-workshop-id="activeWorkshopId"
             :stats="stats"
             :loading="loading"
             :page="page"
@@ -386,6 +388,7 @@
           <!-- Attendee Detail Slide-Over Inspector Drawer -->
           <AdminAttendeeDrawer
             :attendee="inspectedAttendee"
+            :workshops="workshops"
             :sending-id="sendingId"
             :short-date="shortDate"
             @close="inspectedAttendee = null"
@@ -396,6 +399,8 @@
           <!-- Live QR Check-in Scanner Modal -->
           <AdminQrScannerModal
             v-if="showQrScanner"
+            :workshops="workshops"
+            :initial-workshop-id="activeWorkshopId || ''"
             :toast="toast"
             @close="showQrScanner = false"
             @checked-in="onQrCheckedIn"
@@ -1253,6 +1258,13 @@ const inspectedAttendee = ref(null);
 const WELCOME_TEMPLATE = "welcome_schedule";
 const emailView = ref(WELCOME_TEMPLATE);
 
+const activeWorkshopId = computed(() => {
+  if (emailView.value && emailView.value.startsWith("reminder:")) {
+    return emailView.value.replace("reminder:", "");
+  }
+  return null;
+});
+
 const onEmailViewChange = () => {
   page.value = 1;
   statusFilter.value = "all";
@@ -1436,20 +1448,72 @@ const sendingAll = ref(false);
 const batchSending = ref(false);
 const showQrScanner = ref(false);
 
-const toggleAttendeeCheckIn = async (attendee) => {
-  const newStatus = !attendee.attended;
+const toggleAttendeeCheckIn = async (payload) => {
+  const attendee = payload?.attendee || payload;
+  let targetWorkshopId = payload?.workshopId || activeWorkshopId.value;
+
+  if (!targetWorkshopId) {
+    targetWorkshopId =
+      workshops.value.find((w) => w.status === "live")?.id ||
+      workshops.value.find((w) => w.status === "upcoming")?.id ||
+      workshops.value[0]?.id;
+  }
+
+  if (!targetWorkshopId) {
+    toast("error", "No workshop found", "Please create or publish a workshop first.");
+    return;
+  }
+
+  const checkins = attendee.checkins || [];
+  const currentlyChecked = checkins.some((c) => c.workshop_id === targetWorkshopId);
+  const newStatus =
+    payload?.targetStatus !== undefined ? payload.targetStatus : !currentlyChecked;
+
   try {
     const res = await fetch("/api/admin/check-in", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: attendee.id, attended: newStatus }),
+      body: JSON.stringify({
+        id: attendee.id,
+        workshop_id: targetWorkshopId,
+        attended: newStatus,
+      }),
     });
     const data = await res.json().catch(() => ({}));
     if (data.ok) {
-      toast("success", newStatus ? "Checked in" : "Check-in removed", attendee.full_name);
-      attendee.attended = newStatus;
-      attendee.checked_in_at = newStatus ? new Date().toISOString() : null;
+      const workshopTitle = data.workshop?.title || "Workshop";
+      toast(
+        "success",
+        newStatus ? "Checked in" : "Check-in removed",
+        `${attendee.full_name} · ${workshopTitle}`
+      );
+
+      if (!attendee.checkins) attendee.checkins = [];
+      if (newStatus) {
+        if (!attendee.checkins.some((c) => c.workshop_id === targetWorkshopId)) {
+          attendee.checkins.push({
+            workshop_id: targetWorkshopId,
+            checked_in_at: new Date().toISOString(),
+          });
+        }
+      } else {
+        attendee.checkins = attendee.checkins.filter(
+          (c) => c.workshop_id !== targetWorkshopId
+        );
+      }
+      attendee.attended = attendee.checkins.length > 0;
+      attendee.checked_in_at = attendee.checkins[0]?.checked_in_at || null;
+
+      if (inspectedAttendee.value && inspectedAttendee.value.id === attendee.id) {
+        inspectedAttendee.value = {
+          ...inspectedAttendee.value,
+          checkins: [...attendee.checkins],
+          attended: attendee.attended,
+        };
+      }
+
       await loadRegistrations();
+      await loadWorkshops();
     } else {
       toast("error", "Check-in failed", data.message || "");
     }
@@ -1460,6 +1524,7 @@ const toggleAttendeeCheckIn = async (attendee) => {
 
 const onQrCheckedIn = async () => {
   await loadRegistrations();
+  await loadWorkshops();
 };
 
 const reportSendResult = (data, successTitle) => {

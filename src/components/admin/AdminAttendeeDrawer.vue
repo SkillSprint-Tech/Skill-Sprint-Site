@@ -133,24 +133,89 @@
             </div>
           </div>
 
-          <div class="bg-slate-50/80 border border-slate-200/70 rounded-xl p-3 flex items-center justify-between">
-            <div>
-              <div class="text-[10px] text-slate-400 font-bold uppercase font-mono">Live Workshop Attendance</div>
-              <div class="text-xs font-semibold text-slate-800 mt-0.5">
-                {{ attendee.attended ? 'Checked In' : 'Not Attended' }}
-                <span v-if="attendee.checked_in_at" class="text-[10px] text-slate-400 font-mono block">
-                  {{ shortDate(attendee.checked_in_at) }}
-                </span>
+          <!-- Per-Workshop Live Attendance Tracker -->
+          <div class="bg-slate-50/80 border border-slate-200/70 rounded-2xl p-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="text-[10px] text-slate-400 font-bold uppercase font-mono tracking-wider">
+                  Workshop Attendance
+                </div>
+                <div class="text-xs font-semibold text-slate-800 mt-0.5 flex items-center gap-2">
+                  <span>{{ attendedCount }} of {{ workshops.length }} Attended</span>
+                  <span
+                    class="text-[10px] font-mono px-2 py-0.5 rounded-full font-bold"
+                    :class="attendedCount > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'"
+                  >
+                    {{ workshops.length ? Math.round((attendedCount / workshops.length) * 100) : 0 }}%
+                  </span>
+                </div>
               </div>
             </div>
-            <button
-              type="button"
-              @click="$emit('toggle-attended', attendee)"
-              class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs"
-              :class="attendee.attended ? 'bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100' : 'bg-emerald-600 text-white hover:bg-emerald-700'"
-            >
-              {{ attendee.attended ? 'Cancel Check-in' : 'Check In' }}
-            </button>
+
+            <!-- Visual Progress Bar -->
+            <div class="w-full bg-slate-200/80 rounded-full h-1.5 overflow-hidden">
+              <div
+                class="bg-emerald-500 h-1.5 rounded-full transition-all duration-300"
+                :style="{ width: `${workshops.length ? (attendedCount / workshops.length) * 100 : 0}%` }"
+              ></div>
+            </div>
+
+            <!-- Dynamic Workshop Checklist (Depends on actual number of workshops) -->
+            <div v-if="workshops.length" class="space-y-2 pt-1">
+              <div
+                v-for="(w, idx) in workshops"
+                :key="w.id"
+                class="bg-white border rounded-xl p-3 flex items-center justify-between gap-3 transition-colors shadow-2xs"
+                :class="isWorkshopCheckedIn(w.id) ? 'border-emerald-200 bg-emerald-50/20' : 'border-slate-200/80'"
+              >
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span
+                      class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded"
+                      :class="isWorkshopCheckedIn(w.id) ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'"
+                    >
+                      #{{ idx + 1 }}
+                    </span>
+                    <span class="text-xs font-semibold text-slate-900 truncate">
+                      {{ w.title }}
+                    </span>
+                    <span
+                      class="text-[9px] font-mono px-1.5 py-0.2 rounded uppercase tracking-wider font-semibold"
+                      :class="{
+                        'bg-emerald-100 text-emerald-800': w.status === 'live',
+                        'bg-blue-50 text-blue-700': w.status === 'upcoming',
+                        'bg-slate-100 text-slate-500': w.status === 'completed',
+                        'bg-rose-50 text-rose-700': w.status === 'cancelled',
+                      }"
+                    >
+                      {{ w.status }}
+                    </span>
+                  </div>
+
+                  <div class="text-[11px] text-slate-400 mt-1 flex items-center gap-2">
+                    <span v-if="w.speaker" class="truncate">{{ w.speaker }}</span>
+                    <span v-if="getCheckinTimestamp(w.id)" class="text-emerald-700 font-mono text-[10px] font-medium shrink-0">
+                      ✓ Checked in {{ shortDate(getCheckinTimestamp(w.id)) }}
+                    </span>
+                    <span v-else class="text-slate-400 text-[10px] shrink-0">Not checked in</span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  @click="$emit('toggle-attended', { attendee, workshopId: w.id, targetStatus: !isWorkshopCheckedIn(w.id) })"
+                  class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shrink-0 shadow-2xs active:scale-[0.98]"
+                  :class="isWorkshopCheckedIn(w.id)
+                    ? 'bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-700'"
+                >
+                  {{ isWorkshopCheckedIn(w.id) ? 'Cancel' : 'Check In' }}
+                </button>
+              </div>
+            </div>
+            <div v-else class="text-xs text-slate-400 italic py-2 text-center">
+              No workshops published yet.
+            </div>
           </div>
 
           <div class="pt-2 text-[10px] text-slate-400 font-mono">
@@ -191,12 +256,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps({
   attendee: {
     type: Object,
     default: null,
+  },
+  workshops: {
+    type: Array,
+    default: () => [],
   },
   sendingId: {
     type: [String, Number, null],
@@ -208,7 +277,23 @@ const props = defineProps({
   },
 });
 
-defineEmits(['close', 'send-one']);
+defineEmits(['close', 'send-one', 'toggle-attended']);
+
+const isWorkshopCheckedIn = (workshopId) => {
+  if (!props.attendee?.checkins) return false;
+  return props.attendee.checkins.some((c) => c.workshop_id === workshopId);
+};
+
+const getCheckinTimestamp = (workshopId) => {
+  if (!props.attendee?.checkins) return null;
+  const match = props.attendee.checkins.find((c) => c.workshop_id === workshopId);
+  return match?.checked_in_at || null;
+};
+
+const attendedCount = computed(() => {
+  if (!props.attendee?.checkins) return 0;
+  return props.attendee.checkins.length;
+});
 
 const copied = ref(false);
 
