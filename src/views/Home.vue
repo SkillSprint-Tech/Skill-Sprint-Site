@@ -6,6 +6,7 @@
     <Testimonial />
     <Stats />
     <Partner />
+    <PartnerEventPopup />
   </div>
 </template>
 
@@ -16,6 +17,7 @@ import Whysection from '../components/LandingPage/Whysection.vue'
 import Testimonial from '../components/LandingPage/Testimonial.vue'
 import Stats from '../components/LandingPage/Stats.vue'
 import Partner from '../components/LandingPage/Partner.vue'
+import PartnerEventPopup from '../components/LandingPage/PartnerEventPopup.vue'
 import { onMounted } from 'vue';
 
 onMounted(() => {

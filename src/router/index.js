@@ -103,6 +103,9 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
+    } else if (to.hash) {
+      // Land on the anchored section, clear of the sticky navbar.
+      return { el: to.hash, top: document.querySelector('nav')?.offsetHeight ?? 0 }
     } else {
       return { left: 0, top: 0 }
     }

@@ -80,7 +80,7 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- PARTNER EVENT -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="partnerScope" class="bg-[#0B101B] section relative overflow-hidden">
+    <section ref="partnerScope" :id="partnerEvent.anchor" class="bg-[#0B101B] section relative overflow-hidden">
       <div class="max-w-5xl mx-auto relative z-10">
         <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
@@ -345,6 +345,7 @@
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { useGSAP } from '../composables/useGSAP'
 import { whatsappGroup } from '../data/site'
+import { partnerEvent } from '../data/partnerEvent'
 
 const pageScope = ref(null)
 const heroScope = ref(null)
@@ -393,19 +394,6 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
 // Partner event
 const partnerScope = ref(null)
-
-const partnerEvent = {
-  name: 'LoopVerse 3.0',
-  host: 'LoopLab',
-  poster: '/loopverse-3-outreach-partner.jpg',
-  posterAlt: 'LoopLab proudly announce Skill Sprint as LoopVerse 3.0 Outreach Partner',
-  modules: ['Web Dev', 'App Dev', 'Game Dev', 'AI/ML', 'Cybersecurity', 'UI/UX', 'Idea Pitching'],
-  date: '9th October 2026',
-  venue: 'Onsite at CEGA, NASTP Lahore, or virtual',
-  promoCode: 'LL-SPRINT',
-  promoOffer: '10% off registration',
-  registerUrl: 'https://www.looplab.site/loopverse/register',
-}
 
 const promoCopied = ref(false)
 
