@@ -78,6 +78,84 @@
     </section>
 
     <!-- ═══════════════════════════════════════ -->
+    <!-- PARTNER EVENT -->
+    <!-- ═══════════════════════════════════════ -->
+    <section ref="partnerScope" class="bg-[#0B101B] section relative overflow-hidden">
+      <div class="max-w-5xl mx-auto relative z-10">
+        <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+
+          <div class="flex-shrink-0 w-full max-w-xs sm:max-w-sm partner-poster">
+            <img :src="partnerEvent.poster" :alt="partnerEvent.posterAlt" width="1025" height="1535"
+                 class="w-full h-auto rounded-2xl border border-white/10 shadow-2xl" loading="lazy" />
+          </div>
+
+          <div class="flex-1 text-center lg:text-left partner-copy">
+            <span class="inline-flex items-center gap-2 bg-violet-500/10 text-violet-300 text-xs font-extrabold
+                         px-4 py-1.5 rounded-full border border-violet-500/20 uppercase tracking-widest mb-6">
+              <i class="fa-solid fa-handshake text-sm" aria-hidden="true"></i>
+              Outreach Partner
+            </span>
+            <h2 class="text-white h-section leading-[1.1] mb-5">
+              We just joined<br />
+              <span class="bg-gradient-to-r from-violet-400 to-fuchsia-300 bg-clip-text text-transparent">
+                {{ partnerEvent.name }}.
+              </span>
+            </h2>
+            <p class="text-gray-400 text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 mb-6">
+              Skill Sprint is officially an Outreach Partner for {{ partnerEvent.host }}'s
+              {{ partnerEvent.name }}. Seven modules. One day. Zero excuses. Build under pressure,
+              compete with the best, and walk out with more than a certificate.
+            </p>
+
+            <ul class="flex flex-wrap gap-2 justify-center lg:justify-start mb-6">
+              <li v-for="module in partnerEvent.modules" :key="module"
+                  class="bg-white/5 border border-white/10 text-gray-300 text-xs font-semibold px-3 py-1.5 rounded-full">
+                {{ module }}
+              </li>
+            </ul>
+
+            <dl class="flex flex-col gap-2 text-sm text-gray-300 mb-8">
+              <div class="flex items-start gap-3 justify-center lg:justify-start">
+                <dt class="sr-only">Date</dt>
+                <i class="fa-regular fa-calendar text-violet-300 mt-0.5 w-4 text-center" aria-hidden="true"></i>
+                <dd>{{ partnerEvent.date }}</dd>
+              </div>
+              <div class="flex items-start gap-3 justify-center lg:justify-start">
+                <dt class="sr-only">Venue</dt>
+                <i class="fa-solid fa-location-dot text-violet-300 mt-0.5 w-4 text-center" aria-hidden="true"></i>
+                <dd>{{ partnerEvent.venue }}</dd>
+              </div>
+            </dl>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+              <a :href="partnerEvent.registerUrl" target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center justify-center gap-2.5 bg-violet-600 text-white
+                        px-8 py-4 rounded-full font-bold hover:bg-violet-700
+                        transition-colors duration-200">
+                Register now
+                <i class="fa-solid fa-arrow-up-right-from-square text-sm" aria-hidden="true"></i>
+              </a>
+              <button type="button" @click="copyPromoCode"
+                      class="inline-flex items-center justify-center gap-2.5 border border-dashed border-white/25 text-gray-300
+                             px-6 py-4 rounded-full font-semibold hover:border-white/40 hover:text-white
+                             transition-colors duration-200 cursor-pointer"
+                      :aria-label="`Copy promo code ${partnerEvent.promoCode}`">
+                <span class="font-mono font-bold text-white tracking-wider">{{ partnerEvent.promoCode }}</span>
+                <span class="text-sm">{{ promoCopied ? 'Copied!' : partnerEvent.promoOffer }}</span>
+                <i :class="promoCopied ? 'fa-solid fa-check' : 'fa-regular fa-copy'" class="text-sm" aria-hidden="true"></i>
+              </button>
+            </div>
+
+            <p class="text-gray-500 text-sm mt-6">
+              Registrations are now open. Squad up, lock in, and get ready to loop in.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
     <!-- WALL OF FAME (Testimonials) -->
     <!-- ═══════════════════════════════════════ -->
     <section ref="testimonialScope" class="bg-[#F8FAFC] section overflow-hidden">
@@ -313,6 +391,34 @@ const handleScroll = () => {
 onMounted(() => window.addEventListener('scroll', handleScroll))
 onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
+// Partner event
+const partnerScope = ref(null)
+
+const partnerEvent = {
+  name: 'LoopVerse 3.0',
+  host: 'LoopLab',
+  poster: '/loopverse-3-outreach-partner.jpg',
+  posterAlt: 'LoopLab proudly announce Skill Sprint as LoopVerse 3.0 Outreach Partner',
+  modules: ['Web Dev', 'App Dev', 'Game Dev', 'AI/ML', 'Cybersecurity', 'UI/UX', 'Idea Pitching'],
+  date: '9th October 2026',
+  venue: 'Onsite at CEGA, NASTP Lahore, or virtual',
+  promoCode: 'LL-SPRINT',
+  promoOffer: '10% off registration',
+  registerUrl: 'https://www.looplab.site/loopverse/register',
+}
+
+const promoCopied = ref(false)
+
+const copyPromoCode = async () => {
+  try {
+    await navigator.clipboard.writeText(partnerEvent.promoCode)
+    promoCopied.value = true
+    setTimeout(() => { promoCopied.value = false }, 2000)
+  } catch {
+    // Clipboard blocked (insecure context / denied) — the code is still visible to copy by hand.
+  }
+}
+
 // Testimonials data
 const testimonials = [
   { quote: 'SkillSprint gave me my first real pull request experience. No classroom can replicate that feeling of shipping code.', name: 'Aisha K.', initials: 'AK', avatarClass: 'bg-blue-100 text-blue-600', desktopStyle: 'width:280px; top:30px; left:0; z-index:20; transform:rotate(-6deg);' },
@@ -363,6 +469,10 @@ useGSAP((self) => {
   if (statItems.length > 0) {
     gsap.from(statItems, { scrollTrigger: { trigger: statsScope.value, start: 'top 85%', toggleActions: 'play none none reverse' }, y: 30, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out' })
   }
+
+  // Partner event animations
+  gsap.from('.partner-poster', { scrollTrigger: { trigger: partnerScope.value, start: 'top 80%', toggleActions: 'play none none reverse' }, y: 60, opacity: 0, scale: 0.92, duration: 1, ease: 'back.out(1.3)' })
+  gsap.from('.partner-copy', { scrollTrigger: { trigger: partnerScope.value, start: 'top 77%', toggleActions: 'play none none reverse' }, y: 40, opacity: 0, duration: 1, ease: 'power3.out' })
 
   // Testimonial animations
   gsap.from('.wall-heading', { scrollTrigger: { trigger: testimonialScope.value, start: 'top 80%', toggleActions: 'play none none reverse' }, y: 50, opacity: 0, duration: 1, ease: 'power3.out' })
