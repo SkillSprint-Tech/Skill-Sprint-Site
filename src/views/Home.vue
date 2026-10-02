@@ -7,6 +7,7 @@
     <Stats />
     <Partner />
     <PartnerEventPopup />
+    <PartnerEventCountdown />
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import Testimonial from '../components/LandingPage/Testimonial.vue'
 import Stats from '../components/LandingPage/Stats.vue'
 import Partner from '../components/LandingPage/Partner.vue'
 import PartnerEventPopup from '../components/LandingPage/PartnerEventPopup.vue'
+import PartnerEventCountdown from '../components/LandingPage/PartnerEventCountdown.vue'
 import { onMounted } from 'vue';
 
 onMounted(() => {
