@@ -3,8 +3,6 @@
  * and the home page announcement popup so the details only live in one place.
  */
 export const partnerEvent = {
-  // Also the localStorage suffix for "dismissed", so a new event shows its popup again.
-  id: 'loopverse-3',
   // Section anchor on /community, the target of the popup's "See details" link.
   anchor: 'loopverse',
   name: 'LoopVerse 3.0',

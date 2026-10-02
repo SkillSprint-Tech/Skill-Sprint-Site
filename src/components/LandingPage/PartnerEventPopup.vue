@@ -122,11 +122,16 @@
   </Teleport>
 </template>
 
+<script>
+// Module scope, so it outlives the component: closing the popup keeps it closed while
+// the visitor moves around the site, and a fresh page load shows it again.
+let dismissedThisLoad = false
+</script>
+
 <script setup>
 import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { partnerEvent } from '../../data/partnerEvent'
 
-const DISMISSED_KEY = `ss:popup-dismissed:${partnerEvent.id}`
 // Let the hero land first so the popup reads as news, not as part of the page load.
 const SHOW_DELAY_MS = 1500
 // Keep in sync with the 3D media query in the styles below.
@@ -138,10 +143,6 @@ const visible = ref(false)
 const panel = ref(null)
 let showTimer = null
 let lastFocused = null
-
-const wasDismissed = () => {
-  try { return localStorage.getItem(DISMISSED_KEY) === '1' } catch { return false }
-}
 
 // Pad for the scrollbar that disappears, so the page behind doesn't jump sideways.
 const lockScroll = () => {
@@ -167,9 +168,9 @@ const show = async () => {
 const dismiss = () => {
   if (!visible.value) return
   visible.value = false
+  dismissedThisLoad = true
   unlockScroll()
   lastFocused?.focus?.({ preventScroll: true })
-  try { localStorage.setItem(DISMISSED_KEY, '1') } catch { /* private mode: not remembered */ }
 }
 
 const onKeydown = (e) => {
@@ -212,7 +213,7 @@ const resetTilt = () => {
 
 onMounted(() => {
   const eventOver = Date.now() > new Date(partnerEvent.endsAt).getTime()
-  if (eventOver || wasDismissed()) return
+  if (eventOver || dismissedThisLoad) return
   showTimer = setTimeout(show, SHOW_DELAY_MS)
 })
 

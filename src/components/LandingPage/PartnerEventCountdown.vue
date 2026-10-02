@@ -40,12 +40,16 @@
   </Transition>
 </template>
 
+<script>
+// Module scope, so it outlives the component: closing the countdown keeps it closed while
+// the visitor moves around the site, and a fresh page load shows it again.
+let hiddenThisLoad = false
+</script>
+
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { partnerEvent } from '../../data/partnerEvent'
 
-// Session-scoped: closing it tucks it away for this visit, and it's back on the next one.
-const HIDDEN_KEY = `ss:countdown-hidden:${partnerEvent.id}`
 // Matches the announcement popup, so the two arrive together.
 const SHOW_DELAY_MS = 1500
 
@@ -74,18 +78,14 @@ const units = computed(() => {
   return live.value ? all.slice(1) : all
 })
 
-const wasHidden = () => {
-  try { return sessionStorage.getItem(HIDDEN_KEY) === '1' } catch { return false }
-}
-
 const hide = () => {
   visible.value = false
+  hiddenThisLoad = true
   clearInterval(tick)
-  try { sessionStorage.setItem(HIDDEN_KEY, '1') } catch { /* private mode: not remembered */ }
 }
 
 onMounted(() => {
-  if (over.value || wasHidden()) return
+  if (over.value || hiddenThisLoad) return
   // Recomputed from the clock each tick, so a throttled background tab can't drift.
   tick = setInterval(() => {
     now.value = Date.now()
