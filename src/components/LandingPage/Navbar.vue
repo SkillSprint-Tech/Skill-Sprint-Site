@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-[#F8FAFC] px-3 md:px-8 sticky top-0 z-50 border-b border-gray-100/80 backdrop-blur-sm">
+  <nav class="bg-[#F8FAFC]/90 px-3 md:px-8 sticky top-0 z-50 border-b border-gray-200/50 backdrop-blur-md transition-all duration-300">
     
     <div class="max-w-7xl mx-auto flex items-center justify-between py-2 md:py-3">
       
@@ -48,10 +48,10 @@
           </div>
 
           <!-- Button -->
-          <router-link to="/contact-us">
+          <router-link v-magnetic to="/contact-us">
             <button class="bg-blue-600 text-white px-6 lg:px-8 py-3 lg:py-4 
                            text-sm lg:text-base rounded-full font-medium 
-                           hover:bg-blue-700 transition shadow-sm shadow-blue-100 cursor-pointer">
+                           hover:bg-blue-700 transition shadow-sm shadow-blue-200 hover:shadow-md cursor-pointer">
               Join the Sprint
             </button>
           </router-link>

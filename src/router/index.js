@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import ContactUs from '../components/ContactUs.vue'
+import { resetScroll } from '../motion/smoothScroll'
 
 // Prevent native browser scroll restoration behavior
 if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
@@ -115,7 +116,7 @@ const router = createRouter({
 // Force manual scroll reset immediately on completion of route transitions
 router.afterEach((to) => {
   if (typeof window !== 'undefined') {
-    window.scrollTo({ left: 0, top: 0, behavior: 'instant' })
+    resetScroll()
   }
 
   // Keep admin out of search results. Added/removed per navigation so it never leaks
