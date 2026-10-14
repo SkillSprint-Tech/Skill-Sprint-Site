@@ -4,41 +4,83 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- HERO -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="heroScope" class="px-4 sm:px-6 relative bg-[#F8FAFC] pt-10 sm:pt-14 md:pt-20 pb-10 md:pb-16 text-center overflow-hidden">
+    <section ref="heroScope" class="px-4 sm:px-6 relative bg-[#F8FAFC] pt-12 sm:pt-16 md:pt-24 pb-12 md:pb-20 text-center overflow-hidden">
 
-      <div class="hidden sm:block pointer-events-none select-none" aria-hidden="true">
+      <!-- Ambient blueprint grid and light orbs -->
+      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div class="absolute top-10 left-1/4 w-[480px] h-[320px] bg-blue-500/10 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-10 right-1/4 w-[400px] h-[300px] bg-indigo-500/10 blur-[100px] rounded-full"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(37,99,235,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(37,99,235,0.03)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_50%,#000_30%,transparent_100%)]"></div>
+      </div>
+
+      <div class="hidden sm:block pointer-events-none select-none relative z-10" aria-hidden="true">
         <div v-for="(tag, i) in floatingTags" :key="i"
-             class="absolute bg-white shadow-sm px-3 py-1.5 rounded-full border border-gray-200
+             class="absolute bg-white shadow-sm px-3.5 py-1.5 rounded-full border border-gray-200
                     text-[11px] font-medium tracking-wide text-gray-600 floating-tag"
-             :class="tag.position" style="font-family: 'Handlee', cursive;">
+             :class="tag.position"
+             :data-depth="[1.2, 0.8, 1.4, 1.0][i % 4]"
+             style="font-family: 'Handlee', cursive;">
           {{ tag.label }}
         </div>
       </div>
 
-      <div class="relative z-10">
-        <h1 class="hero-heading h-display text-gray-900 leading-[1.1] mb-4">
+      <div class="relative z-10 max-w-4xl mx-auto">
+        <div class="flex justify-center mb-5">
+          <span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-600 text-xs font-mono font-extrabold px-4 py-1.5 rounded-full border border-blue-100 uppercase tracking-widest">
+            <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
+            Technical Curriculum Series
+          </span>
+        </div>
+
+        <h1 class="hero-heading h-display text-gray-900 leading-[1.1] mb-5">
           Free Workshops.<br />
           <span class="text-blue-600">Real Skills.</span>
         </h1>
-        <p class="hero-sub max-w-xs sm:max-w-sm md:max-w-2xl mx-auto text-gray-500 text-sm sm:text-base md:text-lg mb-8 leading-relaxed px-2">
+        <p class="hero-sub max-w-xs sm:max-w-sm md:max-w-2xl mx-auto text-gray-500 text-base sm:text-lg mb-8 leading-relaxed px-2 font-normal">
           Hands-on sessions covering software engineering, UI/UX design, data & AI, cybersecurity, and modern tech skills. Open to everyone, costing nothing. Register once and we'll email you the full schedule.
         </p>
-        <div class="flex flex-wrap gap-3 justify-center items-center">
+        <div class="flex flex-wrap gap-4 justify-center items-center">
           <a href="#register"
-             class="w-full sm:w-auto bg-blue-600 text-white px-8 py-3.5 rounded-full font-semibold
-                    hover:bg-blue-700 transition-colors duration-200 shadow-sm shadow-blue-100">
+             v-magnetic
+             class="w-full sm:w-auto bg-blue-600 text-white px-9 py-3.5 rounded-full font-semibold
+                    hover:bg-blue-700 transition-all duration-200 shadow-lg shadow-blue-500/25 cursor-pointer">
             Register for the series
           </a>
           <button
             type="button"
+            v-magnetic
             @click="showQuiz = true"
-            class="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white text-sm font-bold px-6 py-3.5 rounded-full shadow-sm hover:shadow transition-all cursor-pointer flex items-center justify-center gap-2"
+            class="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white text-sm font-bold px-8 py-3.5 rounded-full shadow-lg shadow-blue-500/20 transition-all cursor-pointer flex items-center justify-center gap-2"
           >
             <span>✨ Take the 2-Min Quiz</span>
           </button>
         </div>
       </div>
     </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- KINETIC VELOCITY MARQUEE -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="workshops-marquee py-5 bg-slate-950 overflow-hidden relative" aria-hidden="true">
+      <div class="workshops-marquee-track flex w-max gap-8 font-mono text-sm sm:text-base font-extrabold uppercase text-white/90 tracking-widest select-none">
+        <template v-for="pass in 2" :key="pass">
+          <span class="flex items-center gap-8">
+            <span class="text-blue-400">⚡ ZERO-COST WORKSHOPS</span>
+            <span>·</span>
+            <span>LIVE PRODUCTION CODING</span>
+            <span>·</span>
+            <span class="text-indigo-400">UI/UX DESIGN SYSTEMS</span>
+            <span>·</span>
+            <span>DATA & INTELLIGENCE LABS</span>
+            <span>·</span>
+            <span class="text-emerald-400">CYBERSECURITY PRACTICUMS</span>
+            <span>·</span>
+            <span>ALL LEVELS WELCOME</span>
+            <span>·</span>
+          </span>
+        </template>
+      </div>
+    </div>
 
     <!-- ═══════════════════════════════════════ -->
     <!-- UPCOMING -->
@@ -685,20 +727,69 @@ const resetForm = () => {
 }
 
 // ── Animations ──────────────────────────────────────────────────────────────
+import { SplitText } from '../motion/gsap'
+import { hasFinePointer } from '../motion/intro'
+
 useGSAP((self) => {
   const { gsap } = self
 
-  const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
-  tl.from('.hero-heading', { y: 80, opacity: 0, duration: 1.4, skewY: 2 })
-    .from('.hero-sub', { y: 30, opacity: 0, duration: 1.1 }, '-=1.0')
+  const headingSplit = SplitText.create(self.selector('.hero-heading'), { type: 'words,chars', wordsClass: 'whw' })
+  gsap.from(headingSplit.chars, {
+    y: 50,
+    opacity: 0,
+    rotateX: -45,
+    stagger: 0.02,
+    duration: 1,
+    ease: 'power3.out',
+  })
 
-  self.selector('.floating-tag').forEach((label, i) => {
-    gsap.from(label, { scale: 0, opacity: 0, duration: 1, delay: 0.7 + i * 0.12, ease: 'back.out(2)' })
+  gsap.from(self.selector('.hero-sub'), {
+    y: 30,
+    opacity: 0,
+    duration: 0.9,
+    delay: 0.3,
+    ease: 'power3.out',
+  })
+
+  const labels = self.selector('.floating-tag')
+  labels.forEach((label, i) => {
+    gsap.from(label, { scale: 0, opacity: 0, duration: 1, delay: 0.5 + i * 0.12, ease: 'back.out(2)' })
     gsap.to(label, {
-      y: '+=10', x: i % 2 === 0 ? '+=4' : '-=4', rotation: i % 2 === 0 ? '+=2' : '-=2',
-      duration: 2.2 + i * 0.4, yoyo: true, repeat: -1, ease: 'sine.inOut', delay: i * 0.2,
+      y: '+=8', x: i % 2 === 0 ? '+=4' : '-=4', rotation: i % 2 === 0 ? '+=2' : '-=2',
+      duration: 2.4 + i * 0.4, yoyo: true, repeat: -1, ease: 'sine.inOut', delay: i * 0.2,
     })
   })
+
+  if (hasFinePointer()) {
+    const tagMovers = labels.map((el) => ({
+      depth: parseFloat(el.dataset.depth) || 1,
+      x: gsap.quickTo(el, 'x', { duration: 1, ease: 'power3.out' }),
+      y: gsap.quickTo(el, 'y', { duration: 1, ease: 'power3.out' }),
+    }))
+
+    const onPointer = (e) => {
+      const r = heroScope.value?.getBoundingClientRect()
+      if (!r) return
+      const nx = (e.clientX - r.left) / r.width - 0.5
+      const ny = (e.clientY - r.top) / r.height - 0.5
+      tagMovers.forEach((m) => {
+        m.x(nx * 30 * m.depth)
+        m.y(ny * 20 * m.depth)
+      })
+    }
+    heroScope.value?.addEventListener('pointermove', onPointer)
+  }
+
+  // Marquee track
+  const track = self.selector('.workshops-marquee-track')[0]
+  if (track) {
+    gsap.to(track, {
+      xPercent: -50,
+      duration: 24,
+      ease: 'none',
+      repeat: -1,
+    })
+  }
 
   gsap.from('.upcoming-heading', {
     scrollTrigger: { trigger: upcomingScope.value, start: 'top 85%', toggleActions: 'play none none reverse' },

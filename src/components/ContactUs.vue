@@ -1,194 +1,224 @@
 <template>
-  <div class="min-h-screen bg-[#F8FAFC] font-sans">
+  <div ref="pageScope" class="min-h-screen bg-[#F8FAFC] font-sans overflow-x-hidden">
     
+    <!-- Ambient Tech Grid Background -->
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 bg-[radial-gradient(#2563eb_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.12]"></div>
+      <div class="absolute top-1/4 left-1/4 w-[500px] h-[350px] bg-blue-500/12 blur-[140px] rounded-full"></div>
+      <div class="absolute top-1/2 right-10 w-[450px] h-[450px] bg-indigo-500/10 blur-[130px] rounded-full"></div>
+    </div>
+
     <!-- ── CONTACT FORM SECTION ── -->
-    <section class="px-4 sm:px-8 py-4 sm:py-6">
-      <div class="max-w-[1312px] mx-auto">
+    <section class="px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16 relative z-10">
+      <div class="max-w-7xl mx-auto">
         
-        <!-- Main Container -->
-        <div class="bg-[rgba(1,120,255,0.05)] rounded-[16px] sm:rounded-[16px] p-[6.7px] sm:p-6">
-          <div class="flex flex-col lg:flex-row gap-[11.17px] sm:gap-10">
+        <!-- Main Spatial Container -->
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl md:rounded-[2.5rem] p-4 sm:p-8 md:p-10 shadow-[0_20px_70px_rgba(37,99,235,0.08)] border border-slate-200/80">
+          <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
             
-            <!-- LEFT PANEL - Blue Info (HIDDEN ON MOBILE) -->
-            <div class="bg-[#0178FF] rounded-[16px] p-[40px] text-white flex flex-col justify-between
-                        w-full lg:w-[500px] min-h-[510.51px] lg:min-h-[794px]
-                        hidden sm:flex">
+            <!-- LEFT PANEL - Blue Spatial Info (Shown on Tablet & Desktop) -->
+            <div class="contact-left-panel bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-900 rounded-3xl p-8 sm:p-10 md:p-12 text-white flex flex-col justify-between
+                        w-full lg:w-[480px] min-h-[520px] lg:min-h-[740px] relative overflow-hidden shadow-xl shadow-blue-900/20">
               
+              <!-- Subtle Background Light Conduits -->
+              <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+              <div class="absolute top-0 right-0 p-8 opacity-15 pointer-events-none select-none">
+                <img src="/logo.png" alt="" class="w-36 h-auto" />
+              </div>
+
               <!-- Title Section -->
-              <div class="flex flex-col gap-2 w-full">
-                <p class="text-[12px] font-medium tracking-[-0.12px] opacity-80 uppercase">Contact US</p>
-                <h1 class="text-[34px] sm:text-[42px] lg:text-[64px] font-semibold leading-[1.1] tracking-tight">
-                  Let's Build<br />Something<br />Together
+              <div class="flex flex-col gap-3 relative z-10">
+                <div class="flex items-center gap-2">
+                  <span class="inline-flex items-center gap-2 bg-white/15 text-white text-xs font-mono font-extrabold px-3.5 py-1.5 rounded-full border border-white/20 uppercase tracking-widest">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Direct Conduit
+                  </span>
+                </div>
+
+                <h1 class="contact-heading text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.08] tracking-tight mt-2">
+                  Let's Build<br />
+                  Something<br />
+                  <span class="text-blue-200">Together.</span>
                 </h1>
-                <p class="text-[18px] font-normal leading-[28px] opacity-90 max-w-[420px]">
-                  Have an idea, partnership proposal, or question?<br />
-                  Send it our way and let's sprint on it.
+
+                <p class="text-base sm:text-lg font-normal leading-relaxed text-blue-100/90 mt-2 max-w-sm">
+                  Have an idea, track question, or partnership proposal? Drop us a transmission and our student leads will sprint on it.
                 </p>
               </div>
 
-              <!-- Contact Details - DESKTOP ONLY (Inside blue panel) -->
-              <div class="flex flex-col justify-center items-start p-[12px_0px] gap-[4px] w-full sm:w-[354px] h-[142px] mt-6 lg:mt-0">
-                
-                <!-- Email Section -->
-                <div class="flex flex-row items-center p-0 gap-[8px] w-full sm:w-[354px] h-[66px]">
-                  <div class="flex flex-row justify-center items-center p-[12px] gap-[32px] w-[48px] h-[48px] bg-[#0A0A0A] rounded-[8px] shrink-0">
-                    <div class="relative w-[24px] h-[24px]">
-                      <svg class="w-[24px] h-[24px] text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="flex flex-col justify-center items-start p-0 w-full sm:w-[298px] h-[66px]">
-                    <p class="font-archivo font-medium text-[14px] leading-[22px] tracking-[-0.18px] text-white w-full sm:w-[298px] h-[22px]">Email</p>
-                    <p class="font-archivo font-normal text-[12px] leading-[20px] text-white w-full sm:w-[298px] h-[20px]">skillsprint@gmail.com</p>
-                  </div>
+              <!-- Live Status Pill -->
+              <div class="my-6 p-4 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md relative z-10">
+                <div class="flex items-center gap-2.5 mb-1">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span class="text-xs font-mono font-bold uppercase tracking-wider text-emerald-300">
+                    Transmission Channels Online
+                  </span>
                 </div>
+                <p class="text-xs text-blue-100/80 leading-normal">
+                  Average student triage response time: <span class="font-bold text-white">&lt; 24 hours</span>.
+                </p>
+              </div>
 
-                <!-- Phone Section -->
-                <div class="flex flex-row items-center p-0 gap-[8px] w-full sm:w-[354px] h-[48px]">
-                  <div class="flex flex-row justify-center items-center p-[12px] gap-[32px] w-[48px] h-[48px] bg-[#0A0A0A] rounded-[8px] shrink-0">
-                    <div class="relative w-[24px] h-[24px]">
-                      <svg class="w-[24px] h-[24px] text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                      </svg>
-                    </div>
+              <!-- Contact Conduits (Email & Phone) -->
+              <div class="flex flex-col gap-3.5 relative z-10">
+                
+                <!-- Email Row -->
+                <a href="mailto:skillsprint@gmail.com" class="flex items-center gap-4 p-3.5 rounded-2xl bg-white/[0.08] hover:bg-white/[0.15] border border-white/10 transition-all duration-200 group">
+                  <div class="w-12 h-12 bg-white/15 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-inner">
+                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
                   </div>
-                  <div class="flex flex-col items-start p-0 w-full sm:w-[298px] h-[46px]">
-                    <p class="font-archivo font-medium text-[14px] leading-[22px] tracking-[-0.18px] text-white w-full sm:w-[298px] h-[22px]">Phone</p>
-                    <p class="font-archivo font-normal text-[12px] leading-[20px] text-white w-full sm:w-[298px] h-[20px]">+92 317 444 4441</p>
+                  <div class="min-w-0">
+                    <p class="text-xs font-mono font-bold uppercase tracking-wider text-blue-200">Email Conduit</p>
+                    <p class="text-sm font-semibold text-white truncate">skillsprint@gmail.com</p>
                   </div>
-                </div>
+                </a>
+
+                <!-- Phone Row -->
+                <a href="tel:+923174444441" class="flex items-center gap-4 p-3.5 rounded-2xl bg-white/[0.08] hover:bg-white/[0.15] border border-white/10 transition-all duration-200 group">
+                  <div class="w-12 h-12 bg-white/15 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-inner">
+                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                    </svg>
+                  </div>
+                  <div class="min-w-0">
+                    <p class="text-xs font-mono font-bold uppercase tracking-wider text-blue-200">Direct Inquiries</p>
+                    <p class="text-sm font-semibold text-white truncate">+92 317 444 4441</p>
+                  </div>
+                </a>
 
               </div>
             </div>
 
-            <!-- RIGHT PANEL - Form or Success State -->
-            <div class="bg-transparent rounded-[16px] p-0 sm:p-0 flex-1 w-full relative">
+            <!-- RIGHT PANEL - Modern Spatial Form -->
+            <div class="contact-form-panel flex-1 w-full relative">
               
               <Transition name="fade-slide" mode="out-in">
                 <!-- Success Message Card -->
-                <div v-if="submitSuccess" class="flex flex-col items-center justify-center text-center py-12 px-6 bg-white rounded-[24px] border border-emerald-100 shadow-sm min-h-[500px]">
-                  <div class="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-6 border border-emerald-100/50 shadow-inner">
+                <div v-if="submitSuccess" class="flex flex-col items-center justify-center text-center py-16 px-6 bg-slate-50/70 rounded-3xl border border-emerald-200/80 shadow-sm min-h-[500px]">
+                  <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-3xl flex items-center justify-center mb-6 shadow-inner ring-4 ring-emerald-50">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 class="text-gray-900 font-extrabold text-2xl tracking-tight mb-2">Message Sent Successfully!</h3>
-                  <p class="text-gray-500 text-base leading-relaxed max-w-[400px] mb-8">
-                    Thank you for reaching out, <span class="font-semibold text-gray-800">{{ form.fullName }}</span>. We've received your details and will get back to you shortly.
+                  <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-mono font-extrabold px-3 py-1 rounded-full border border-emerald-200 uppercase tracking-widest mb-3">
+                    Transmission Dispatched
+                  </span>
+                  <h3 class="text-gray-900 font-black text-2xl sm:text-3xl tracking-tight mb-3">Transmission Acknowledged!</h3>
+                  <p class="text-gray-600 text-base leading-relaxed max-w-[420px] mb-8 font-normal">
+                    Thank you for reaching out, <span class="font-bold text-gray-900">{{ form.fullName }}</span>. We've logged your message and a track lead will reach back shortly.
                   </p>
                   <button
                     type="button"
                     @click="resetForm"
-                    class="px-8 py-3 bg-[#0178FF] hover:bg-[#0168E0] text-white font-semibold rounded-full shadow-md shadow-blue-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+                    v-magnetic
+                    class="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full shadow-lg shadow-blue-500/25 transition-all duration-300"
                   >
-                    Send Another Message
+                    Send Another Transmission
                   </button>
                 </div>
 
-                <!-- Form -->
-                <form v-else @submit.prevent="handleSubmit" class="flex flex-col gap-[16px] w-full">
+                <!-- Form Inputs -->
+                <form v-else @submit.prevent="handleSubmit" class="flex flex-col gap-5 w-full">
                   
-                  <!-- Error message if any -->
-                  <div v-if="submitError" class="p-4 bg-red-50 border border-red-100 text-red-700 text-sm rounded-xl flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                  <!-- Error banner -->
+                  <div v-if="submitError" class="p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-2xl flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0 text-red-500" viewBox="0 0 20 20" fill="currentColor">
                       <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
                     </svg>
                     <span>{{ submitError }}</span>
                   </div>
 
                   <!-- Row 1: Full Name + Email -->
-                  <div class="flex flex-col sm:flex-row gap-[16px] w-full">
-                    <div class="flex flex-col gap-2 w-full sm:w-[354px]">
-                      <label class="text-[16px] font-medium text-black tracking-[0.5px]">
-                        Full Name <span class="text-red-400">*</span>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full">
+                    <div class="flex flex-col gap-2">
+                      <label class="text-sm font-bold text-gray-800 tracking-wide font-mono uppercase">
+                        Full Name <span class="text-red-500">*</span>
                       </label>
                       <input 
                         v-model="form.fullName"
                         type="text"
-                        placeholder="Enter your first name"
+                        placeholder="Ada Lovelace"
                         required
-                        class="w-full px-4 py-[16px] rounded-[12px] bg-white border border-[#D4D4D4] 
-                               text-[14px] text-gray-800 placeholder-[#737373]
-                               focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 focus:border-[#0178FF]
-                               transition h-[52px]"
+                        class="w-full px-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-200 
+                               text-sm text-gray-900 placeholder-gray-400
+                               focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 focus:bg-white
+                               transition-all duration-200"
                       />
                     </div>
-                    <div class="flex flex-col gap-2 w-full sm:w-[354px]">
-                      <label class="text-[16px] font-medium text-black tracking-[0.5px]">
-                        Email Address <span class="text-red-400">*</span>
+                    <div class="flex flex-col gap-2">
+                      <label class="text-sm font-bold text-gray-800 tracking-wide font-mono uppercase">
+                        Email Address <span class="text-red-500">*</span>
                       </label>
                       <input 
                         v-model="form.email"
                         type="email"
-                        placeholder="Enter your email"
+                        placeholder="ada@university.edu"
                         required
-                        class="w-full px-4 py-[16px] rounded-[12px] bg-white border border-[#D4D4D4] 
-                               text-[14px] text-gray-800 placeholder-[#737373]
-                               focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 focus:border-[#0178FF]
-                               transition h-[52px]"
+                        class="w-full px-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-200 
+                               text-sm text-gray-900 placeholder-gray-400
+                               focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 focus:bg-white
+                               transition-all duration-200"
                       />
                     </div>
                   </div>
 
                   <!-- Row 2: Phone + University -->
-                  <div class="flex flex-col sm:flex-row gap-[16px] w-full">
-                    <div class="flex flex-col gap-2 w-full sm:w-[354px]">
-                      <label class="text-[16px] font-medium text-black tracking-[0.5px]">
-                        Phone Number <span class="text-red-400">*</span>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full">
+                    <div class="flex flex-col gap-2">
+                      <label class="text-sm font-bold text-gray-800 tracking-wide font-mono uppercase">
+                        Phone Number <span class="text-red-500">*</span>
                       </label>
-                      <div class="flex items-center w-full h-[52px] rounded-[12px] bg-white border border-[#D4D4D4] overflow-hidden">
-                        <span class="px-4 flex items-center gap-2 border-r border-[#D4D4D4] h-full text-[14px] text-[#737373]">
-                          🇺🇸 US
-                        </span>
-                        <input 
-                          v-model="form.phone"
-                          type="tel"
-                          placeholder="+1 (555) 000-0000"
-                          required
-                          class="flex-1 px-4 py-[16px] bg-transparent text-[14px] text-gray-800 placeholder-[#737373]
-                                 focus:outline-none h-full"
-                        />
-                      </div>
+                      <input 
+                        v-model="form.phone"
+                        type="tel"
+                        placeholder="+92 300 0000000"
+                        required
+                        class="w-full px-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-200 
+                               text-sm text-gray-900 placeholder-gray-400
+                               focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 focus:bg-white
+                               transition-all duration-200"
+                      />
                     </div>
-                    <div class="flex flex-col gap-2 w-full sm:w-[354px]">
-                      <label class="text-[16px] font-medium text-black tracking-[0.5px]">
+                    <div class="flex flex-col gap-2">
+                      <label class="text-sm font-bold text-gray-800 tracking-wide font-mono uppercase">
                         University / Organization
                       </label>
                       <input 
                         v-model="form.organization"
                         type="text"
-                        placeholder="Enter your University / Organization"
-                        class="w-full px-4 py-[16px] rounded-[12px] bg-white border border-[#D4D4D4] 
-                               text-[14px] text-gray-800 placeholder-[#737373]
-                               focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 focus:border-[#0178FF]
-                               transition h-[52px]"
+                        placeholder="e.g. FAST, NUST, Superior, ITU"
+                        class="w-full px-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-200 
+                               text-sm text-gray-900 placeholder-gray-400
+                               focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 focus:bg-white
+                               transition-all duration-200"
                       />
                     </div>
                   </div>
 
-                  <!-- Purpose -->
+                  <!-- Purpose of Contact -->
                   <div class="flex flex-col gap-2 w-full">
-                    <label class="text-[16px] font-medium text-black tracking-[0.5px]">
-                      Purpose of Contact <span class="text-red-400">*</span>
+                    <label class="text-sm font-bold text-gray-800 tracking-wide font-mono uppercase">
+                      Purpose of Contact <span class="text-red-500">*</span>
                     </label>
                     <div class="relative w-full">
                       <select 
                         v-model="form.purpose"
                         required
-                        class="w-full px-4 py-[16px] rounded-[8px] bg-white border border-[#D4D4D4] 
-                               text-[14px] text-[#737373] focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 
-                               focus:border-[#0178FF] transition h-[52px] appearance-none"
+                        class="w-full px-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-200 
+                               text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 
+                               focus:border-blue-500 focus:bg-white transition-all duration-200 appearance-none font-medium cursor-pointer"
                       >
-                        <option value="" disabled>Select Purpose</option>
-                        <option value="General Inquiry">General Inquiry</option>
-                        <option value="Student Programs">Student Programs &amp; Events</option>
-                        <option value="Partnerships">Academic Partnerships</option>
-                        <option value="Corporate">Corporate Partnerships</option>
-                        <option value="Volunteer">Volunteer &amp; Mentorship</option>
-                        <option value="Hiring">Talent Acquisition</option>
-                        <option value="Media">Media &amp; Press</option>
-                        <option value="Other">Other</option>
+                        <option value="" disabled>Select Inquiry Purpose</option>
+                        <option value="General Inquiry">General Inquiry / Question</option>
+                        <option value="Student Programs">Student Engineering Tracks &amp; Sprints</option>
+                        <option value="Partnerships">Academic MOU &amp; Campus Chapters</option>
+                        <option value="Corporate">Corporate Sponsorship &amp; Hackathon Support</option>
+                        <option value="Volunteer">Volunteer Mentor / Code Reviewer</option>
+                        <option value="Hiring">Talent Acquisition &amp; Graduate Hiring</option>
+                        <option value="Media">Media, Press &amp; Community Outreach</option>
+                        <option value="Other">Other Collaboration</option>
                       </select>
                       <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -199,85 +229,78 @@
                   </div>
 
                   <!-- Message -->
-                  <div class="flex flex-col gap-1 w-full">
-                    <label class="text-[16px] font-medium text-black tracking-[0.5px]">
-                      Message <span class="text-red-400">*</span>
+                  <div class="flex flex-col gap-2 w-full">
+                    <label class="text-sm font-bold text-gray-800 tracking-wide font-mono uppercase">
+                      Message <span class="text-red-500">*</span>
                     </label>
                     <textarea 
                       v-model="form.message"
-                      rows="4"
-                      placeholder="Write your message..."
+                      rows="5"
+                      placeholder="Tell us about your background, what track you're interested in, or how you'd like to collaborate..."
                       required
-                      class="w-full px-4 py-[16px] rounded-[12px] bg-white border border-[#D4D4D4] 
-                             text-[14px] text-gray-800 placeholder-[#737373] resize-none
-                             focus:outline-none focus:ring-2 focus:ring-[#0178FF]/30 focus:border-[#0178FF]
-                             transition min-h-[294px] sm:min-h-[294px]"
+                      class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-200 
+                             text-sm text-gray-900 placeholder-gray-400 resize-none
+                             focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 focus:bg-white
+                             transition-all duration-200 min-h-[160px]"
                     ></textarea>
                   </div>
 
-                  <!-- Checkbox + Submit -->
-                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 w-full pt-2">
+                  <!-- Checkbox & Submit Button -->
+                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 pt-3">
                     <label class="flex items-start gap-3 cursor-pointer select-none">
-                      <input type="checkbox" v-model="agreed" class="mt-0.5 w-[24px] h-[24px] rounded-[3px] border-[#A3A3A3] text-[#0178FF] focus:ring-[#0178FF]" />
-                      <span class="text-[16px] text-black leading-[20px] tracking-[0.5px]">
-                        You agree to our friendly 
-                        <a href="#" class="text-[#0178FF] underline decoration-[#0178FF] decoration-1 underline-offset-2">privacy policy.</a>
+                      <input type="checkbox" v-model="agreed" class="mt-1 w-5 h-5 rounded-md border-gray-300 text-blue-600 focus:ring-blue-500" />
+                      <span class="text-xs sm:text-sm text-gray-600 leading-snug">
+                        I agree to SkillSprint's friendly 
+                        <a href="#" class="text-blue-600 font-semibold underline underline-offset-2">community guidelines</a>.
                       </span>
                     </label>
 
                     <button 
                       type="submit"
                       :disabled="isSubmitting || !agreed"
-                      class="w-full sm:w-[150px] bg-[#0178FF] hover:bg-[#0168E0] text-white font-medium 
-                             py-[12px] px-[24px] rounded-[12px] text-[14px] tracking-[-0.16px]
-                             transition disabled:opacity-50 disabled:cursor-not-allowed h-[44px] flex items-center justify-center"
+                      v-magnetic
+                      class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold 
+                             py-3.5 px-8 rounded-full text-sm shadow-lg shadow-blue-500/25
+                             transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <svg v-if="isSubmitting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                      <svg v-if="isSubmitting" class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      <span v-if="isSubmitting">Sending...</span>
-                      <span v-else>Send Message</span>
+                      <span v-if="isSubmitting">Transmitting...</span>
+                      <span v-else>Send Message &rarr;</span>
                     </button>
                   </div>
 
                 </form>
               </Transition>
 
-              <!-- ── EMAIL & PHONE SECTION (MOBILE ONLY - BELOW FORM) ── -->
-              <div class="flex flex-col justify-center items-start p-[12px_0px] gap-[4px] w-full sm:w-[354px] h-[142px] mt-6 sm:hidden">
-                
-                <!-- Email Section -->
-                <div class="flex flex-row items-center p-0 gap-[8px] w-full sm:w-[354px] h-[66px]">
-                  <div class="flex flex-row justify-center items-center p-[12px] gap-[32px] w-[48px] h-[48px] bg-[#0A0A0A] rounded-[8px] shrink-0">
-                    <div class="relative w-[24px] h-[24px]">
-                      <svg class="w-[24px] h-[24px] text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                      </svg>
-                    </div>
+              <!-- Mobile Contact Details (Shown below form on small screens) -->
+              <div class="flex flex-col gap-3 mt-8 sm:hidden pt-6 border-t border-gray-200">
+                <a href="mailto:skillsprint@gmail.com" class="flex items-center gap-3 p-3 rounded-2xl bg-slate-100 border border-slate-200">
+                  <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
                   </div>
-                  <div class="flex flex-col justify-center items-start p-0 w-full sm:w-[298px] h-[66px]">
-                    <p class="font-archivo font-medium text-[14px] leading-[22px] tracking-[-0.18px] text-black w-full sm:w-[298px] h-[22px]">Email</p>
-                    <p class="font-archivo font-normal text-[12px] leading-[20px] text-black w-full sm:w-[298px] h-[20px]">skillsprint@gmail.com</p>
+                  <div>
+                    <p class="text-[10px] font-mono font-bold text-gray-400 uppercase">Email Us</p>
+                    <p class="text-xs font-bold text-gray-900">skillsprint@gmail.com</p>
                   </div>
-                </div>
-
-                <!-- Phone Section -->
-                <div class="flex flex-row items-center p-0 gap-[8px] w-full sm:w-[354px] h-[48px]">
-                  <div class="flex flex-row justify-center items-center p-[12px] gap-[32px] w-[48px] h-[48px] bg-[#0A0A0A] rounded-[8px] shrink-0">
-                    <div class="relative w-[24px] h-[24px]">
-                      <svg class="w-[24px] h-[24px] text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                      </svg>
-                    </div>
+                </a>
+                <a href="tel:+923174444441" class="flex items-center gap-3 p-3 rounded-2xl bg-slate-100 border border-slate-200">
+                  <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                    </svg>
                   </div>
-                  <div class="flex flex-col items-start p-0 w-full sm:w-[298px] h-[46px]">
-                    <p class="font-archivo font-medium text-[14px] leading-[22px] tracking-[-0.18px] text-black w-full sm:w-[298px] h-[22px]">Phone</p>
-                    <p class="font-archivo font-normal text-[12px] leading-[20px] text-black w-full sm:w-[298px] h-[20px]">+92 317 444 4441</p>
+                  <div>
+                    <p class="text-[10px] font-mono font-bold text-gray-400 uppercase">Call Us</p>
+                    <p class="text-xs font-bold text-gray-900">+92 317 444 4441</p>
                   </div>
-                </div>
-
+                </a>
               </div>
+
             </div>
           </div>
         </div>
@@ -285,104 +308,39 @@
     </section>
 
     <!-- ── PARTNER CTA SECTION ── -->
-    <section class="relative w-full overflow-hidden bg-[#F8FAFC]">
-      <div class="relative w-full max-w-[1440px] mx-auto h-[160.24px] sm:h-[574px]">
-        
-        <div class="absolute left-0 right-0 top-[48.24%] bottom-[1.75%] sm:block hidden
-                    bg-gradient-to-b from-[#91DEFF] to-[#0178FF] opacity-24 
-                    blur-[60px] rounded-[174px_435px_0px_0px]"></div>
-        
-        <div class="absolute left-0 right-0 top-[48.48%] bottom-[1.51%] sm:hidden block
-                    bg-gradient-to-b from-[#91DEFF] to-[#0178FF] opacity-24 
-                    blur-[16.75px] rounded-[48.575px_121.438px_0px_0px]"></div>
-
-        <div class="absolute left-1/2 -translate-x-1/2 
-                    w-[382px] sm:w-[1220px] 
-                    h-[134.67px] sm:h-[331px]
-                    top-[calc(50%-67.33px)] sm:top-[calc(50%-165.5px)]
-                    bg-white border border-[rgba(0,0,0,0.08)] 
-                    rounded-[11.1667px] sm:rounded-[40px]
-                    flex flex-col items-center justify-center
-                    px-[40.2px] sm:px-[144px] 
-                    py-[22.3333px] sm:py-[80px]">
-
-          <div class="flex flex-col items-center gap-[16px] sm:gap-[32px] w-full max-w-[302px] sm:max-w-[930px]">
-            
-            <div class="flex flex-col items-center gap-[8px] w-full">
-              <h2 class="font-archivo font-bold text-[#0C0E0F] text-center 
-                        text-[24px] sm:text-[56px] 
-                        leading-[26px] sm:leading-[56px]
-                        tracking-[-0.016em]
-                        w-[302px] sm:w-[700px]
-                        whitespace-nowrap">
-                Partner with <span class="text-[#0178FF] relative inline-block"> Skill Sprint
-                  <span class="absolute left-0 -bottom-1 w-full h-[4px] sm:h-[10px] bg-[#0178FF] rotate-[-2deg] opacity-80"></span>
-                </span>
-              </h2>
-              
-              <p class="font-inter sm:font-archivo font-normal text-[#0C0E0F] text-center
-                        text-[12px] sm:text-[20.3px]
-                        leading-[13px] sm:leading-[30px]
-                        w-[302px] sm:w-[930px]">
-                Collaborate with us to empower students globally.
-              </p>
-            </div>
-
-            <div class="flex flex-row justify-center items-center gap-[8px] 
-                        w-[193px] sm:w-[269px] 
-                        h-[27px] sm:h-[44px]">
-              <button class="bg-[#0178FF] hover:bg-[#0168E0] text-white 
-                            rounded-[27.9167px] sm:rounded-[100px]
-                            px-[12px] sm:px-[20px] 
-                            py-[6px] sm:py-[12px]
-                            flex items-center justify-center
-                            w-[103px] sm:w-[143px] 
-                            h-[27px] sm:h-[44px]">
-                <span class="font-archivo font-semibold sm:font-medium 
-                            text-[12px] sm:text-[16px]
-                            leading-[124%] 
-                            tracking-[-0.02em]
-                            text-white
-                            w-[79px] sm:w-[103px]">
+    <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] section overflow-hidden">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        <div class="relative bg-white/95 backdrop-blur-md rounded-3xl md:rounded-[2.5rem] shadow-[0_25px_60px_rgba(37,99,235,0.12)] border border-white/60 px-6 sm:px-12 py-12 md:py-16 text-center overflow-hidden partner-cta-card">
+          <div class="absolute right-0 bottom-0 pointer-events-none select-none opacity-80" aria-hidden="true">
+            <img ref="ctaMascot" src="/sidelogo.png" alt="" class="w-40 sm:w-56 md:w-72 h-auto object-contain" style="transform: rotate(-12deg) translate(20%, 15%);" />
+          </div>
+          <div class="relative z-10">
+            <span class="inline-block bg-blue-50 text-blue-600 text-xs font-mono font-extrabold px-4 py-1.5 rounded-full border border-blue-100 uppercase tracking-widest mb-4">
+              Institutional Alliances
+            </span>
+            <h2 class="h-sub text-gray-900 leading-snug mb-4">
+              Partner with
+              <span class="text-blue-600 relative inline-block ml-1">Skill Sprint
+                <span class="absolute left-0 -bottom-1 w-full h-[3px] bg-blue-500 rotate-[-2deg]"></span>
+              </span>
+            </h2>
+            <p class="text-gray-600 text-sm sm:text-base md:text-lg max-w-md mx-auto leading-relaxed mb-8">
+              Collaborate with our campus leaders to empower student engineers and sponsor open-source initiatives.
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center items-center">
+              <router-link to="/community" v-magnetic>
+                <button class="bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold px-8 py-3.5 rounded-full text-sm transition-all duration-200 shadow-lg shadow-blue-500/25">
                   Join the Sprint
-                </span>
-              </button>
-              <button class="bg-[rgba(26,26,26,0.1)] hover:bg-[rgba(26,26,26,0.15)]
-                            rounded-[27.9167px] sm:rounded-[100px]
-                            px-[12px] sm:px-[20px]
-                            py-[6px] sm:py-[12px]
-                            flex items-center justify-center
-                            w-[82px] sm:w-[118px]
-                            h-[27px] sm:h-[44px]">
-                <span class="font-archivo font-semibold sm:font-medium
-                            text-[12px] sm:text-[16px]
-                            leading-[124%]
-                            tracking-[-0.02em]
-                            text-[#212121]
-                            w-[58px] sm:w-[78px]">
-                  Contact us
-                </span>
-              </button>
+                </button>
+              </router-link>
+              <router-link to="/about" v-magnetic>
+                <button class="bg-white border-2 border-gray-200 hover:border-blue-400 hover:text-blue-600 text-gray-700 font-bold px-8 py-3.5 rounded-full text-sm transition-all duration-200">
+                  About Us
+                </button>
+              </router-link>
             </div>
           </div>
         </div>
-
-        <div class="absolute hidden sm:block
-                    w-[700.98px] h-[889.98px]
-                    left-[915px] top-[-70.62px]
-                    pointer-events-none select-none
-                    rotate-[-12.11deg]">
-          <img src="/src/assets/cb877c421c749c65ca71d83d3c2eab9e3f2ba7c1.png" alt="Robot" class="w-full h-full object-contain" />
-        </div>
-
-        <div class="absolute sm:hidden block
-                    w-[189.24px] h-[189.24px]
-                    left-[269.91px] top-[18.99px]
-                    pointer-events-none select-none
-                    rotate-[-6.77deg]">
-          <img src="/src/assets/cb877c421c749c65ca71d83d3c2eab9e3f2ba7c1.png" alt="Robot" class="w-full h-full object-contain" />
-        </div>
-
       </div>
     </section>
 
@@ -392,8 +350,12 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useGSAP } from '../composables/useGSAP'
+import { SplitText } from '../motion/gsap'
 
 const route = useRoute()
+const pageScope = ref(null)
+const ctaMascot = ref(null)
 
 const form = reactive({
   fullName: '',
@@ -406,7 +368,7 @@ const form = reactive({
 
 onMounted(() => {
   if (route.query.track) {
-    form.purpose = 'Student'
+    form.purpose = 'Student Programs'
     form.message = `I took the 2-Min Track Matchmaker Quiz and matched with: ${route.query.track}. I would love to participate in this track!`
   }
 })
@@ -458,9 +420,55 @@ const resetForm = () => {
     message: ''
   })
 }
+
+// Unified GSAP Animations
+useGSAP(({ gsap, selector }) => {
+  // SplitText heading on left panel
+  const headingEl = selector('.contact-heading')[0]
+  if (headingEl) {
+    const split = SplitText.create(headingEl, { type: 'lines,words', wordsClass: 'cw' })
+    gsap.from(split.words, {
+      y: 40,
+      opacity: 0,
+      stagger: 0.04,
+      duration: 1,
+      ease: 'power3.out',
+    })
+  }
+
+  gsap.from(selector('.contact-left-panel'), {
+    x: -50,
+    opacity: 0,
+    duration: 1,
+    ease: 'power3.out'
+  })
+
+  gsap.from(selector('.contact-form-panel'), {
+    x: 50,
+    opacity: 0,
+    duration: 1,
+    delay: 0.15,
+    ease: 'power3.out'
+  })
+
+  if (ctaMascot.value) {
+    gsap.from(ctaMascot.value, {
+      scrollTrigger: { trigger: '.partner-cta-card', start: 'top 85%', toggleActions: 'play none none reverse' },
+      xPercent: 30,
+      yPercent: 30,
+      opacity: 0,
+      duration: 1.2,
+      ease: 'back.out(1.5)'
+    })
+  }
+}, pageScope)
 </script>
 
 <style scoped>
+.contact-heading :deep(.cw) {
+  display: inline-block;
+  overflow: clip;
+}
 .fade-slide-enter-active,
 .fade-slide-leave-active {
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
