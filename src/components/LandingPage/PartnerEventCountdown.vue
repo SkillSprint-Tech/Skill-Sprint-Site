@@ -62,7 +62,7 @@ let showTimer = null
 let tick = null
 
 const live = computed(() => now.value >= startsAt)
-const over = computed(() => now.value > endsAt)
+const over = computed(() => Boolean(partnerEvent.isPast) || now.value > endsAt)
 
 const pad = (n) => String(n).padStart(2, '0')
 

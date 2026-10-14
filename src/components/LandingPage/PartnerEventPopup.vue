@@ -212,7 +212,7 @@ const resetTilt = () => {
 }
 
 onMounted(() => {
-  const eventOver = Date.now() > new Date(partnerEvent.endsAt).getTime()
+  const eventOver = Boolean(partnerEvent.isPast) || Date.now() > new Date(partnerEvent.endsAt).getTime()
   if (eventOver || dismissedThisLoad) return
   showTimer = setTimeout(show, SHOW_DELAY_MS)
 })

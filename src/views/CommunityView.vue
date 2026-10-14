@@ -78,33 +78,48 @@
     </section>
 
     <!-- ═══════════════════════════════════════ -->
-    <!-- PARTNER EVENT -->
+    <!-- PAST ENDEAVOUR: PARTNER EVENT -->
     <!-- ═══════════════════════════════════════ -->
     <section ref="partnerScope" :id="partnerEvent.anchor" class="bg-[#0B101B] section relative overflow-hidden">
       <div class="max-w-5xl mx-auto relative z-10">
         <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
-          <div class="flex-shrink-0 w-full max-w-xs sm:max-w-sm partner-poster">
-            <img :src="partnerEvent.poster" :alt="partnerEvent.posterAlt" width="1025" height="1535"
-                 class="w-full h-auto rounded-2xl border border-white/10 shadow-2xl" loading="lazy" />
+          <div class="flex-shrink-0 w-full max-w-xs sm:max-w-sm partner-poster relative">
+            <div class="relative">
+              <img :src="partnerEvent.poster" :alt="partnerEvent.posterAlt" width="1025" height="1535"
+                   class="w-full h-auto rounded-2xl border border-white/10 shadow-2xl" loading="lazy" />
+              <div class="absolute top-3.5 right-3.5 bg-black/70 backdrop-blur-md border border-white/15 text-white/90 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1.5 shadow-lg">
+                <i class="fa-solid fa-flag-checkered text-violet-400" aria-hidden="true"></i>
+                <span>Concluded</span>
+              </div>
+            </div>
           </div>
 
           <div class="flex-1 text-center lg:text-left partner-copy">
-            <span class="inline-flex items-center gap-2 bg-violet-500/10 text-violet-300 text-xs font-extrabold
-                         px-4 py-1.5 rounded-full border border-violet-500/20 uppercase tracking-widest mb-6">
-              <i class="fa-solid fa-handshake text-sm" aria-hidden="true"></i>
-              Outreach Partner
-            </span>
+            <div class="flex flex-wrap items-center gap-2 justify-center lg:justify-start mb-6">
+              <span class="inline-flex items-center gap-2 bg-violet-500/10 text-violet-300 text-xs font-extrabold
+                           px-4 py-1.5 rounded-full border border-violet-500/20 uppercase tracking-widest">
+                <i class="fa-solid fa-clock-rotate-left text-sm" aria-hidden="true"></i>
+                Past Endeavour
+              </span>
+              <span class="inline-flex items-center gap-1.5 bg-white/5 text-gray-400 text-xs font-semibold
+                           px-3 py-1 rounded-full border border-white/10">
+                <i class="fa-solid fa-handshake text-violet-400 text-xs" aria-hidden="true"></i>
+                Outreach Partner
+              </span>
+            </div>
+
             <h2 class="text-white h-section leading-[1.1] mb-5">
-              We just joined<br />
-              <span class="bg-gradient-to-r from-violet-400 to-fuchsia-300 bg-clip-text text-transparent">
+              Proud Outreach Partner for<br />
+              <span class="bg-gradient-to-r from-violet-400 via-fuchsia-300 to-sky-300 bg-clip-text text-transparent">
                 {{ partnerEvent.name }}.
               </span>
             </h2>
+
             <p class="text-gray-400 text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 mb-6">
-              Skill Sprint is officially an Outreach Partner for {{ partnerEvent.host }}'s
-              {{ partnerEvent.name }}. Seven modules. One day. Zero excuses. Build under pressure,
-              compete with the best, and walk out with more than a certificate.
+              Skill Sprint proudly served as an official Outreach Partner for {{ partnerEvent.host }}'s
+              {{ partnerEvent.name }}. Seven intensive modules bringing student builders together to create,
+              compete under pressure, and ship real projects across modern engineering domains.
             </p>
 
             <ul class="flex flex-wrap gap-2 justify-center lg:justify-start mb-6">
@@ -114,40 +129,38 @@
               </li>
             </ul>
 
-            <dl class="flex flex-col gap-2 text-sm text-gray-300 mb-8">
-              <div class="flex items-start gap-3 justify-center lg:justify-start">
+            <dl class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 text-sm text-gray-300 mb-8 justify-center lg:justify-start">
+              <div class="flex items-center gap-2.5 bg-white/[0.04] px-4 py-2 rounded-xl border border-white/[0.08]">
                 <dt class="sr-only">Date</dt>
-                <i class="fa-regular fa-calendar text-violet-300 mt-0.5 w-4 text-center" aria-hidden="true"></i>
-                <dd>{{ partnerEvent.date }}</dd>
+                <i class="fa-regular fa-calendar-check text-violet-300 text-sm" aria-hidden="true"></i>
+                <dd class="font-medium">{{ partnerEvent.date }} · <span class="text-emerald-400 font-semibold">Concluded</span></dd>
               </div>
-              <div class="flex items-start gap-3 justify-center lg:justify-start">
+              <div class="flex items-center gap-2.5 bg-white/[0.04] px-4 py-2 rounded-xl border border-white/[0.08]">
                 <dt class="sr-only">Venue</dt>
-                <i class="fa-solid fa-location-dot text-violet-300 mt-0.5 w-4 text-center" aria-hidden="true"></i>
-                <dd>{{ partnerEvent.venue }}</dd>
+                <i class="fa-solid fa-location-dot text-violet-300 text-sm" aria-hidden="true"></i>
+                <dd class="font-medium">{{ partnerEvent.venue }}</dd>
               </div>
             </dl>
 
-            <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-              <a :href="partnerEvent.registerUrl" target="_blank" rel="noopener noreferrer"
-                 class="inline-flex items-center justify-center gap-2.5 bg-violet-600 text-white
-                        px-8 py-4 rounded-full font-bold hover:bg-violet-700
-                        transition-colors duration-200">
-                Register now
-                <i class="fa-solid fa-arrow-up-right-from-square text-sm" aria-hidden="true"></i>
+            <div class="flex flex-wrap items-center gap-3 justify-center lg:justify-start">
+              <span class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 px-5 py-3 rounded-full text-sm font-semibold">
+                <i class="fa-solid fa-circle-check text-emerald-400 text-xs" aria-hidden="true"></i>
+                Event Completed
+              </span>
+              <a
+                v-if="partnerEvent.websiteUrl"
+                :href="partnerEvent.websiteUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 text-gray-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-5 py-3 rounded-full text-sm font-medium transition-colors duration-200"
+              >
+                <span>Visit {{ partnerEvent.host }}</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400" aria-hidden="true"></i>
               </a>
-              <button type="button" @click="copyPromoCode"
-                      class="inline-flex items-center justify-center gap-2.5 border border-dashed border-white/25 text-gray-300
-                             px-6 py-4 rounded-full font-semibold hover:border-white/40 hover:text-white
-                             transition-colors duration-200 cursor-pointer"
-                      :aria-label="`Copy promo code ${partnerEvent.promoCode}`">
-                <span class="font-mono font-bold text-white tracking-wider">{{ partnerEvent.promoCode }}</span>
-                <span class="text-sm">{{ promoCopied ? 'Copied!' : partnerEvent.promoOffer }}</span>
-                <i :class="promoCopied ? 'fa-solid fa-check' : 'fa-regular fa-copy'" class="text-sm" aria-hidden="true"></i>
-              </button>
             </div>
 
-            <p class="text-gray-500 text-sm mt-6">
-              Registrations are now open. Squad up, lock in, and get ready to loop in.
+            <p class="text-gray-500 text-xs sm:text-sm mt-6">
+              Part of Skill Sprint's continuing commitment to connecting student builders with premier nationwide hackathons and developer ecosystems.
             </p>
           </div>
 
@@ -394,18 +407,6 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
 // Partner event
 const partnerScope = ref(null)
-
-const promoCopied = ref(false)
-
-const copyPromoCode = async () => {
-  try {
-    await navigator.clipboard.writeText(partnerEvent.promoCode)
-    promoCopied.value = true
-    setTimeout(() => { promoCopied.value = false }, 2000)
-  } catch {
-    // Clipboard blocked (insecure context / denied) — the code is still visible to copy by hand.
-  }
-}
 
 // Testimonials data
 const testimonials = [

@@ -20,4 +20,7 @@ export const partnerEvent = {
   promoCode: 'LL-SPRINT',
   promoOffer: '10% off registration',
   registerUrl: 'https://www.looplab.site/loopverse/register',
+  websiteUrl: 'https://www.looplab.site/',
+  isPast: true,
+  status: 'Concluded',
 }
