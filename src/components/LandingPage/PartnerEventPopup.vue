@@ -131,6 +131,7 @@ let dismissedThisLoad = false
 <script setup>
 import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { partnerEvent } from '../../data/partnerEvent'
+import { whenIntroDone } from '../../motion/intro'
 
 // Let the hero land first so the popup reads as news, not as part of the page load.
 const SHOW_DELAY_MS = 1500
@@ -214,7 +215,11 @@ const resetTilt = () => {
 onMounted(() => {
   const eventOver = Boolean(partnerEvent.isPast) || Date.now() > new Date(partnerEvent.endsAt).getTime()
   if (eventOver || dismissedThisLoad) return
-  showTimer = setTimeout(show, SHOW_DELAY_MS)
+  whenIntroDone().then(() => {
+    if (!dismissedThisLoad) {
+      showTimer = setTimeout(show, SHOW_DELAY_MS)
+    }
+  })
 })
 
 onUnmounted(() => {

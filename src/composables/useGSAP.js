@@ -66,12 +66,14 @@ const wrapGsap = (g) =>
  * Teardown reverts ONLY this component's context, so it never kills another component's
  * triggers (which previously broke the three useGSAP calls in TeamView).
  *
- * @param {Function} animationCallback - receives { gsap, ScrollTrigger, selector }
+ * @param {Function} animationCallback - receives { gsap, ScrollTrigger, selector }. May
+ *   return a cleanup function (event listeners, matchMedia…) which runs on unmount.
  * @param {import('vue').Ref|HTMLElement} [scope] - Optional scope ref to restrict targets
  */
 export function useGSAP(animationCallback, scope) {
   let ctx
   let cancelled = false
+  let userCleanup = null
   const rafIds = []
   const timeoutIds = []
   const observers = []
@@ -125,7 +127,8 @@ export function useGSAP(animationCallback, scope) {
         }
         return gsap.utils.toArray(query, scopeEl)
       }
-      animationCallback({ gsap: wrapped, ScrollTrigger, selector: scopedSelector })
+      const result = animationCallback({ gsap: wrapped, ScrollTrigger, selector: scopedSelector })
+      if (typeof result === 'function') userCleanup = result
     }, scopeEl)
 
     const created = ScrollTrigger.getAll().filter((t) => !before.has(t))
@@ -166,6 +169,9 @@ export function useGSAP(animationCallback, scope) {
     rafIds.forEach((id) => cancelAnimationFrame(id))
     timeoutIds.forEach((id) => clearTimeout(id))
     observers.forEach((io) => io.disconnect())
+    if (userCleanup) {
+      try { userCleanup() } catch { /* never block unmount on a cleanup error */ }
+    }
 
     // Reverts every tween/set created in this context AND kills their ScrollTriggers,
     // restoring the DOM to its natural (visible) state. Scoped — never touches siblings'.

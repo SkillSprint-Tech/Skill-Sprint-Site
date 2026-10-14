@@ -49,6 +49,7 @@ let hiddenThisLoad = false
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { partnerEvent } from '../../data/partnerEvent'
+import { whenIntroDone } from '../../motion/intro'
 
 // Matches the announcement popup, so the two arrive together.
 const SHOW_DELAY_MS = 1500
@@ -91,7 +92,11 @@ onMounted(() => {
     now.value = Date.now()
     if (over.value) clearInterval(tick)
   }, 1000)
-  showTimer = setTimeout(() => { visible.value = true }, SHOW_DELAY_MS)
+  whenIntroDone().then(() => {
+    if (!hiddenThisLoad && !over.value) {
+      showTimer = setTimeout(() => { visible.value = true }, SHOW_DELAY_MS)
+    }
+  })
 })
 
 onUnmounted(() => {
