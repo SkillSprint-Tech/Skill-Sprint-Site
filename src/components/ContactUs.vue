@@ -1,8 +1,8 @@
 <template>
-  <div ref="pageScope" class="min-h-screen bg-[#F8FAFC] font-sans overflow-x-hidden">
+  <div ref="pageScope" class="relative min-h-screen bg-[#F8FAFC] font-sans overflow-x-hidden">
     
     <!-- Ambient Tech Grid Background -->
-    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
       <div class="absolute inset-0 bg-[radial-gradient(#2563eb_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.12]"></div>
       <div class="absolute top-1/4 left-1/4 w-[500px] h-[350px] bg-blue-500/12 blur-[140px] rounded-full"></div>
       <div class="absolute top-1/2 right-10 w-[450px] h-[450px] bg-indigo-500/10 blur-[130px] rounded-full"></div>

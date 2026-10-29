@@ -7,7 +7,7 @@
     <section ref="heroScope" class="px-4 sm:px-6 relative bg-[#F8FAFC] pt-12 sm:pt-16 md:pt-24 pb-12 md:pb-20 text-center overflow-hidden">
 
       <!-- Ambient blueprint grid and light orbs -->
-      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute top-10 left-1/4 w-[480px] h-[320px] bg-blue-500/10 blur-[120px] rounded-full"></div>
         <div class="absolute bottom-10 right-1/4 w-[400px] h-[300px] bg-indigo-500/10 blur-[100px] rounded-full"></div>
         <div class="absolute inset-0 bg-[linear-gradient(rgba(37,99,235,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(37,99,235,0.03)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_50%,#000_30%,transparent_100%)]"></div>
@@ -157,7 +157,7 @@
     <!-- ═══════════════════════════════════════ -->
     <section ref="howSection" class="bg-[#0B101B] py-20 sm:py-28 md:py-36 px-4 sm:px-6 overflow-hidden relative">
 
-      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-600/15 rounded-full blur-[140px] animate-pulse"></div>
         <div class="absolute bottom-1/4 right-1/4 w-[450px] h-[450px] bg-indigo-500/15 rounded-full blur-[130px]"></div>
         <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_30%,transparent_100%)]"></div>

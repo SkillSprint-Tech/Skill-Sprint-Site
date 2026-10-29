@@ -15,7 +15,7 @@
         </svg>
       </div>
       <!-- Glow orbs -->
-      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute top-[-60px] left-[20%] w-[500px] h-[350px] bg-blue-400/7 blur-[110px] rounded-full"></div>
         <div class="absolute top-[25%] right-[10%] w-[280px] h-[220px] bg-indigo-300/5 blur-[80px] rounded-full"></div>
       </div>
@@ -66,7 +66,7 @@
 
     <!-- ─── STATS (dark) ─── -->
     <section class="bg-[#0B101B] py-20 sm:py-28 px-4 relative overflow-hidden stats-section">
-      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[400px] bg-blue-600/6 blur-[150px] rounded-full"></div>
       </div>
       <div class="max-w-5xl mx-auto relative z-10 grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
@@ -206,7 +206,7 @@
     <!-- ─── CTA BANNER (dark continues) ─── -->
     <section class="bg-[#0B101B] pb-24 sm:pb-32 px-4 text-center relative overflow-hidden">
       <!-- Glow background -->
-      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-blue-600/10 blur-[110px] rounded-full"></div>
       </div>
       <div class="max-w-3xl mx-auto relative z-10 cta-block">

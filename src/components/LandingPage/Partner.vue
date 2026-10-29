@@ -3,7 +3,7 @@
   <section ref="scope" class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] py-20 sm:py-28 overflow-hidden">
 
     <!-- Iridescent mesh gradient orbs -->
-    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
       <div class="absolute top-1/2 left-1/3 -translate-y-1/2 w-[600px] h-[350px] bg-blue-400/25 rounded-full blur-[100px] animate-pulse"></div>
       <div class="absolute bottom-0 right-1/4 w-[400px] h-[300px] bg-indigo-300/30 rounded-full blur-[80px]"></div>
     </div>

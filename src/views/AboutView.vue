@@ -6,7 +6,7 @@
     <!-- ═══════════════════════════════════════ -->
     <section ref="heroScope" class="w-full bg-[#F8FAFC] section-tight relative overflow-hidden">
       <!-- Ambient light & blueprint grid -->
-      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute top-1/4 left-1/4 w-[500px] h-[350px] bg-blue-500/10 blur-[130px] rounded-full"></div>
         <div class="absolute -right-20 top-1/3 w-[400px] h-[400px] bg-indigo-500/10 blur-[120px] rounded-full"></div>
       </div>
