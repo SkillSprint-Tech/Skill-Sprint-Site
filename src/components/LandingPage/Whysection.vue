@@ -2,7 +2,7 @@
   <section ref="sectionRef" class="why-section relative bg-[#0B101B] py-20 sm:py-28 md:py-36 px-4 sm:px-6 overflow-hidden">
 
     <!-- Ambient glowing motion-graphics background -->
-    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
       <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-600/15 rounded-full blur-[140px] animate-pulse"></div>
       <div class="absolute bottom-1/4 right-1/4 w-[450px] h-[450px] bg-indigo-500/15 rounded-full blur-[130px]"></div>
       <!-- Subtle technical grid -->

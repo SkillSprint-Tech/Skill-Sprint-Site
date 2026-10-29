@@ -6,7 +6,7 @@
     <!-- ═══════════════════════════════════════ -->
     <section ref="heroScope" class="px-4 sm:px-6 relative bg-[#F8FAFC] pt-12 sm:pt-16 md:pt-24 pb-14 md:pb-20 text-center overflow-hidden">
       <!-- Ambient light & blueprint grid -->
-      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute inset-0 bg-[radial-gradient(#2563eb_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.14]"></div>
         <div class="absolute top-1/4 left-1/4 w-[500px] h-[350px] bg-blue-500/15 blur-[140px] rounded-full"></div>
         <div class="absolute -right-20 top-1/3 w-[450px] h-[450px] bg-indigo-500/12 blur-[130px] rounded-full"></div>
@@ -161,7 +161,7 @@
     <!-- ═══════════════════════════════════════ -->
     <section ref="partnerScope" :id="partnerEvent.anchor" class="bg-[#0B101B] section relative overflow-hidden text-white">
       <!-- Ambient Starfield / Mesh Glow -->
-      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute -top-40 -left-40 w-[600px] h-[600px] bg-violet-600/15 blur-[160px] rounded-full"></div>
         <div class="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-blue-600/15 blur-[160px] rounded-full"></div>
         <div class="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:32px_32px]"></div>

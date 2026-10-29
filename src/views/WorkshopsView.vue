@@ -7,7 +7,7 @@
     <section ref="heroScope" class="px-4 sm:px-6 relative bg-[#F8FAFC] pt-12 sm:pt-16 md:pt-24 pb-12 md:pb-20 text-center overflow-hidden">
 
       <!-- Ambient blueprint grid and light orbs -->
-      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute top-10 left-1/4 w-[480px] h-[320px] bg-blue-500/10 blur-[120px] rounded-full"></div>
         <div class="absolute bottom-10 right-1/4 w-[400px] h-[300px] bg-indigo-500/10 blur-[100px] rounded-full"></div>
         <div class="absolute inset-0 bg-[linear-gradient(rgba(37,99,235,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(37,99,235,0.03)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_50%,#000_30%,transparent_100%)]"></div>

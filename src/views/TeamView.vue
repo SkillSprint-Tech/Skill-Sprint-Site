@@ -6,7 +6,7 @@
     <!-- ═══════════════════════════════════════ -->
     <section ref="heroScope" class="px-4 sm:px-6 relative bg-[#F8FAFC] pt-12 sm:pt-16 md:pt-24 pb-14 md:pb-20 text-center overflow-hidden">
       <!-- Ambient light & blueprint grid -->
-      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute inset-0 bg-[radial-gradient(#2563eb_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.14]"></div>
         <div class="absolute top-1/4 left-1/4 w-[500px] h-[350px] bg-blue-500/15 blur-[140px] rounded-full"></div>
         <div class="absolute -right-20 top-1/3 w-[450px] h-[450px] bg-indigo-500/12 blur-[130px] rounded-full"></div>
@@ -59,11 +59,11 @@
               Connect With Us
             </button>
           </router-link>
-          <a href="#recruitment-status" v-magnetic>
+          <router-link to="/community" v-magnetic>
             <button class="bg-white/80 backdrop-blur-sm border-2 border-gray-200 hover:border-blue-400 hover:text-blue-600 text-gray-700 font-bold px-7 py-3 rounded-full text-sm transition-all duration-300 shadow-sm">
-              Recruitment Windows
+              Community Hub
             </button>
-          </a>
+          </router-link>
         </div>
       </div>
     </section>
@@ -141,68 +141,6 @@
     </section>
 
     <!-- ═══════════════════════════════════════ -->
-    <!-- RECRUITMENT STATUS (Cyberpunk Locked Terminal) -->
-    <!-- ═══════════════════════════════════════ -->
-    <section id="recruitment-status" ref="recruitSection" class="bg-[#0B101B] section overflow-hidden relative text-white border-y border-white/10">
-      <!-- Ambient red glow -->
-      <div class="absolute -top-32 left-1/3 w-[500px] h-[500px] bg-red-600/10 blur-[160px] rounded-full pointer-events-none"></div>
-
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
-        <div class="text-center mb-12 md:mb-16">
-          <span class="inline-flex items-center gap-2 bg-red-500/15 text-red-400 text-xs font-mono font-extrabold px-4 py-1.5 rounded-full border border-red-500/30 uppercase tracking-widest mb-4">
-            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-            Seasonal Pipeline
-          </span>
-          <h2 class="recruit-heading text-white h-section mb-3 font-extrabold">
-            Core Team Allocation Windows
-          </h2>
-          <p class="recruit-sub text-gray-400 text-base sm:text-lg font-medium max-w-xl mx-auto">
-            Positions are evaluated on a strict seasonal rotation cycle based on active contributions.
-          </p>
-        </div>
-
-        <!-- Cyber Terminal Card -->
-        <div class="recruit-card bg-slate-900/90 backdrop-blur-xl rounded-3xl border border-white/15 p-8 sm:p-12 shadow-[0_25px_70px_rgba(0,0,0,0.8)] relative overflow-hidden group">
-          <!-- Laser scanning effect line -->
-          <div class="laser-scanner absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-75"></div>
-
-          <!-- HUD Header -->
-          <div class="flex items-center justify-between pb-6 border-b border-white/10 mb-8">
-            <div class="flex items-center gap-3">
-              <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
-              <span class="font-mono text-xs font-black text-gray-300 uppercase tracking-widest">
-                SYS_ONBOARDING // STATUS
-              </span>
-            </div>
-            <span class="inline-flex items-center gap-2 bg-red-500/20 text-red-400 text-xs font-mono font-black px-3.5 py-1.5 rounded-full border border-red-500/40">
-              LOCKED
-            </span>
-          </div>
-
-          <!-- Description -->
-          <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-8 font-normal">
-            Core leadership and track coordinator positions are evaluated on a strict seasonal rotation cycle. We do not accept passive external applications. When active recruitment pipelines clear, formal onboarding application portals will be routed directly through our verified communication channels.
-          </p>
-
-          <!-- Status Indicator Terminal Row -->
-          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-black/40 border border-white/10 rounded-2xl">
-            <div class="flex items-center gap-3.5">
-              <div class="w-3.5 h-3.5 rounded-full bg-red-500 ring-4 ring-red-500/20 shrink-0"></div>
-              <span class="font-mono text-xs sm:text-sm font-bold text-gray-200 uppercase tracking-wider">
-                Current Pipeline Status: Locked (Evaluating Cohort Alpha)
-              </span>
-            </div>
-            <router-link to="/contact-us" v-magnetic>
-              <button class="whitespace-nowrap bg-white/10 hover:bg-white/15 text-white text-xs font-mono font-bold px-4 py-2 rounded-xl border border-white/20 transition-colors">
-                Inquire For Next Window &rarr;
-              </button>
-            </router-link>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════ -->
     <!-- CTA SECTION -->
     <!-- ═══════════════════════════════════════ -->
     <section class="relative w-full bg-gradient-to-b from-[#F8FAFC] via-[#dceeff] to-[#b8d4f0] section overflow-hidden">
@@ -213,16 +151,16 @@
           </div>
           <div class="relative z-10">
             <span class="inline-block bg-blue-50 text-blue-600 text-xs font-mono font-extrabold px-4 py-1.5 rounded-full border border-blue-100 uppercase tracking-widest mb-4">
-              Get Notified
+              Build With Us
             </span>
             <h2 class="h-sub text-gray-900 leading-snug mb-4">
-              Want to join when positions
-              <span class="text-blue-600 relative inline-block ml-1">open?
+              Want to build
+              <span class="text-blue-600 relative inline-block ml-1">with us?
                 <span class="absolute left-0 -bottom-1 w-full h-[3px] bg-blue-500 rotate-[-2deg]"></span>
               </span>
             </h2>
             <p class="text-gray-600 text-sm sm:text-base md:text-lg max-w-md mx-auto leading-relaxed mb-8">
-              Stay connected through our official community channels for upcoming recruitment announcements.
+              Join the community, show up to a workshop, and ship something real. That is how every member of this team started.
             </p>
             <div class="flex flex-wrap gap-4 justify-center items-center">
               <router-link to="/contact-us" v-magnetic>
@@ -254,7 +192,6 @@ const pageScope = ref(null)
 const heroScope = ref(null)
 const marqueeScope = ref(null)
 const teamSection = ref(null)
-const recruitSection = ref(null)
 const ctaMascot = ref(null)
 
 const coreMembers = ref([
@@ -413,29 +350,7 @@ useGSAP(({ gsap, ScrollTrigger, selector }) => {
     })
   }
 
-  // 5. Recruitment Locked Terminal Reveal & Laser Scanner
-  gsap.from(selector('.recruit-card'), {
-    scrollTrigger: { trigger: recruitSection.value, start: 'top 75%', toggleActions: 'play none none reverse' },
-    y: 50,
-    scale: 0.92,
-    opacity: 0,
-    duration: 1.1,
-    ease: 'back.out(1.4)'
-  })
-
-  // Laser sweep animation
-  const scanner = selector('.laser-scanner')[0]
-  if (scanner) {
-    gsap.to(scanner, {
-      top: '100%',
-      duration: 2.6,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut'
-    })
-  }
-
-  // 6. CTA Mascot Parallax
+  // 5. CTA Mascot Parallax
   if (ctaMascot.value) {
     gsap.from(ctaMascot.value, {
       scrollTrigger: { trigger: '.cta-card', start: 'top 85%', toggleActions: 'play none none reverse' },
