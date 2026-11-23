@@ -32,56 +32,54 @@
               <div class="spatial-stage relative aspect-[3/2] md:aspect-[2/3]">
                 <img
                   :src="partnerEvent.poster"
-                  alt=""
+                  :alt="partnerEvent.posterAlt"
                   class="spatial-poster w-full h-full object-cover object-top rounded-[22px] border border-white/20"
                 />
                 <div class="spatial-chip spatial-chip--modules hidden md:flex absolute -left-5 top-8 items-center gap-2 rounded-full px-3.5 py-2 text-white text-xs font-bold whitespace-nowrap" aria-hidden="true">
-                  <i class="fa-solid fa-layer-group text-violet-200" aria-hidden="true"></i>
-                  {{ partnerEvent.modules.length }} modules · 1 day
+                  <i class="fa-solid fa-graduation-cap text-emerald-300" aria-hidden="true"></i>
+                  {{ partnerEvent.chipTop }}
                 </div>
                 <div class="spatial-chip spatial-chip--promo absolute -bottom-5 right-3 md:-right-6 md:bottom-10 flex flex-col items-center rounded-2xl px-4 py-2.5 text-white" aria-hidden="true">
-                  <span class="text-2xl font-black leading-none tracking-tight">10%</span>
-                  <span class="text-[10px] font-extrabold uppercase tracking-widest text-white/80 mt-0.5">off</span>
+                  <span class="text-xl font-black leading-none tracking-tight">{{ partnerEvent.chipBottomValue }}</span>
+                  <span class="text-[10px] font-extrabold uppercase tracking-widest text-white/85 mt-0.5">{{ partnerEvent.chipBottomLabel }}</span>
                 </div>
               </div>
 
               <!-- Copy -->
               <div class="spatial-copy min-w-0 text-center md:text-left">
-                <span class="spatial-tile inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-widest text-violet-100 px-3.5 py-1.5 rounded-full mb-4">
-                  🎉 Exciting news
+                <span class="spatial-tile inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-widest text-emerald-200 px-3.5 py-1.5 rounded-full mb-4">
+                  {{ partnerEvent.popupBadge }}
                 </span>
                 <h2 id="partner-popup-title" class="text-white text-[26px] sm:text-3xl font-extrabold tracking-tight leading-[1.15] mb-5 sm:mb-3">
-                  We're an official
-                  <span class="bg-gradient-to-r from-violet-300 via-fuchsia-300 to-sky-300 bg-clip-text text-transparent">{{ partnerEvent.name }}</span>
-                  Outreach Partner
+                  <span class="bg-gradient-to-r from-emerald-300 via-teal-200 to-sky-300 bg-clip-text text-transparent">{{ partnerEvent.name }}</span>:
+                  {{ partnerEvent.subtitle }}
                 </h2>
                 <!-- Dropped on phones so the whole popup fits without scrolling. -->
-                <p class="hidden sm:block text-white/70 text-[15px] leading-relaxed mb-5">
-                  Skill Sprint has teamed up with {{ partnerEvent.host }}.
-                  {{ partnerEvent.modules.length }} modules, one day: build under pressure and compete with the best.
+                <p class="hidden sm:block text-white/75 text-[15px] leading-relaxed mb-5">
+                  {{ partnerEvent.summary }}
                 </p>
 
                 <dl class="grid sm:grid-cols-2 gap-2.5 mb-2.5 text-left">
                   <div class="spatial-tile flex items-start gap-3 rounded-2xl px-4 py-2.5 sm:py-3">
-                    <i class="fa-regular fa-calendar text-violet-200 w-4 text-center mt-1" aria-hidden="true"></i>
+                    <i class="fa-regular fa-calendar text-emerald-300 w-4 text-center mt-1" aria-hidden="true"></i>
                     <div>
                       <dt class="text-[10px] font-bold uppercase tracking-widest text-white/50">Date</dt>
                       <dd class="text-white text-sm font-semibold">{{ partnerEvent.date }}</dd>
                     </div>
                   </div>
                   <div class="spatial-tile flex items-start gap-3 rounded-2xl px-4 py-2.5 sm:py-3">
-                    <i class="fa-solid fa-location-dot text-violet-200 w-4 text-center mt-1" aria-hidden="true"></i>
+                    <i class="fa-solid fa-location-dot text-emerald-300 w-4 text-center mt-1" aria-hidden="true"></i>
                     <div>
-                      <dt class="text-[10px] font-bold uppercase tracking-widest text-white/50">Where</dt>
+                      <dt class="text-[10px] font-bold uppercase tracking-widest text-white/50">Venue</dt>
                       <dd class="text-white text-sm font-semibold">{{ partnerEvent.venue }}</dd>
                     </div>
                   </div>
                 </dl>
 
-                <p class="spatial-tile spatial-tile--dashed rounded-2xl px-4 py-3 text-sm text-white/75 mb-6">
-                  Use code
-                  <span class="font-mono font-bold text-white tracking-wider">{{ partnerEvent.promoCode }}</span>
-                  for {{ partnerEvent.promoOffer }}
+                <p class="spatial-tile spatial-tile--dashed rounded-2xl px-4 py-3 text-sm text-white/80 mb-6">
+                  Referral Code:
+                  <span class="font-mono font-bold text-emerald-300 tracking-wider ml-1">{{ partnerEvent.referralCode }}</span>
+                  <span class="text-white/55"> · Hosted by {{ partnerEvent.host }}</span>
                 </p>
 
                 <div class="flex gap-3 justify-center md:justify-start">
@@ -92,7 +90,7 @@
                     @click="dismiss"
                     class="spatial-cta flex-1 sm:flex-none inline-flex items-center justify-center gap-2.5 text-white text-sm font-bold px-4 sm:px-7 py-3.5 rounded-full whitespace-nowrap"
                   >
-                    Register now
+                    Register on Meetup
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs" aria-hidden="true"></i>
                   </a>
                   <router-link

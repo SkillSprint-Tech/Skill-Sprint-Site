@@ -157,9 +157,196 @@
     </section>
 
     <!-- ═══════════════════════════════════════ -->
+    <!-- FEATURED UPCOMING PARTNER EVENT (AWS From Zero) -->
+    <!-- ═══════════════════════════════════════ -->
+    <section ref="partnerScope" :id="partnerEvent.anchor" class="bg-[#080E16] section relative overflow-hidden text-white">
+      <!-- Ambient emerald & cloud glow -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div class="absolute -top-40 -left-40 w-[620px] h-[620px] bg-emerald-500/12 blur-[160px] rounded-full"></div>
+        <div class="absolute -bottom-40 -right-40 w-[620px] h-[620px] bg-teal-500/12 blur-[160px] rounded-full"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(rgba(16,185,129,0.08)_1px,transparent_1px)] [background-size:30px_30px]"></div>
+      </div>
+
+      <div class="max-w-6xl mx-auto relative z-10 px-4 sm:px-6">
+        <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-14">
+
+          <!-- Left Column: 3D Portrait Poster + Meetup Banner Card -->
+          <div ref="posterCard" class="flex-shrink-0 w-full max-w-xs sm:max-w-sm flex flex-col gap-5 partner-poster relative perspective-1000">
+            <div class="group relative rounded-2xl overflow-hidden border border-emerald-400/25 shadow-[0_25px_60px_rgba(0,0,0,0.75)] hover:border-emerald-400/60 transition-all duration-500 transform-gpu">
+              <img :src="partnerEvent.poster" :alt="partnerEvent.posterAlt" width="1086" height="1536"
+                   class="w-full h-auto object-cover transform-gpu group-hover:scale-[1.03] transition-transform duration-700" loading="lazy" />
+
+              <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+              <div class="absolute top-4 right-4 bg-black/80 backdrop-blur-md border border-emerald-400/40 text-emerald-300 text-[11px] font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-2 shadow-xl">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>{{ partnerEvent.status }}</span>
+              </div>
+            </div>
+
+            <!-- Meetup Landscape Banner Preview -->
+            <a
+              :href="partnerEvent.registerUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group block rounded-2xl overflow-hidden border border-white/15 bg-white/[0.03] hover:border-emerald-400/50 transition-all duration-300 shadow-lg"
+            >
+              <div class="relative aspect-video overflow-hidden">
+                <img :src="partnerEvent.banner" :alt="partnerEvent.bannerAlt"
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+              </div>
+              <div class="px-4 py-2.5 flex items-center justify-between text-xs text-gray-300 font-mono bg-black/40">
+                <span class="truncate">{{ partnerEvent.hostFull }}</span>
+                <span class="inline-flex items-center gap-1.5 text-emerald-300 font-bold flex-shrink-0 ml-2">
+                  Meetup <i class="fa-solid fa-arrow-up-right-from-square text-[10px]" aria-hidden="true"></i>
+                </span>
+              </div>
+            </a>
+          </div>
+
+          <!-- Right Column: Details, Curriculum, Referral & CTAs -->
+          <div class="flex-1 text-center lg:text-left partner-copy">
+            <div class="flex flex-wrap items-center gap-2.5 justify-center lg:justify-start mb-5">
+              <span class="inline-flex items-center gap-2 bg-emerald-500/15 text-emerald-300 text-xs font-mono font-extrabold
+                           px-4 py-1.5 rounded-full border border-emerald-500/35 uppercase tracking-widest">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                Upcoming Event
+              </span>
+              <span class="inline-flex items-center gap-1.5 bg-white/5 text-gray-200 text-xs font-mono font-semibold
+                           px-3.5 py-1.5 rounded-full border border-white/10">
+                <i class="fa-brands fa-aws text-amber-400 text-sm" aria-hidden="true"></i>
+                {{ partnerEvent.host }}
+              </span>
+              <span class="inline-flex items-center gap-1.5 bg-white/5 text-emerald-200 text-xs font-mono font-semibold
+                           px-3.5 py-1.5 rounded-full border border-white/10">
+                <i class="fa-solid fa-graduation-cap text-emerald-400 text-xs" aria-hidden="true"></i>
+                E-Certificates Included
+              </span>
+            </div>
+
+            <h2 class="text-white h-section leading-[1.12] mb-4 font-extrabold">
+              <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-sky-300 bg-clip-text text-transparent">
+                {{ partnerEvent.name }}:
+              </span><br />
+              {{ partnerEvent.subtitle }}
+            </h2>
+
+            <p class="text-gray-300 text-base sm:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0 mb-6 font-normal">
+              {{ partnerEvent.summary }}
+            </p>
+
+            <!-- What You'll Learn -->
+            <div class="bg-white/[0.04] border border-white/10 rounded-2xl p-5 mb-6 text-left">
+              <h3 class="text-xs font-mono font-extrabold uppercase tracking-widest text-emerald-300 mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-book-open text-emerald-400" aria-hidden="true"></i>
+                What You'll Learn
+              </h3>
+              <ul class="space-y-2.5 text-sm sm:text-[15px] text-gray-200">
+                <li v-for="item in partnerEvent.learnItems" :key="item" class="flex items-start gap-2.5">
+                  <i class="fa-solid fa-circle-check text-emerald-400 mt-1 flex-shrink-0 text-xs" aria-hidden="true"></i>
+                  <span>{{ item }}</span>
+                </li>
+              </ul>
+              <p class="mt-4 pt-3 border-t border-white/10 text-xs sm:text-sm text-gray-300 flex items-start gap-2">
+                <i class="fa-solid fa-award text-amber-300 mt-0.5 flex-shrink-0" aria-hidden="true"></i>
+                <span>{{ partnerEvent.certificateNote }}</span>
+              </p>
+            </div>
+
+            <!-- Date, Time & Venue -->
+            <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-200 mb-5 text-left">
+              <div class="flex items-start gap-3 bg-white/[0.05] px-4 py-3 rounded-xl border border-white/[0.08]">
+                <i class="fa-regular fa-calendar text-emerald-300 text-base mt-0.5" aria-hidden="true"></i>
+                <div>
+                  <dt class="text-[10px] font-mono uppercase tracking-widest text-gray-400">Date & Time</dt>
+                  <dd class="font-semibold text-white">{{ partnerEvent.date }}</dd>
+                  <dd class="text-xs text-emerald-300/90 font-mono mt-0.5">{{ partnerEvent.time }}</dd>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 bg-white/[0.05] px-4 py-3 rounded-xl border border-white/[0.08]">
+                <i class="fa-solid fa-location-dot text-emerald-300 text-base mt-0.5" aria-hidden="true"></i>
+                <div>
+                  <dt class="text-[10px] font-mono uppercase tracking-widest text-gray-400">Venue</dt>
+                  <dd class="font-semibold text-white">{{ partnerEvent.venue }}</dd>
+                  <dd class="text-xs text-gray-400 mt-0.5">Lahore · In-person session</dd>
+                </div>
+              </div>
+            </dl>
+
+            <!-- Referral Code Banner -->
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-emerald-500/10 border border-dashed border-emerald-400/40 rounded-2xl px-4 py-3 mb-7 text-left">
+              <div class="flex items-center gap-2.5">
+                <i class="fa-solid fa-ticket text-emerald-300" aria-hidden="true"></i>
+                <span class="text-sm text-gray-200">
+                  Referral Code:
+                  <strong class="font-mono text-white tracking-wider ml-1">{{ partnerEvent.referralCode }}</strong>
+                </span>
+              </div>
+              <button
+                type="button"
+                @click="copyReferralCode"
+                class="inline-flex items-center gap-1.5 text-xs font-mono font-bold px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-emerald-200 transition-colors cursor-pointer"
+              >
+                <i :class="copiedReferral ? 'fa-solid fa-check text-emerald-400' : 'fa-regular fa-copy'" aria-hidden="true"></i>
+                <span>{{ copiedReferral ? 'Copied!' : 'Copy code' }}</span>
+              </button>
+            </div>
+
+            <!-- Action Buttons & Community Links -->
+            <div class="flex flex-wrap items-center gap-3 justify-center lg:justify-start">
+              <a
+                :href="partnerEvent.registerUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                v-magnetic
+                class="inline-flex items-center justify-center gap-2.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold px-7 py-3.5 rounded-full text-sm transition-all duration-200 shadow-lg shadow-emerald-500/25 active:scale-95"
+              >
+                <span>Register on Meetup</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs" aria-hidden="true"></i>
+              </a>
+
+              <a
+                :href="partnerEvent.whatsappUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                v-magnetic
+                class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-emerald-500/20 border border-emerald-400/35 text-white px-6 py-3.5 rounded-full text-sm font-semibold transition-all duration-200"
+              >
+                <i class="fab fa-whatsapp text-emerald-400 text-base" aria-hidden="true"></i>
+                <span>Join WhatsApp (After Reg.)</span>
+              </a>
+
+              <div class="flex items-center gap-2">
+                <a
+                  :href="partnerEvent.linkedinUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="AWS From Zero LinkedIn post"
+                  class="w-11 h-11 rounded-full bg-white/10 hover:bg-blue-600/40 border border-white/15 flex items-center justify-center text-white transition-colors"
+                >
+                  <i class="fab fa-linkedin-in text-sm" aria-hidden="true"></i>
+                </a>
+                <a
+                  :href="partnerEvent.instagramUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="AWS From Zero Instagram post"
+                  class="w-11 h-11 rounded-full bg-white/10 hover:bg-pink-600/40 border border-white/15 flex items-center justify-center text-white transition-colors"
+                >
+                  <i class="fab fa-instagram text-sm" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
     <!-- PAST ENDEAVOUR: PARTNER EVENT (LoopVerse) -->
     <!-- ═══════════════════════════════════════ -->
-    <section ref="partnerScope" :id="partnerEvent.anchor" class="bg-[#0B101B] section relative overflow-hidden text-white">
+    <section ref="pastPartnerScope" :id="pastPartnerEvent.anchor" class="bg-[#0B101B] section relative overflow-hidden text-white border-t border-white/5">
       <!-- Ambient Starfield / Mesh Glow -->
       <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute -top-40 -left-40 w-[600px] h-[600px] bg-violet-600/15 blur-[160px] rounded-full"></div>
@@ -171,9 +358,9 @@
         <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
           <!-- 3D Poster Tilt with Specular Sheen -->
-          <div ref="posterCard" class="flex-shrink-0 w-full max-w-xs sm:max-w-sm partner-poster relative perspective-1000 group">
+          <div ref="pastPosterCard" class="flex-shrink-0 w-full max-w-xs sm:max-w-sm partner-poster relative perspective-1000 group">
             <div class="relative rounded-2xl overflow-hidden border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.7)] group-hover:border-violet-400/50 transition-all duration-500 transform-gpu">
-              <img :src="partnerEvent.poster" :alt="partnerEvent.posterAlt" width="1025" height="1535"
+              <img :src="pastPartnerEvent.poster" :alt="pastPartnerEvent.posterAlt" width="1025" height="1535"
                    class="w-full h-auto object-cover transform-gpu group-hover:scale-105 transition-transform duration-700" loading="lazy" />
               
               <!-- Specular Light Reflection Overlay -->
@@ -181,12 +368,12 @@
 
               <div class="absolute top-4 right-4 bg-black/80 backdrop-blur-md border border-white/20 text-white/95 text-[11px] font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-2 shadow-xl">
                 <i class="fa-solid fa-flag-checkered text-violet-400" aria-hidden="true"></i>
-                <span>Concluded</span>
+                <span>{{ pastPartnerEvent.status }}</span>
               </div>
             </div>
           </div>
 
-          <div class="flex-1 text-center lg:text-left partner-copy">
+          <div class="flex-1 text-center lg:text-left past-partner-copy">
             <div class="flex flex-wrap items-center gap-2.5 justify-center lg:justify-start mb-6">
               <span class="inline-flex items-center gap-2 bg-violet-500/15 text-violet-300 text-xs font-mono font-extrabold
                            px-4 py-1.5 rounded-full border border-violet-500/30 uppercase tracking-widest">
@@ -203,18 +390,18 @@
             <h2 class="text-white h-section leading-[1.12] mb-5 font-extrabold">
               Proud Outreach Partner for<br />
               <span class="bg-gradient-to-r from-violet-400 via-fuchsia-300 to-sky-300 bg-clip-text text-transparent">
-                {{ partnerEvent.name }}.
+                {{ pastPartnerEvent.name }}.
               </span>
             </h2>
 
             <p class="text-gray-300 text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 mb-6 font-normal">
-              Skill Sprint proudly served as an official Outreach Partner for {{ partnerEvent.host }}'s
-              {{ partnerEvent.name }}. Seven intensive modules bringing student builders together to create,
+              Skill Sprint proudly served as an official Outreach Partner for {{ pastPartnerEvent.host }}'s
+              {{ pastPartnerEvent.name }}. Seven intensive modules bringing student builders together to create,
               compete under pressure, and ship real projects across modern engineering domains.
             </p>
 
             <ul class="flex flex-wrap gap-2 justify-center lg:justify-start mb-6">
-              <li v-for="module in partnerEvent.modules" :key="module"
+              <li v-for="module in pastPartnerEvent.modules" :key="module"
                   class="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-violet-400/40 text-gray-300 text-xs font-mono font-semibold px-3.5 py-1.5 rounded-full transition-colors">
                 {{ module }}
               </li>
@@ -224,12 +411,12 @@
               <div class="flex items-center gap-2.5 bg-white/[0.05] px-4 py-2.5 rounded-xl border border-white/[0.08]">
                 <dt class="sr-only">Date</dt>
                 <i class="fa-regular fa-calendar-check text-violet-300 text-sm" aria-hidden="true"></i>
-                <dd class="font-medium">{{ partnerEvent.date }} · <span class="text-emerald-400 font-semibold">Concluded</span></dd>
+                <dd class="font-medium">{{ pastPartnerEvent.date }} · <span class="text-emerald-400 font-semibold">Concluded</span></dd>
               </div>
               <div class="flex items-center gap-2.5 bg-white/[0.05] px-4 py-2.5 rounded-xl border border-white/[0.08]">
                 <dt class="sr-only">Venue</dt>
                 <i class="fa-solid fa-location-dot text-violet-300 text-sm" aria-hidden="true"></i>
-                <dd class="font-medium">{{ partnerEvent.venue }}</dd>
+                <dd class="font-medium">{{ pastPartnerEvent.venue }}</dd>
               </div>
             </dl>
 
@@ -239,14 +426,14 @@
                 Event Completed
               </span>
               <a
-                v-if="partnerEvent.websiteUrl"
-                :href="partnerEvent.websiteUrl"
+                v-if="pastPartnerEvent.websiteUrl"
+                :href="pastPartnerEvent.websiteUrl"
                 target="_blank"
                 rel="noopener noreferrer"
                 v-magnetic
                 class="inline-flex items-center gap-2 text-white bg-white/10 hover:bg-white/15 border border-white/15 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-200"
               >
-                <span>Visit {{ partnerEvent.host }}</span>
+                <span>Visit {{ pastPartnerEvent.host }}</span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-xs text-violet-300" aria-hidden="true"></i>
               </a>
             </div>
@@ -470,7 +657,7 @@ import { ref, reactive } from 'vue'
 import { useGSAP } from '../composables/useGSAP'
 import { SplitText } from '../motion/gsap'
 import { whatsappGroup } from '../data/site'
-import { partnerEvent } from '../data/partnerEvent'
+import { partnerEvent, pastPartnerEvent } from '../data/partnerEvent'
 
 const pageScope = ref(null)
 const heroScope = ref(null)
@@ -478,10 +665,26 @@ const marqueeScope = ref(null)
 const statsScope = ref(null)
 const partnerScope = ref(null)
 const posterCard = ref(null)
+const pastPartnerScope = ref(null)
+const pastPosterCard = ref(null)
 const testimonialScope = ref(null)
 const galleryScope = ref(null)
 const whatsappScope = ref(null)
 const ctaMascot = ref(null)
+
+const copiedReferral = ref(false)
+let copyResetTimer = null
+
+const copyReferralCode = async () => {
+  try {
+    await navigator.clipboard.writeText(partnerEvent.referralCode)
+    copiedReferral.value = true
+    clearTimeout(copyResetTimer)
+    copyResetTimer = setTimeout(() => { copiedReferral.value = false }, 2000)
+  } catch {
+    copiedReferral.value = false
+  }
+}
 
 // Stats data
 const stats = reactive([
@@ -606,6 +809,25 @@ useGSAP(({ gsap, ScrollTrigger, selector }) => {
 
   gsap.from(selector('.partner-copy'), {
     scrollTrigger: { trigger: partnerScope.value, start: 'top 75%', toggleActions: 'play none none reverse' },
+    x: 40,
+    opacity: 0,
+    duration: 1,
+    ease: 'power3.out'
+  })
+
+  if (pastPosterCard.value) {
+    gsap.from(pastPosterCard.value, {
+      scrollTrigger: { trigger: pastPartnerScope.value, start: 'top 75%', toggleActions: 'play none none reverse' },
+      y: 60,
+      rotateY: -15,
+      opacity: 0,
+      duration: 1.2,
+      ease: 'back.out(1.4)'
+    })
+  }
+
+  gsap.from(selector('.past-partner-copy'), {
+    scrollTrigger: { trigger: pastPartnerScope.value, start: 'top 75%', toggleActions: 'play none none reverse' },
     x: 40,
     opacity: 0,
     duration: 1,
